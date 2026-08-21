@@ -1,0 +1,67 @@
+/* Final viewport + interaction hardening */
+html,body{width:100%;height:100%;min-height:100%;overflow:hidden;overscroll-behavior:none}
+body{min-height:100dvh}
+.viewport{inset:0;width:100vw;height:100dvh;min-height:100svh;overflow:hidden}
+.sync-world{inset:-3.5vmax;scale:1;transform-origin:center center}
+.scroll-space{display:none!important;height:0!important}
+
+/* Lamp: the whole antique lamp is clickable, not only its tiny switch. */
+.desk-lamp{cursor:pointer;user-select:none;-webkit-user-select:none;transition:filter .22s ease,scale .18s ease}
+.desk-lamp:hover{filter:drop-shadow(0 12px 11px rgba(0,0,0,.48)) brightness(1.08)}
+.desk-lamp:active{scale:.97}
+.desk-lamp:focus-visible{outline:2px solid rgba(229,187,119,.86);outline-offset:5px;border-radius:12px}
+body.lamp-on .desk-lamp{filter:drop-shadow(0 14px 12px rgba(0,0,0,.45)) drop-shadow(0 0 14px rgba(255,177,80,.18))}
+body.lamp-on .room::after{z-index:3;background:radial-gradient(ellipse 48% 46% at 32% 67%,rgba(255,197,111,.19),rgba(235,145,63,.08) 38%,transparent 70%);mix-blend-mode:screen}
+
+/* PIN inspect/focus layer. */
+.lock-focus-backdrop{position:absolute;inset:-8vmax;z-index:44;background:radial-gradient(circle at 50% 50%,rgba(7,5,4,.42),rgba(1,1,1,.78));backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .28s ease}
+body.lock-focused .lock-focus-backdrop{opacity:1;pointer-events:auto}
+.lockbox{cursor:pointer;--focus-x:0px;--focus-y:0px;transition:filter .3s ease,translate .36s cubic-bezier(.2,.82,.2,1),scale .36s cubic-bezier(.2,.82,.2,1)}
+.lockbox:hover:not(.focused){filter:drop-shadow(0 26px 22px rgba(0,0,0,.52)) brightness(1.06)}
+.lockbox:focus-visible{outline:2px solid rgba(214,171,106,.72);outline-offset:7px;border-radius:22px}
+.lockbox.focused{z-index:60;translate:var(--focus-x) var(--focus-y);scale:1.35;filter:drop-shadow(0 30px 38px rgba(0,0,0,.72)) drop-shadow(0 0 26px rgba(177,111,51,.15));cursor:default}
+.lockbox.focused .lock-window{border-color:rgba(225,188,129,.70);box-shadow:inset 0 0 32px rgba(0,0,0,.64),0 0 22px rgba(185,118,55,.2)}
+.lockbox.focused .digit-viewport{cursor:ns-resize;touch-action:none;pointer-events:auto}
+.lockbox.focused .lock-crest::after{content:'  MANUAL';color:#c79a60;font-size:.58rem;letter-spacing:.18em}
+.lock-close{display:none;position:absolute;right:3px;top:5px;z-index:12;width:28px;height:28px;border-radius:50%;border:1px solid rgba(224,186,125,.28);background:rgba(20,13,9,.82);color:#d5b783;font:600 20px/1 Georgia,serif;cursor:pointer;padding:0}
+.lockbox.focused .lock-close{display:grid;place-items:center}
+.lock-close:focus-visible{outline:2px solid #ddb879;outline-offset:2px}
+.digit-viewport{touch-action:none}
+.digit-viewport::after{content:'';position:absolute;inset:0;border-radius:10px;box-shadow:inset 0 12px 14px rgba(0,0,0,.18),inset 0 -12px 14px rgba(0,0,0,.18);pointer-events:none}
+.lockbox.focused .digit-viewport:hover{background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(0,0,0,.08))}
+
+/* 666 remains local to the ritual: never tint the whole screen red. */
+body.ritual-active .lockbox{filter:drop-shadow(0 28px 24px rgba(0,0,0,.54)) drop-shadow(0 0 25px rgba(255,48,30,.28))}
+body.ritual-active .arch-window{box-shadow:inset 0 0 70px rgba(0,0,0,.9),0 0 42px rgba(140,25,18,.11)}
+body.ritual-active .room{filter:none!important}
+
+/* Keep the moon physically behind every piece of the window frame. */
+.arch-window{isolation:isolate}
+.moon-stack{z-index:1!important}
+.arch-window::before,.arch-window::after{z-index:8!important}
+.window-frame-overlay{z-index:9!important}
+
+@media(max-width:820px){
+  .sync-world{inset:-2.8vmax;scale:.96}
+  .lockbox{left:clamp(64px,13vw,96px)}
+  .lockbox.focused{scale:1.12}
+  .desk-lamp{right:20%;bottom:85%;scale:.80}
+}
+@media(max-height:720px){
+  .sync-world{scale:.90}
+  .content{padding-top:32px;padding-bottom:48px}
+  .window-recess{top:4%;height:min(50vh,390px)}
+  .table{bottom:9%}
+  .lockbox{top:30%;scale:.90}
+  .lockbox.focused{scale:1.12}
+}
+@media(max-width:520px){
+  .sync-world{scale:.90}
+  .lockbox{left:clamp(56px,14vw,78px);top:42%}
+  .lockbox.focused{scale:1.02}
+  .table{left:-18%;scale:.72}
+  .window-recess{right:-8%;scale:.86}
+}
+@media(prefers-reduced-motion:reduce){
+  .lock-focus-backdrop,.lockbox,.desk-lamp{transition:none!important}
+}
