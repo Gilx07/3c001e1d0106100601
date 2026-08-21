@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#070605" />
-  <meta name="description" content="Dolenthis — ruang gelap, ingatan lama, dan sebuah oracle angka dari 1 sampai 100." />
+  <meta name="description" content="Dolenthis — ruang gelap, kemungkinan, dan angka yang terus berubah." />
   <title>Dolenthis</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=UnifrakturCook:wght@700&display=swap');
@@ -12,13 +12,11 @@
     :root {
       --bg: #070605;
       --panel: rgba(18, 15, 12, .78);
-      --paper: #15120f;
       --ink: #d8cfbd;
       --soft: #aaa090;
       --muted: #756d62;
       --faint: #342e28;
       --accent: #7f2222;
-      --accent-soft: rgba(127, 34, 34, .18);
       --line: rgba(216, 207, 189, .12);
     }
 
@@ -249,9 +247,7 @@
       margin: 0 auto;
       padding: clamp(28px, 6vw, 54px);
       border: 1px solid var(--line);
-      background:
-        linear-gradient(135deg, rgba(255,255,255,.018), transparent 35%),
-        var(--panel);
+      background: linear-gradient(135deg, rgba(255,255,255,.018), transparent 35%), var(--panel);
       backdrop-filter: blur(8px);
       text-align: center;
       overflow: hidden;
@@ -324,6 +320,7 @@
     #number {
       position: relative;
       z-index: 2;
+      min-width: 3ch;
       font-size: clamp(4rem, 12vw, 7rem);
       line-height: 1;
       font-variant-numeric: tabular-nums;
@@ -331,37 +328,36 @@
       text-shadow: 0 0 26px rgba(127,34,34,.18);
     }
 
-    #number.reveal-number { animation: numberReveal .48s ease; }
+    #number.reveal-number { animation: numberReveal .42s ease; }
 
     @keyframes numberReveal {
-      0% { opacity: .15; transform: scale(.72); filter: blur(7px); }
-      65% { transform: scale(1.08); }
+      0% { opacity: .18; transform: scale(.82); filter: blur(5px); }
+      70% { transform: scale(1.05); }
       100% { opacity: 1; transform: scale(1); filter: blur(0); }
     }
 
-    .oracle-button {
-      appearance: none;
-      border: 1px solid #51443a;
-      background: #110e0c;
-      color: #c6baa8;
-      padding: 13px 24px 12px;
-      cursor: pointer;
-      font: inherit;
-      font-size: .78rem;
-      letter-spacing: .24em;
-      text-transform: uppercase;
-      transition: .25s ease;
+    .countdown {
+      width: min(420px, 90%);
+      height: 2px;
+      margin: 4px auto 0;
+      background: rgba(216,207,189,.08);
+      overflow: hidden;
+      position: relative;
     }
 
-    .oracle-button:hover {
-      border-color: #775349;
-      background: var(--accent-soft);
-      color: #efe5d4;
-      transform: translateY(-2px);
+    .countdown-line {
+      width: 100%;
+      height: 100%;
+      transform-origin: left center;
+      background: linear-gradient(90deg, #5d1b1b, #9b5c4b, #c1af95);
+      box-shadow: 0 0 8px rgba(127,34,34,.25);
+      animation: countdownShrink 1.5s linear infinite;
     }
 
-    .oracle-button:active { transform: translateY(0); }
-    .oracle-button:focus-visible { outline: 2px solid #8a6255; outline-offset: 4px; }
+    @keyframes countdownShrink {
+      from { transform: scaleX(1); }
+      to { transform: scaleX(0); }
+    }
 
     .hint {
       margin: 13px 0 0;
@@ -393,12 +389,13 @@
     }
 
     .history-chip {
-      min-width: 40px;
+      min-width: 44px;
       padding: 6px 10px;
       border: 1px solid #302a25;
       color: #867d71;
       background: rgba(0,0,0,.18);
       font-size: .92rem;
+      font-variant-numeric: tabular-nums;
     }
 
     .empty-history { color: #4e4841; font-style: italic; }
@@ -429,7 +426,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
     }
   </style>
 </head>
@@ -453,9 +450,7 @@
         <p class="eyebrow">Est. in the shadows</p>
         <h1 id="title">Mandor</h1>
         <div class="divider" aria-hidden="true">◆</div>
-        <p class="tagline">
-          Ada hal-hal yang datang tanpa nama, bergerak pelan di antara cahaya, waktu, dan kemungkinan.
-        </p>
+        <p class="tagline">Ada hal-hal yang datang tanpa nama, bergerak pelan di antara cahaya, waktu, dan kemungkinan.</p>
         <p class="latin">Memoria manet · tenebrae loquuntur</p>
         <a class="enter" href="#oracle">Enter the silence <span aria-hidden="true">↓</span></a>
       </div>
@@ -465,19 +460,21 @@
       <p class="section-label">Instrumentum Aleae</p>
       <div class="oracle">
         <h2 id="oracle-title">The Number Oracle</h2>
-        <p class="oracle-desc">Biarkan kebetulan memilih. Tekan segel di bawah untuk menghasilkan satu angka dari 1 sampai 100.</p>
+        <p class="oracle-desc">Satu angka dari 1 sampai 999 muncul dengan sendirinya setiap 1,5 detik. Garis di bawah menunjukkan waktu menuju perubahan berikutnya.</p>
 
-        <div class="number-stage" aria-hidden="true">
-          <div id="number">—</div>
+        <div class="number-stage">
+          <div id="number" aria-live="polite">—</div>
         </div>
 
-        <button class="oracle-button" id="generate" type="button">Reveal a number</button>
-        <p class="hint">Tekan tombol atau gunakan tombol <strong>Space</strong>.</p>
+        <div class="countdown" aria-hidden="true">
+          <div class="countdown-line" id="countdown-line"></div>
+        </div>
+        <p class="hint">Angka berikutnya akan muncul saat garis menghilang.</p>
 
         <div class="history" aria-live="polite">
           <p class="history-title">Jejak terakhir</p>
           <div class="history-list" id="history">
-            <span class="empty-history">Belum ada angka yang dipanggil.</span>
+            <span class="empty-history">Menunggu angka pertama.</span>
           </div>
         </div>
       </div>
@@ -488,14 +485,14 @@
 
   <script>
     (() => {
-      const button = document.getElementById('generate');
       const numberEl = document.getElementById('number');
       const historyEl = document.getElementById('history');
+      const lineEl = document.getElementById('countdown-line');
       const history = [];
-      let rolling = false;
+      const interval = 1500;
 
       function randomNumber() {
-        return Math.floor(Math.random() * 100) + 1;
+        return Math.floor(Math.random() * 999) + 1;
       }
 
       function renderHistory() {
@@ -508,46 +505,27 @@
         });
       }
 
-      function revealNumber() {
-        if (rolling) return;
-        rolling = true;
-        button.disabled = true;
-        button.textContent = 'Consulting...';
-
-        let ticks = 0;
-        const timer = setInterval(() => {
-          numberEl.textContent = randomNumber();
-          ticks += 1;
-
-          if (ticks >= 12) {
-            clearInterval(timer);
-            const finalNumber = randomNumber();
-            numberEl.textContent = finalNumber;
-            numberEl.classList.remove('reveal-number');
-            void numberEl.offsetWidth;
-            numberEl.classList.add('reveal-number');
-
-            history.unshift(finalNumber);
-            if (history.length > 7) history.pop();
-            renderHistory();
-
-            button.disabled = false;
-            button.textContent = 'Reveal another';
-            rolling = false;
-          }
-        }, 55);
+      function resetCountdown() {
+        lineEl.style.animation = 'none';
+        void lineEl.offsetWidth;
+        lineEl.style.animation = `countdownShrink ${interval}ms linear forwards`;
       }
 
-      button.addEventListener('click', revealNumber);
+      function revealNumber() {
+        const value = randomNumber();
+        numberEl.textContent = value;
+        numberEl.classList.remove('reveal-number');
+        void numberEl.offsetWidth;
+        numberEl.classList.add('reveal-number');
 
-      document.addEventListener('keydown', (event) => {
-        const target = event.target;
-        const tag = target && target.tagName ? target.tagName.toLowerCase() : '';
-        if (event.code === 'Space' && tag !== 'input' && tag !== 'textarea' && tag !== 'button') {
-          event.preventDefault();
-          revealNumber();
-        }
-      });
+        history.unshift(value);
+        if (history.length > 7) history.pop();
+        renderHistory();
+        resetCountdown();
+      }
+
+      revealNumber();
+      setInterval(revealNumber, interval);
     })();
   </script>
 </body>
