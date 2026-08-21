@@ -11,13 +11,13 @@
 
     :root {
       --bg: #070605;
-      --panel: rgba(18, 15, 12, .78);
+      --panel: rgba(18,15,12,.78);
       --ink: #d8cfbd;
       --soft: #aaa090;
       --muted: #756d62;
       --faint: #342e28;
       --accent: #7f2222;
-      --line: rgba(216, 207, 189, .12);
+      --line: rgba(216,207,189,.12);
     }
 
     * { box-sizing: border-box; }
@@ -29,8 +29,8 @@
       color: var(--ink);
       font-family: 'Cormorant Garamond', Georgia, serif;
       background:
-        radial-gradient(circle at 50% 15%, rgba(94, 67, 43, .12), transparent 30%),
-        radial-gradient(circle at 15% 70%, rgba(80, 18, 18, .06), transparent 25%),
+        radial-gradient(circle at 50% 15%, rgba(94,67,43,.12), transparent 30%),
+        radial-gradient(circle at 15% 70%, rgba(80,18,18,.06), transparent 25%),
         linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
         var(--bg);
       background-size: auto, auto, 100% 4px, auto;
@@ -97,14 +97,14 @@
       animation: drift var(--duration) linear infinite;
       animation-delay: var(--delay);
       left: var(--left);
-      box-shadow: 0 0 7px rgba(127, 34, 34, .45);
+      box-shadow: 0 0 7px rgba(127,34,34,.45);
     }
 
     @keyframes drift {
-      0% { transform: translate3d(0, 0, 0); opacity: 0; }
+      0% { transform: translate3d(0,0,0); opacity: 0; }
       12% { opacity: .5; }
       75% { opacity: .2; }
-      100% { transform: translate3d(var(--sway), -105vh, 0); opacity: 0; }
+      100% { transform: translate3d(var(--sway),-105vh,0); opacity: 0; }
     }
 
     main {
@@ -123,7 +123,7 @@
       animation: reveal 1.5s ease both;
     }
 
-    .hero-inner { width: min(900px, 100%); }
+    .hero-inner { width: min(900px,100%); }
 
     .sigil {
       width: 82px;
@@ -142,12 +142,12 @@
     }
 
     .sigil span { transform: rotate(-45deg); }
-    .sigil::before, .sigil::after { content: ''; position: absolute; background: var(--faint); }
-    .sigil::before { width: 116px; height: 1px; }
-    .sigil::after { width: 1px; height: 116px; }
+    .sigil::before,.sigil::after { content:''; position:absolute; background:var(--faint); }
+    .sigil::before { width:116px; height:1px; }
+    .sigil::after { width:1px; height:116px; }
 
     @keyframes breathe {
-      0%, 100% { filter: drop-shadow(0 0 0 rgba(127,34,34,0)); }
+      0%,100% { filter: drop-shadow(0 0 0 rgba(127,34,34,0)); }
       50% { filter: drop-shadow(0 0 10px rgba(127,34,34,.25)); }
     }
 
@@ -156,18 +156,18 @@
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: .46em;
-      font-size: clamp(.62rem, 1.4vw, .78rem);
+      font-size: clamp(.62rem,1.4vw,.78rem);
     }
 
     h1 {
       margin: 0;
-      font-family: 'UnifrakturCook', 'Times New Roman', serif;
-      font-size: clamp(5.4rem, 16vw, 10.5rem);
+      font-family: 'UnifrakturCook','Times New Roman',serif;
+      font-size: clamp(5.4rem,16vw,10.5rem);
       line-height: .86;
       font-weight: 700;
       letter-spacing: -.035em;
       color: #c9beac;
-      text-shadow: 0 2px 0 #1b1713, 0 0 36px rgba(117, 79, 50, .11);
+      text-shadow: 0 2px 0 #1b1713, 0 0 36px rgba(117,79,50,.11);
     }
 
     .divider {
@@ -176,23 +176,23 @@
       align-items: center;
       justify-content: center;
       gap: 14px;
-      width: min(420px, 80%);
+      width: min(420px,80%);
       color: var(--accent);
     }
 
-    .divider::before, .divider::after {
-      content: '';
-      height: 1px;
-      flex: 1;
-      background: linear-gradient(90deg, transparent, var(--faint));
+    .divider::before,.divider::after {
+      content:'';
+      height:1px;
+      flex:1;
+      background:linear-gradient(90deg,transparent,var(--faint));
     }
-    .divider::after { transform: scaleX(-1); }
+    .divider::after { transform:scaleX(-1); }
 
     .tagline {
       margin: 0 auto;
       max-width: 650px;
       color: var(--soft);
-      font-size: clamp(1.25rem, 3vw, 1.8rem);
+      font-size: clamp(1.25rem,3vw,1.8rem);
       line-height: 1.6;
       font-style: italic;
     }
@@ -221,212 +221,160 @@
     }
 
     .enter:hover {
-      color: #d5cbbb;
-      border-color: #62554a;
-      background: rgba(255,255,255,.025);
-      transform: translateY(-2px);
+      color:#d5cbbb;
+      border-color:#62554a;
+      background:rgba(255,255,255,.025);
+      transform:translateY(-2px);
     }
 
-    .oracle-wrap {
-      padding: 58px 0 72px;
-      scroll-margin-top: 20px;
-    }
+    .oracle-wrap { padding:58px 0 72px; scroll-margin-top:20px; }
 
     .section-label {
-      margin: 0 0 12px;
-      color: var(--muted);
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: .38em;
-      font-size: .68rem;
+      margin:0 0 12px;
+      color:var(--muted);
+      text-align:center;
+      text-transform:uppercase;
+      letter-spacing:.38em;
+      font-size:.68rem;
     }
 
     .oracle {
-      position: relative;
-      width: min(760px, 100%);
-      margin: 0 auto;
-      padding: clamp(28px, 6vw, 54px);
-      border: 1px solid var(--line);
-      background: linear-gradient(135deg, rgba(255,255,255,.018), transparent 35%), var(--panel);
-      backdrop-filter: blur(8px);
-      text-align: center;
-      overflow: hidden;
+      position:relative;
+      width:min(760px,100%);
+      margin:0 auto;
+      padding:clamp(28px,6vw,54px);
+      border:1px solid var(--line);
+      background:linear-gradient(135deg,rgba(255,255,255,.018),transparent 35%),var(--panel);
+      backdrop-filter:blur(8px);
+      text-align:center;
+      overflow:hidden;
     }
 
-    .oracle::before,
-    .oracle::after {
-      content: '';
-      position: absolute;
-      width: 70px;
-      height: 70px;
-      border-color: rgba(216,207,189,.18);
-      pointer-events: none;
+    .oracle::before,.oracle::after {
+      content:'';
+      position:absolute;
+      width:70px;
+      height:70px;
+      border-color:rgba(216,207,189,.18);
+      pointer-events:none;
     }
 
-    .oracle::before {
-      top: 12px;
-      left: 12px;
-      border-top: 1px solid;
-      border-left: 1px solid;
-    }
-
-    .oracle::after {
-      right: 12px;
-      bottom: 12px;
-      border-right: 1px solid;
-      border-bottom: 1px solid;
-    }
+    .oracle::before { top:12px; left:12px; border-top:1px solid; border-left:1px solid; }
+    .oracle::after { right:12px; bottom:12px; border-right:1px solid; border-bottom:1px solid; }
 
     .oracle h2 {
-      margin: 0;
-      font-size: clamp(2rem, 5vw, 3.1rem);
-      font-weight: 500;
-      letter-spacing: .04em;
+      margin:0;
+      font-size:clamp(2rem,5vw,3.1rem);
+      font-weight:500;
+      letter-spacing:.04em;
     }
 
     .oracle-desc {
-      max-width: 540px;
-      margin: 10px auto 30px;
-      color: var(--muted);
-      font-size: 1.05rem;
-      line-height: 1.55;
+      max-width:540px;
+      margin:10px auto 30px;
+      color:var(--muted);
+      font-size:1.05rem;
+      line-height:1.55;
     }
 
     .number-stage {
-      width: min(250px, 65vw);
-      aspect-ratio: 1;
-      margin: 0 auto 28px;
-      border: 1px solid #40372f;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      position: relative;
-      background: radial-gradient(circle, rgba(127,34,34,.08), transparent 64%);
+      width:min(250px,65vw);
+      aspect-ratio:1;
+      margin:0 auto 28px;
+      border:1px solid #40372f;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      position:relative;
+      background:radial-gradient(circle,rgba(127,34,34,.08),transparent 64%);
     }
 
-    .number-stage::before,
-    .number-stage::after {
-      content: '';
-      position: absolute;
-      border: 1px solid rgba(216,207,189,.08);
-      border-radius: 50%;
+    .number-stage::before,.number-stage::after {
+      content:'';
+      position:absolute;
+      border:1px solid rgba(216,207,189,.08);
+      border-radius:50%;
     }
 
-    .number-stage::before { inset: 11px; }
-    .number-stage::after { inset: 24px; border-style: dashed; animation: rotate 24s linear infinite; }
-
-    @keyframes rotate { to { transform: rotate(360deg); } }
+    .number-stage::before { inset:11px; }
+    .number-stage::after { inset:24px; border-style:dashed; animation:rotate 24s linear infinite; }
+    @keyframes rotate { to { transform:rotate(360deg); } }
 
     #number {
-      position: relative;
-      z-index: 2;
-      min-width: 3ch;
-      font-size: clamp(4rem, 12vw, 7rem);
-      line-height: 1;
-      font-variant-numeric: tabular-nums;
-      color: #c9beac;
-      text-shadow: 0 0 26px rgba(127,34,34,.18);
+      position:relative;
+      z-index:2;
+      min-width:3ch;
+      font-size:clamp(4rem,12vw,7rem);
+      line-height:1;
+      font-variant-numeric:tabular-nums;
+      color:#c9beac;
+      text-shadow:0 0 26px rgba(127,34,34,.18);
     }
 
-    #number.reveal-number { animation: numberReveal .42s ease; }
-
+    #number.reveal-number { animation:numberReveal .42s ease; }
     @keyframes numberReveal {
-      0% { opacity: .18; transform: scale(.82); filter: blur(5px); }
-      70% { transform: scale(1.05); }
-      100% { opacity: 1; transform: scale(1); filter: blur(0); }
+      0% { opacity:.18; transform:scale(.82); filter:blur(5px); }
+      70% { transform:scale(1.05); }
+      100% { opacity:1; transform:scale(1); filter:blur(0); }
     }
 
     .countdown {
-      width: min(420px, 90%);
-      height: 2px;
-      margin: 4px auto 0;
-      background: rgba(216,207,189,.08);
-      overflow: hidden;
-      position: relative;
+      width:min(420px,90%);
+      height:2px;
+      margin:4px auto 0;
+      background:rgba(216,207,189,.08);
+      overflow:hidden;
+      position:relative;
     }
 
     .countdown-line {
-      width: 100%;
-      height: 100%;
-      transform-origin: left center;
-      background: linear-gradient(90deg, #5d1b1b, #9b5c4b, #c1af95);
-      box-shadow: 0 0 8px rgba(127,34,34,.25);
-      animation: countdownShrink 1.5s linear infinite;
+      width:100%;
+      height:100%;
+      transform-origin:left center;
+      background:linear-gradient(90deg,#5d1b1b,#9b5c4b,#c1af95);
+      box-shadow:0 0 8px rgba(127,34,34,.25);
+      animation:countdownShrink 1.5s linear infinite;
     }
 
     @keyframes countdownShrink {
-      from { transform: scaleX(1); }
-      to { transform: scaleX(0); }
+      from { transform:scaleX(1); }
+      to { transform:scaleX(0); }
     }
 
     .hint {
-      margin: 13px 0 0;
-      color: #5d554d;
-      font-size: .76rem;
-      letter-spacing: .08em;
+      margin:13px 0 0;
+      color:#5d554d;
+      font-size:.76rem;
+      letter-spacing:.08em;
     }
-
-    .history {
-      margin-top: 30px;
-      padding-top: 24px;
-      border-top: 1px solid var(--line);
-    }
-
-    .history-title {
-      margin: 0 0 13px;
-      color: #655d54;
-      text-transform: uppercase;
-      letter-spacing: .24em;
-      font-size: .66rem;
-    }
-
-    .history-list {
-      min-height: 34px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .history-chip {
-      min-width: 44px;
-      padding: 6px 10px;
-      border: 1px solid #302a25;
-      color: #867d71;
-      background: rgba(0,0,0,.18);
-      font-size: .92rem;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .empty-history { color: #4e4841; font-style: italic; }
 
     .footer {
-      padding: 0 0 22px;
-      color: #403a34;
-      text-align: center;
-      font-size: .65rem;
-      letter-spacing: .22em;
-      text-transform: uppercase;
+      padding:0 0 22px;
+      color:#403a34;
+      text-align:center;
+      font-size:.65rem;
+      letter-spacing:.22em;
+      text-transform:uppercase;
     }
 
     @keyframes reveal {
-      from { opacity: 0; transform: translateY(18px); filter: blur(3px); }
-      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+      from { opacity:0; transform:translateY(18px); filter:blur(3px); }
+      to { opacity:1; transform:translateY(0); filter:blur(0); }
     }
 
-    @media (max-width: 600px) {
-      .frame { inset: 8px; }
-      main { width: min(100% - 32px, 1120px); padding-top: 64px; }
-      .hero { min-height: 78vh; }
-      .sigil { width: 66px; height: 66px; }
-      .sigil::before { width: 92px; }
-      .sigil::after { height: 92px; }
-      .oracle { padding: 34px 20px; }
-      .oracle-wrap { padding-top: 38px; }
+    @media (max-width:600px) {
+      .frame { inset:8px; }
+      main { width:min(100% - 32px,1120px); padding-top:64px; }
+      .hero { min-height:78vh; }
+      .sigil { width:66px; height:66px; }
+      .sigil::before { width:92px; }
+      .sigil::after { height:92px; }
+      .oracle { padding:34px 20px; }
+      .oracle-wrap { padding-top:38px; }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+    @media (prefers-reduced-motion:reduce) {
+      *,*::before,*::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; }
     }
   </style>
 </head>
@@ -470,13 +418,6 @@
           <div class="countdown-line" id="countdown-line"></div>
         </div>
         <p class="hint">Angka berikutnya akan muncul saat garis menghilang.</p>
-
-        <div class="history" aria-live="polite">
-          <p class="history-title">Jejak terakhir</p>
-          <div class="history-list" id="history">
-            <span class="empty-history">Menunggu angka pertama.</span>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -486,23 +427,11 @@
   <script>
     (() => {
       const numberEl = document.getElementById('number');
-      const historyEl = document.getElementById('history');
       const lineEl = document.getElementById('countdown-line');
-      const history = [];
       const interval = 1500;
 
       function randomNumber() {
         return Math.floor(Math.random() * 999) + 1;
-      }
-
-      function renderHistory() {
-        historyEl.innerHTML = '';
-        history.forEach((value) => {
-          const chip = document.createElement('span');
-          chip.className = 'history-chip';
-          chip.textContent = value;
-          historyEl.appendChild(chip);
-        });
       }
 
       function resetCountdown() {
@@ -512,15 +441,10 @@
       }
 
       function revealNumber() {
-        const value = randomNumber();
-        numberEl.textContent = value;
+        numberEl.textContent = randomNumber();
         numberEl.classList.remove('reveal-number');
         void numberEl.offsetWidth;
         numberEl.classList.add('reveal-number');
-
-        history.unshift(value);
-        if (history.length > 7) history.pop();
-        renderHistory();
         resetCountdown();
       }
 
