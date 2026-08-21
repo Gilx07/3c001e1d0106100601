@@ -198,12 +198,17 @@
     }
 
     .latin {
+      min-height: 1.4em;
       margin: 24px 0 0;
       color: #5c554d;
       font-size: .72rem;
       letter-spacing: .32em;
       text-transform: uppercase;
+      opacity: 1;
+      transition: opacity .7s ease;
     }
+
+    .latin.fading { opacity: 0; }
 
     .enter {
       display: inline-flex;
@@ -263,18 +268,10 @@
     .oracle::after { right:12px; bottom:12px; border-right:1px solid; border-bottom:1px solid; }
 
     .oracle h2 {
-      margin:0;
+      margin:0 0 30px;
       font-size:clamp(2rem,5vw,3.1rem);
       font-weight:500;
       letter-spacing:.04em;
-    }
-
-    .oracle-desc {
-      max-width:540px;
-      margin:10px auto 30px;
-      color:var(--muted);
-      font-size:1.05rem;
-      line-height:1.55;
     }
 
     .number-stage {
@@ -341,13 +338,6 @@
       to { transform:scaleX(0); }
     }
 
-    .hint {
-      margin:13px 0 0;
-      color:#5d554d;
-      font-size:.76rem;
-      letter-spacing:.08em;
-    }
-
     .footer {
       padding:0 0 22px;
       color:#403a34;
@@ -375,6 +365,7 @@
 
     @media (prefers-reduced-motion:reduce) {
       *,*::before,*::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; }
+      .latin { transition:none; }
     }
   </style>
 </head>
@@ -399,7 +390,7 @@
         <h1 id="title">Mandor</h1>
         <div class="divider" aria-hidden="true">◆</div>
         <p class="tagline">Ada hal-hal yang datang tanpa nama, bergerak pelan di antara cahaya, waktu, dan kemungkinan.</p>
-        <p class="latin">Memoria manet · tenebrae loquuntur</p>
+        <p class="latin" id="ancient-phrase" aria-live="polite">Lux in tenebris</p>
         <a class="enter" href="#oracle">Enter the silence <span aria-hidden="true">↓</span></a>
       </div>
     </section>
@@ -408,7 +399,6 @@
       <p class="section-label">Instrumentum Aleae</p>
       <div class="oracle">
         <h2 id="oracle-title">The Number Oracle</h2>
-        <p class="oracle-desc">Satu angka dari 1 sampai 999 muncul dengan sendirinya setiap 1,5 detik. Garis di bawah menunjukkan waktu menuju perubahan berikutnya.</p>
 
         <div class="number-stage">
           <div id="number" aria-live="polite">—</div>
@@ -417,7 +407,6 @@
         <div class="countdown" aria-hidden="true">
           <div class="countdown-line" id="countdown-line"></div>
         </div>
-        <p class="hint">Angka berikutnya akan muncul saat garis menghilang.</p>
       </div>
     </section>
 
@@ -428,7 +417,62 @@
     (() => {
       const numberEl = document.getElementById('number');
       const lineEl = document.getElementById('countdown-line');
-      const interval = 1500;
+      const phraseEl = document.getElementById('ancient-phrase');
+      const numberInterval = 1500;
+      const phraseInterval = 5000;
+
+      const ancientPhrases = [
+        'Lux in tenebris',
+        'Memento vivere',
+        'Tempus fugit',
+        'Astra inclinant',
+        'Per aspera ad astra',
+        'Sic transit gloria',
+        'Nox profunda',
+        'Umbra manet',
+        'Vox antiqua',
+        'Silentium aeternum',
+        'Lumen occultum',
+        'Ordo ab chao',
+        'Fatum vocat',
+        'Ignis fatuus',
+        'Somnia vana',
+        'Via incognita',
+        'Anima mundi',
+        'Ars longa',
+        'Vita brevis',
+        'Sub rosa',
+        'In absentia',
+        'Ad infinitum',
+        'Ex nihilo',
+        'De profundis',
+        'In nocte',
+        'Terra incognita',
+        'Pax obscura',
+        'Vox nihili',
+        'Aeternum vale',
+        'Mutatis mutandis',
+        'Gnothi seauton',
+        'Panta rhei',
+        'Kairos',
+        'Aletheia',
+        'Nyx',
+        'Ananke',
+        'Moira',
+        'Logos',
+        'Kosmos',
+        'Erebus',
+        'Chronos',
+        'Skotos',
+        'Phos',
+        'Psyche',
+        'Eidolon',
+        'Lethe',
+        'Aion',
+        'Nostos',
+        'Oneiros',
+        'Aporia'
+      ];
 
       function randomNumber() {
         return Math.floor(Math.random() * 999) + 1;
@@ -437,7 +481,7 @@
       function resetCountdown() {
         lineEl.style.animation = 'none';
         void lineEl.offsetWidth;
-        lineEl.style.animation = `countdownShrink ${interval}ms linear forwards`;
+        lineEl.style.animation = `countdownShrink ${numberInterval}ms linear forwards`;
       }
 
       function revealNumber() {
@@ -448,8 +492,27 @@
         resetCountdown();
       }
 
+      let phraseIndex = Math.floor(Math.random() * ancientPhrases.length);
+      phraseEl.textContent = ancientPhrases[phraseIndex];
+
+      function changePhrase() {
+        phraseEl.classList.add('fading');
+
+        setTimeout(() => {
+          let nextIndex;
+          do {
+            nextIndex = Math.floor(Math.random() * ancientPhrases.length);
+          } while (nextIndex === phraseIndex);
+
+          phraseIndex = nextIndex;
+          phraseEl.textContent = ancientPhrases[phraseIndex];
+          phraseEl.classList.remove('fading');
+        }, 700);
+      }
+
       revealNumber();
-      setInterval(revealNumber, interval);
+      setInterval(revealNumber, numberInterval);
+      setInterval(changePhrase, phraseInterval);
     })();
   </script>
 </body>
