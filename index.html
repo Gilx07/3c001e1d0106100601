@@ -10,11 +10,12 @@
   <title>Dolenthis</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/layout-fix.css" />
+  <link rel="stylesheet" href="css/interaction-upgrade.css" />
 </head>
 <body>
   <div class="viewport">
     <div class="sync-world" id="world">
-      <div class="room">
+      <div class="room" id="room">
         <div class="ceiling fall-piece"></div>
         <div class="vault-ribs fall-piece"></div>
         <div class="side left fall-piece"></div>
@@ -27,8 +28,8 @@
         <div class="pillar p1 fall-piece"></div>
         <div class="pillar p2 fall-piece"></div>
 
-        <div class="window-recess fall-piece">
-          <div class="arch-window">
+        <div class="window-recess fall-piece" id="window-recess">
+          <div class="arch-window" id="arch-window">
             <div class="moon-stack">
               <div class="moon-aura"></div>
               <div class="moon-disc"></div>
@@ -36,6 +37,7 @@
               <div class="moon-cloud c2"></div>
               <div class="moon-cloud c3"></div>
             </div>
+            <div class="window-frame-overlay" aria-hidden="true"></div>
           </div>
         </div>
 
@@ -43,18 +45,25 @@
           <div class="book"><div class="page left"></div><div class="page right"></div></div>
           <div class="inkwell"></div>
           <div class="quill"></div>
+          <div class="desk-lamp" aria-label="Lampu meja jadul">
+            <div class="lamp-shade"></div>
+            <div class="lamp-bulb"></div>
+            <div class="lamp-stem"></div>
+            <div class="lamp-base"></div>
+            <button class="lamp-switch" id="lamp-switch" type="button" aria-label="Nyalakan lampu meja" aria-pressed="false"></button>
+          </div>
         </div>
 
-        <div class="lockbox fall-piece" aria-hidden="true">
+        <div class="lockbox fall-piece" id="lockbox" aria-label="PIN lock tiga digit">
           <div class="lock-crest">PIN LOCK</div>
           <div class="lock-arrow up" id="arrow-up"><span>▲</span></div>
           <div class="lock-cage">
             <div class="lock-window" id="lock-window">
-              <div class="digit-viewport"><div class="digit-track" id="digit-hundreds"></div></div>
+              <div class="digit-viewport" data-digit-index="0"><div class="digit-track" id="digit-hundreds"></div></div>
               <div class="digit-separator"></div>
-              <div class="digit-viewport"><div class="digit-track" id="digit-tens"></div></div>
+              <div class="digit-viewport" data-digit-index="1"><div class="digit-track" id="digit-tens"></div></div>
               <div class="digit-separator"></div>
-              <div class="digit-viewport"><div class="digit-track" id="digit-ones"></div></div>
+              <div class="digit-viewport" data-digit-index="2"><div class="digit-track" id="digit-ones"></div></div>
               <div class="lock-glass"></div>
             </div>
             <div class="lock-progress"><i id="progress"></i></div>
@@ -62,6 +71,7 @@
           <div class="lock-arrow down" id="arrow-down"><span>▼</span></div>
         </div>
 
+        <div class="red-orb" id="red-orb" aria-hidden="true"></div>
         <div class="rat r1"></div><div class="rat r2"></div><div class="rat r3"></div>
       </div>
 
