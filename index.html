@@ -3,540 +3,226 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0a0806" id="theme-color" />
+  <meta name="theme-color" content="#090806" id="theme-color" />
   <meta name="description" content="Dolenthis — ruang tua, kemungkinan, dan angka yang terus berubah." />
   <title>Dolenthis</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=UnifrakturCook:wght@700&display=swap');
 
     :root {
-      --bg: #090806;
-      --bg-deep: #030302;
-      --panel: rgba(20, 17, 13, .80);
-      --ink: #d0c4ad;
-      --title: #c8baa0;
-      --soft: #a39783;
-      --muted: #736a5d;
-      --faint: #3a332b;
-      --accent: #712525;
-      --line: rgba(212, 197, 169, .13);
-      --stage-border: #433a30;
-      --stage-glow: rgba(113, 37, 37, .09);
-      --ring: rgba(212, 197, 169, .09);
-      --vignette: rgba(0, 0, 0, .80);
-      --dust: #704335;
-      --count-bg: rgba(212,197,169,.08);
-      --count-a: #571c1c;
-      --count-b: #8b5745;
-      --count-c: #b5a387;
-      --frame-fill: #090806;
-      --noise-opacity: .05;
-      --scanline: rgba(255,255,255,.011);
+      --bg:#090806; --bg-deep:#030302; --panel:rgba(20,17,13,.80);
+      --ink:#d0c4ad; --title:#c8baa0; --soft:#a39783; --muted:#736a5d;
+      --faint:#3a332b; --accent:#712525; --line:rgba(212,197,169,.13);
+      --stage-border:#433a30; --stage-glow:rgba(113,37,37,.09); --ring:rgba(212,197,169,.09);
+      --vignette:rgba(0,0,0,.80); --dust:#704335; --count-bg:rgba(212,197,169,.08);
+      --count-a:#571c1c; --count-b:#8b5745; --count-c:#b5a387; --frame-fill:#090806;
+      --noise-opacity:.05; --scanline:rgba(255,255,255,.011);
     }
 
     body.ancient-light {
-      --bg: #d7c8a7;
-      --bg-deep: #b9a681;
-      --panel: rgba(221, 208, 176, .68);
-      --ink: #3d3427;
-      --title: #493b29;
-      --soft: #594c3a;
-      --muted: #75654d;
-      --faint: #9b8766;
-      --accent: #713f36;
-      --line: rgba(67, 52, 35, .22);
-      --stage-border: #8f7855;
-      --stage-glow: rgba(102, 62, 46, .10);
-      --ring: rgba(63, 47, 30, .16);
-      --vignette: rgba(70, 48, 22, .23);
-      --dust: #70513a;
-      --count-bg: rgba(61,48,31,.12);
-      --count-a: #735143;
-      --count-b: #9a7657;
-      --count-c: #54432f;
-      --frame-fill: #d7c8a7;
-      --noise-opacity: .075;
-      --scanline: rgba(70,50,25,.022);
+      --bg:#d7c8a7; --bg-deep:#b9a681; --panel:rgba(221,208,176,.68);
+      --ink:#3d3427; --title:#493b29; --soft:#594c3a; --muted:#75654d;
+      --faint:#9b8766; --accent:#713f36; --line:rgba(67,52,35,.22);
+      --stage-border:#8f7855; --stage-glow:rgba(102,62,46,.10); --ring:rgba(63,47,30,.16);
+      --vignette:rgba(70,48,22,.23); --dust:#70513a; --count-bg:rgba(61,48,31,.12);
+      --count-a:#735143; --count-b:#9a7657; --count-c:#54432f; --frame-fill:#d7c8a7;
+      --noise-opacity:.075; --scanline:rgba(70,50,25,.022);
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-user-select: none;
-      user-select: none;
-      -webkit-touch-callout: none;
+    body.omen-666 {
+      --bg:#170202; --bg-deep:#050000; --panel:rgba(34,4,4,.86);
+      --ink:#efb1a5; --title:#ff4036; --soft:#c56e65; --muted:#9f4d47;
+      --faint:#5d1717; --accent:#ff1f17; --line:rgba(255,74,60,.28);
+      --stage-border:#a4221d; --stage-glow:rgba(255,20,15,.23); --ring:rgba(255,76,63,.23);
+      --vignette:rgba(40,0,0,.90); --dust:#e33b31; --count-bg:rgba(255,70,60,.12);
+      --count-a:#5d0000; --count-b:#d1160f; --count-c:#ff6d61; --frame-fill:#170202;
+      --noise-opacity:.11; --scanline:rgba(255,0,0,.025);
     }
 
-    html { scroll-behavior: smooth; }
-
+    * { box-sizing:border-box; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; }
+    html { scroll-behavior:smooth; }
     body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--ink);
-      font-family: 'Cormorant Garamond', Georgia, serif;
+      margin:0; min-height:100vh; color:var(--ink); font-family:'Cormorant Garamond',Georgia,serif;
       background:
-        radial-gradient(circle at 50% 15%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 31%),
-        radial-gradient(circle at 16% 72%, color-mix(in srgb, var(--faint) 13%, transparent), transparent 27%),
-        linear-gradient(var(--scanline) 1px, transparent 1px),
-        var(--bg);
-      background-size: auto, auto, 100% 4px, auto;
-      overflow-x: hidden;
-      transition: background-color 1.5s ease, color 1.5s ease;
+        radial-gradient(circle at 50% 15%, color-mix(in srgb,var(--accent) 10%,transparent), transparent 31%),
+        radial-gradient(circle at 16% 72%, color-mix(in srgb,var(--faint) 13%,transparent), transparent 27%),
+        linear-gradient(var(--scanline) 1px,transparent 1px), var(--bg);
+      background-size:auto,auto,100% 4px,auto; overflow-x:hidden;
+      transition:background 1.25s ease,color 1.25s ease;
     }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 50;
-      background: radial-gradient(circle at center, transparent 34%, var(--vignette) 100%);
-      transition: background 1.5s ease;
-    }
-
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 48;
-      opacity: .22;
-      background:
-        repeating-linear-gradient(91deg, transparent 0 37px, color-mix(in srgb, var(--faint) 7%, transparent) 38px, transparent 39px),
-        repeating-linear-gradient(3deg, transparent 0 53px, color-mix(in srgb, var(--faint) 5%, transparent) 54px, transparent 55px);
-      mix-blend-mode: multiply;
-    }
-
-    .noise {
-      position: fixed;
-      inset: 0;
-      z-index: 49;
-      pointer-events: none;
-      opacity: var(--noise-opacity);
-      transition: opacity 1.5s ease;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
-    }
-
-    .frame {
-      position: fixed;
-      inset: 15px;
-      border: 1px solid var(--line);
-      pointer-events: none;
-      z-index: 40;
-      transition: border-color 1.5s ease;
-    }
-
-    .frame::before,
-    .frame::after {
-      content: '✦';
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 0 12px;
-      background: var(--frame-fill);
-      color: var(--faint);
-      font-size: 12px;
-      transition: background 1.5s ease, color 1.5s ease;
-    }
-
-    .frame::before { top: -7px; }
-    .frame::after { bottom: -7px; }
-
-    .embers {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    .ember {
-      position: absolute;
-      bottom: -20px;
-      width: 2px;
-      height: 2px;
-      border-radius: 50%;
-      background: var(--dust);
-      opacity: 0;
-      animation: drift var(--duration) linear infinite;
-      animation-delay: var(--delay);
-      left: var(--left);
-      box-shadow: 0 0 7px color-mix(in srgb, var(--accent) 35%, transparent);
-      transition: background 1.5s ease, box-shadow 1.5s ease;
-    }
-
-    @keyframes drift {
-      0% { transform: translate3d(0,0,0); opacity: 0; }
-      12% { opacity: .45; }
-      75% { opacity: .18; }
-      100% { transform: translate3d(var(--sway),-105vh,0); opacity: 0; }
-    }
-
-    main {
-      width: min(1120px, calc(100% - 48px));
-      margin: 0 auto;
-      padding: 82px 0 64px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero {
-      min-height: 72vh;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      animation: reveal 1.5s ease both;
-    }
-
-    .hero-inner { width: min(900px,100%); }
-
-    .sigil {
-      width: 82px;
-      height: 82px;
-      margin: 0 auto 28px;
-      border: 1px solid var(--faint);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      color: var(--muted);
-      font-size: 29px;
-      transform: rotate(45deg);
-      position: relative;
-      opacity: .86;
-      animation: breathe 5s ease-in-out infinite;
-      transition: border-color 1.5s ease, color 1.5s ease;
-    }
-
-    .sigil span { transform: rotate(-45deg); }
-    .sigil::before,.sigil::after { content:''; position:absolute; background:var(--faint); transition: background 1.5s ease; }
-    .sigil::before { width:116px; height:1px; }
-    .sigil::after { width:1px; height:116px; }
-
-    @keyframes breathe {
-      0%,100% { filter: drop-shadow(0 0 0 transparent); }
-      50% { filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent) 25%, transparent)); }
-    }
-
-    h1 {
-      margin: 0;
-      font-family: 'UnifrakturCook','Times New Roman',serif;
-      font-size: clamp(5.4rem,16vw,10.5rem);
-      line-height: .86;
-      font-weight: 700;
-      letter-spacing: -.035em;
-      color: var(--title);
-      text-shadow: 0 2px 0 color-mix(in srgb, var(--bg-deep) 75%, transparent), 0 0 36px color-mix(in srgb, var(--accent) 10%, transparent);
-      transition: color 1.5s ease, text-shadow 1.5s ease;
-    }
-
-    .divider {
-      margin: 32px auto 26px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      width: min(420px,80%);
-      color: var(--accent);
-      transition: color 1.5s ease;
-    }
-
-    .divider::before,.divider::after {
-      content:'';
-      height:1px;
-      flex:1;
-      background:linear-gradient(90deg,transparent,var(--faint));
-      transition: background 1.5s ease;
-    }
+    body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:50; background:radial-gradient(circle at center,transparent 34%,var(--vignette) 100%); transition:background 1.25s ease; }
+    body::after { content:''; position:fixed; inset:0; pointer-events:none; z-index:48; opacity:.22; background:repeating-linear-gradient(91deg,transparent 0 37px,color-mix(in srgb,var(--faint) 7%,transparent) 38px,transparent 39px),repeating-linear-gradient(3deg,transparent 0 53px,color-mix(in srgb,var(--faint) 5%,transparent) 54px,transparent 55px); mix-blend-mode:multiply; }
+    .noise { position:fixed; inset:0; z-index:49; pointer-events:none; opacity:var(--noise-opacity); transition:opacity 1.25s ease; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E"); }
+    .frame { position:fixed; inset:15px; border:1px solid var(--line); pointer-events:none; z-index:40; transition:border-color 1.25s ease; }
+    .frame::before,.frame::after { content:'✦'; position:absolute; left:50%; transform:translateX(-50%); padding:0 12px; background:var(--frame-fill); color:var(--faint); font-size:12px; transition:background 1.25s ease,color 1.25s ease; }
+    .frame::before { top:-7px; } .frame::after { bottom:-7px; }
+    .embers { position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:1; }
+    .ember { position:absolute; bottom:-20px; width:2px; height:2px; border-radius:50%; background:var(--dust); opacity:0; animation:drift var(--duration) linear infinite; animation-delay:var(--delay); left:var(--left); box-shadow:0 0 7px color-mix(in srgb,var(--accent) 35%,transparent); }
+    @keyframes drift { 0%{transform:translate3d(0,0,0);opacity:0} 12%{opacity:.45} 75%{opacity:.18} 100%{transform:translate3d(var(--sway),-105vh,0);opacity:0} }
+    main { width:min(1120px,calc(100% - 48px)); margin:0 auto; padding:82px 0 64px; position:relative; z-index:2; }
+    .hero { min-height:72vh; display:grid; place-items:center; text-align:center; animation:reveal 1.5s ease both; }
+    .hero-inner { width:min(900px,100%); }
+    .sigil { width:82px; height:82px; margin:0 auto 28px; border:1px solid var(--faint); border-radius:50%; display:grid; place-items:center; color:var(--muted); font-size:29px; transform:rotate(45deg); position:relative; opacity:.86; animation:breathe 5s ease-in-out infinite; }
+    .sigil span { transform:rotate(-45deg); }
+    .sigil::before,.sigil::after { content:''; position:absolute; background:var(--faint); }
+    .sigil::before { width:116px; height:1px; } .sigil::after { width:1px; height:116px; }
+    @keyframes breathe { 0%,100%{filter:drop-shadow(0 0 0 transparent)} 50%{filter:drop-shadow(0 0 10px color-mix(in srgb,var(--accent) 25%,transparent))} }
+    h1 { margin:0; font-family:'UnifrakturCook','Times New Roman',serif; font-size:clamp(5.4rem,16vw,10.5rem); line-height:.86; font-weight:700; letter-spacing:-.035em; color:var(--title); text-shadow:0 2px 0 color-mix(in srgb,var(--bg-deep) 75%,transparent),0 0 36px color-mix(in srgb,var(--accent) 10%,transparent); }
+    .divider { margin:32px auto 26px; display:flex; align-items:center; justify-content:center; gap:14px; width:min(420px,80%); color:var(--accent); }
+    .divider::before,.divider::after { content:''; height:1px; flex:1; background:linear-gradient(90deg,transparent,var(--faint)); }
     .divider::after { transform:scaleX(-1); }
-
-    .tagline {
-      margin: 0 auto;
-      max-width: 650px;
-      color: var(--soft);
-      font-size: clamp(1.25rem,3vw,1.8rem);
-      line-height: 1.6;
-      font-style: italic;
-      transition: color 1.5s ease;
-    }
-
-    .latin {
-      min-height: 1.4em;
-      margin: 24px 0 0;
-      color: var(--muted);
-      font-size: .72rem;
-      letter-spacing: .32em;
-      text-transform: uppercase;
-      opacity: 1;
-      transition: opacity .7s ease, color 1.5s ease;
-    }
-
-    .latin.fading { opacity: 0; }
-
-    .oracle-wrap { padding:58px 0 72px; scroll-margin-top:20px; }
-
-    .section-label {
-      margin:0 0 12px;
-      color:var(--muted);
-      text-align:center;
-      text-transform:uppercase;
-      letter-spacing:.38em;
-      font-size:.68rem;
-      transition: color 1.5s ease;
-    }
-
-    .oracle {
-      position:relative;
-      width:min(760px,100%);
-      margin:0 auto;
-      padding:clamp(28px,6vw,54px);
-      border:1px solid var(--line);
-      background:linear-gradient(135deg,color-mix(in srgb, var(--ink) 3%, transparent),transparent 35%),var(--panel);
-      backdrop-filter:blur(8px);
-      text-align:center;
-      overflow:hidden;
-      transition: background 1.5s ease, border-color 1.5s ease;
-    }
-
-    .oracle::before,.oracle::after {
-      content:'';
-      position:absolute;
-      width:70px;
-      height:70px;
-      border-color:var(--line);
-      pointer-events:none;
-      transition: border-color 1.5s ease;
-    }
-
+    .tagline { margin:0 auto; max-width:650px; color:var(--soft); font-size:clamp(1.25rem,3vw,1.8rem); line-height:1.6; font-style:italic; }
+    .latin { min-height:1.4em; margin:24px 0 0; color:var(--muted); font-size:.72rem; letter-spacing:.32em; text-transform:uppercase; opacity:1; transition:opacity .7s ease,color 1.25s ease; }
+    .latin.fading { opacity:0; }
+    .oracle-wrap { padding:58px 0 72px; }
+    .section-label { margin:0 0 12px; color:var(--muted); text-align:center; text-transform:uppercase; letter-spacing:.38em; font-size:.68rem; }
+    .oracle { position:relative; width:min(760px,100%); margin:0 auto; padding:clamp(28px,6vw,54px); border:1px solid var(--line); background:linear-gradient(135deg,color-mix(in srgb,var(--ink) 3%,transparent),transparent 35%),var(--panel); backdrop-filter:blur(8px); text-align:center; overflow:hidden; }
+    .oracle::before,.oracle::after { content:''; position:absolute; width:70px; height:70px; border-color:var(--line); pointer-events:none; }
     .oracle::before { top:12px; left:12px; border-top:1px solid; border-left:1px solid; }
     .oracle::after { right:12px; bottom:12px; border-right:1px solid; border-bottom:1px solid; }
-
-    .oracle h2 {
-      margin:0 0 30px;
-      color: var(--ink);
-      font-size:clamp(2rem,5vw,3.1rem);
-      font-weight:500;
-      letter-spacing:.04em;
-      transition: color 1.5s ease;
-    }
-
-    .number-stage {
-      width:min(250px,65vw);
-      aspect-ratio:1;
-      margin:0 auto 28px;
-      border:1px solid var(--stage-border);
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      position:relative;
-      background:radial-gradient(circle,var(--stage-glow),transparent 64%);
-      transition: border-color 1.5s ease, background 1.5s ease;
-    }
-
-    .number-stage::before,.number-stage::after {
-      content:'';
-      position:absolute;
-      border:1px solid var(--ring);
-      border-radius:50%;
-      transition: border-color 1.5s ease;
-    }
-
-    .number-stage::before { inset:11px; }
-    .number-stage::after { inset:24px; border-style:dashed; animation:rotate 24s linear infinite; }
-    @keyframes rotate { to { transform:rotate(360deg); } }
-
-    #number {
-      position:relative;
-      z-index:2;
-      min-width:3ch;
-      font-size:clamp(4rem,12vw,7rem);
-      line-height:1;
-      font-variant-numeric:tabular-nums;
-      color:var(--title);
-      text-shadow:0 0 26px color-mix(in srgb, var(--accent) 18%, transparent);
-      transition: color 1.5s ease, text-shadow 1.5s ease;
-    }
-
+    .oracle h2 { margin:0 0 30px; color:var(--ink); font-size:clamp(2rem,5vw,3.1rem); font-weight:500; letter-spacing:.04em; }
+    .number-stage { width:min(250px,65vw); aspect-ratio:1; margin:0 auto 28px; border:1px solid var(--stage-border); border-radius:50%; display:grid; place-items:center; position:relative; background:radial-gradient(circle,var(--stage-glow),transparent 64%); }
+    .number-stage::before,.number-stage::after { content:''; position:absolute; border:1px solid var(--ring); border-radius:50%; }
+    .number-stage::before { inset:11px; } .number-stage::after { inset:24px; border-style:dashed; animation:rotate 24s linear infinite; }
+    @keyframes rotate { to{transform:rotate(360deg)} }
+    #number { position:relative; z-index:2; min-width:3ch; font-size:clamp(4rem,12vw,7rem); line-height:1; font-variant-numeric:tabular-nums; color:var(--title); text-shadow:0 0 26px color-mix(in srgb,var(--accent) 18%,transparent); }
     #number.reveal-number { animation:numberReveal .42s ease; }
-    @keyframes numberReveal {
-      0% { opacity:.18; transform:scale(.82); filter:blur(5px); }
-      70% { transform:scale(1.05); }
-      100% { opacity:1; transform:scale(1); filter:blur(0); }
-    }
-
-    .countdown {
-      width:min(420px,90%);
-      height:2px;
-      margin:4px auto 0;
-      background:var(--count-bg);
-      overflow:hidden;
-      position:relative;
-      transition: background 1.5s ease;
-    }
-
-    .countdown-line {
-      width:100%;
-      height:100%;
-      transform-origin:left center;
-      background:linear-gradient(90deg,var(--count-a),var(--count-b),var(--count-c));
-      box-shadow:0 0 8px color-mix(in srgb, var(--accent) 25%, transparent);
-      animation:countdownShrink 1.5s linear infinite;
-      transition: background 1.5s ease, box-shadow 1.5s ease;
-    }
-
-    @keyframes countdownShrink {
-      from { transform:scaleX(1); }
-      to { transform:scaleX(0); }
-    }
-
-    .footer {
-      padding:0 0 22px;
-      color:var(--faint);
-      text-align:center;
-      font-size:.65rem;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      transition: color 1.5s ease;
-    }
-
-    @keyframes reveal {
-      from { opacity:0; transform:translateY(18px); filter:blur(3px); }
-      to { opacity:1; transform:translateY(0); filter:blur(0); }
-    }
-
-    @media (max-width:600px) {
-      .frame { inset:8px; }
-      main { width:min(100% - 32px,1120px); padding-top:64px; }
-      .hero { min-height:78vh; }
-      .sigil { width:66px; height:66px; }
-      .sigil::before { width:92px; }
-      .sigil::after { height:92px; }
-      .oracle { padding:34px 20px; }
-      .oracle-wrap { padding-top:38px; }
-    }
-
-    @media (prefers-reduced-motion:reduce) {
-      *,*::before,*::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; }
-      .latin { transition:none; }
-    }
+    @keyframes numberReveal { 0%{opacity:.18;transform:scale(.82);filter:blur(5px)} 70%{transform:scale(1.05)} 100%{opacity:1;transform:scale(1);filter:blur(0)} }
+    .countdown { width:min(420px,90%); height:2px; margin:4px auto 0; background:var(--count-bg); overflow:hidden; position:relative; }
+    .countdown-line { width:100%; height:100%; transform-origin:left center; background:linear-gradient(90deg,var(--count-a),var(--count-b),var(--count-c)); box-shadow:0 0 8px color-mix(in srgb,var(--accent) 25%,transparent); }
+    @keyframes countdownShrink { from{transform:scaleX(1)} to{transform:scaleX(0)} }
+    .footer { padding:0 0 22px; color:var(--faint); text-align:center; font-size:.65rem; letter-spacing:.22em; text-transform:uppercase; }
+    body.omen-666::after { opacity:.42; mix-blend-mode:screen; }
+    body.omen-666 .number-stage { box-shadow:0 0 60px rgba(255,0,0,.18), inset 0 0 42px rgba(255,0,0,.09); }
+    @keyframes reveal { from{opacity:0;transform:translateY(18px);filter:blur(3px)} to{opacity:1;transform:translateY(0);filter:blur(0)} }
+    @media(max-width:600px){ .frame{inset:8px} main{width:min(100% - 32px,1120px);padding-top:64px}.hero{min-height:78vh}.sigil{width:66px;height:66px}.sigil::before{width:92px}.sigil::after{height:92px}.oracle{padding:34px 20px}.oracle-wrap{padding-top:38px} }
+    @media(prefers-reduced-motion:reduce){ .latin{transition:none} }
   </style>
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
   <div class="frame" aria-hidden="true"></div>
   <div class="embers" aria-hidden="true">
-    <i class="ember" style="--left:8%;--delay:-2s;--duration:16s;--sway:25px"></i>
-    <i class="ember" style="--left:19%;--delay:-9s;--duration:20s;--sway:-18px"></i>
-    <i class="ember" style="--left:34%;--delay:-5s;--duration:18s;--sway:34px"></i>
-    <i class="ember" style="--left:51%;--delay:-13s;--duration:22s;--sway:-30px"></i>
-    <i class="ember" style="--left:68%;--delay:-7s;--duration:17s;--sway:20px"></i>
-    <i class="ember" style="--left:82%;--delay:-11s;--duration:21s;--sway:-24px"></i>
-    <i class="ember" style="--left:93%;--delay:-4s;--duration:19s;--sway:15px"></i>
+    <i class="ember" style="--left:8%;--delay:-2s;--duration:16s;--sway:25px"></i><i class="ember" style="--left:19%;--delay:-9s;--duration:20s;--sway:-18px"></i><i class="ember" style="--left:34%;--delay:-5s;--duration:18s;--sway:34px"></i><i class="ember" style="--left:51%;--delay:-13s;--duration:22s;--sway:-30px"></i><i class="ember" style="--left:68%;--delay:-7s;--duration:17s;--sway:20px"></i><i class="ember" style="--left:82%;--delay:-11s;--duration:21s;--sway:-24px"></i><i class="ember" style="--left:93%;--delay:-4s;--duration:19s;--sway:15px"></i>
   </div>
 
   <main>
     <section class="hero" aria-labelledby="title">
       <div class="hero-inner">
-        <div class="sigil" aria-hidden="true"><span>†</span></div>
-        <h1 id="title">Mandor</h1>
-        <div class="divider" aria-hidden="true">◆</div>
-        <p class="tagline">Ada hal-hal yang datang tanpa nama, bergerak pelan di antara cahaya, waktu, dan kemungkinan.</p>
-        <p class="latin" id="ancient-phrase" aria-live="polite">Lux in tenebris</p>
+        <div class="sigil fallable" aria-hidden="true"><span>†</span></div>
+        <h1 id="title" class="fallable">Dolenthis</h1>
+        <div class="divider fallable" aria-hidden="true">◆</div>
+        <p class="tagline fallable">Ada hal-hal yang datang tanpa nama, bergerak pelan di antara cahaya, waktu, dan kemungkinan.</p>
+        <p class="latin fallable" id="ancient-phrase" aria-live="polite">Lux in tenebris</p>
       </div>
     </section>
 
     <section class="oracle-wrap" id="oracle" aria-labelledby="oracle-title">
-      <p class="section-label">Instrumentum Aleae</p>
+      <p class="section-label fallable">Instrumentum Aleae</p>
       <div class="oracle">
-        <h2 id="oracle-title">The Number Oracle</h2>
-
-        <div class="number-stage">
-          <div id="number" aria-live="polite">—</div>
-        </div>
-
-        <div class="countdown" aria-hidden="true">
-          <div class="countdown-line" id="countdown-line"></div>
-        </div>
+        <h2 id="oracle-title" class="fallable">The Number Oracle</h2>
+        <div class="number-stage fallable"><div id="number" aria-live="polite">—</div></div>
+        <div class="countdown fallable" aria-hidden="true"><div class="countdown-line" id="countdown-line"></div></div>
       </div>
     </section>
 
-    <footer class="footer">Dolenthis · MMXXVI · The silence remembers</footer>
+    <footer class="footer fallable">Dolenthis · MMXXVI · The silence remembers</footer>
   </main>
 
   <script>
     (() => {
+      const body = document.body;
       const numberEl = document.getElementById('number');
       const lineEl = document.getElementById('countdown-line');
       const phraseEl = document.getElementById('ancient-phrase');
       const themeColorEl = document.getElementById('theme-color');
       const numberInterval = 1500;
       const phraseInterval = 5000;
+      let omenActive = false;
+      let savedLightTheme = false;
 
-      const ancientPhrases = [
-        'Lux in tenebris', 'Memento vivere', 'Tempus fugit', 'Astra inclinant',
-        'Per aspera ad astra', 'Sic transit gloria', 'Nox profunda', 'Umbra manet',
-        'Vox antiqua', 'Silentium aeternum', 'Lumen occultum', 'Ordo ab chao',
-        'Fatum vocat', 'Ignis fatuus', 'Somnia vana', 'Via incognita',
-        'Anima mundi', 'Ars longa', 'Vita brevis', 'Sub rosa',
-        'In absentia', 'Ad infinitum', 'Ex nihilo', 'De profundis',
-        'In nocte', 'Terra incognita', 'Pax obscura', 'Vox nihili',
-        'Aeternum vale', 'Mutatis mutandis', 'Gnothi seauton', 'Panta rhei',
-        'Kairos', 'Aletheia', 'Nyx', 'Ananke', 'Moira', 'Logos', 'Kosmos',
-        'Erebus', 'Chronos', 'Skotos', 'Phos', 'Psyche', 'Eidolon', 'Lethe',
-        'Aion', 'Nostos', 'Oneiros', 'Aporia'
-      ];
+      const ancientPhrases = ['Lux in tenebris','Memento vivere','Tempus fugit','Astra inclinant','Per aspera ad astra','Sic transit gloria','Nox profunda','Umbra manet','Vox antiqua','Silentium aeternum','Lumen occultum','Ordo ab chao','Fatum vocat','Ignis fatuus','Somnia vana','Via incognita','Anima mundi','Ars longa','Vita brevis','Sub rosa','In absentia','Ad infinitum','Ex nihilo','De profundis','In nocte','Terra incognita','Pax obscura','Vox nihili','Aeternum vale','Mutatis mutandis','Gnothi seauton','Panta rhei','Kairos','Aletheia','Nyx','Ananke','Moira','Logos','Kosmos','Erebus','Chronos','Skotos','Phos','Psyche','Eidolon','Lethe','Aion','Nostos','Oneiros','Aporia'];
 
-      function randomNumber() {
-        return Math.floor(Math.random() * 999) + 1;
+      function randomNumber(){ return Math.floor(Math.random()*999)+1; }
+      function resetCountdown(){ lineEl.style.animation='none'; void lineEl.offsetWidth; lineEl.style.animation=`countdownShrink ${numberInterval}ms linear forwards`; }
+
+      function triggerOmen666(){
+        if(omenActive) return;
+        omenActive = true;
+        savedLightTheme = body.classList.contains('ancient-light');
+        body.classList.remove('ancient-light');
+        body.classList.add('omen-666');
+        themeColorEl.setAttribute('content','#170202');
+        lineEl.style.animation='none';
+
+        const elements = [...document.querySelectorAll('.fallable')];
+        const animations = elements.map((el,index) => {
+          const rect = el.getBoundingClientRect();
+          const maxDrop = Math.max(120, window.innerHeight - rect.top + 120);
+          const drift = (Math.random()*90)-45;
+          const rotate = (Math.random()*16)-8;
+          const delay = Math.min(420,index*55 + Math.random()*90);
+          return el.animate([
+            { transform:'translate3d(0,0,0) rotate(0deg)', opacity:1, filter:'blur(0px)' },
+            { transform:`translate3d(${drift*.18}px,${maxDrop*.12}px,0) rotate(${rotate*.18}deg)`, opacity:.98, offset:.25 },
+            { transform:`translate3d(${drift*.55}px,${maxDrop*.5}px,0) rotate(${rotate*.62}deg)`, opacity:.92, offset:.62 },
+            { transform:`translate3d(${drift}px,${maxDrop}px,0) rotate(${rotate}deg)`, opacity:.22, filter:'blur(1.2px)' }
+          ],{ duration:1750, delay, easing:'cubic-bezier(.22,.72,.18,1)', fill:'both' });
+        });
+
+        setTimeout(() => {
+          animations.forEach(anim => { anim.playbackRate = -0.85; anim.play(); });
+          Promise.all(animations.map(anim => anim.finished.catch(()=>null))).then(() => {
+            animations.forEach(anim => anim.cancel());
+            body.classList.remove('omen-666');
+            if(savedLightTheme) body.classList.add('ancient-light');
+            themeColorEl.setAttribute('content', savedLightTheme ? '#d7c8a7' : '#090806');
+            omenActive = false;
+            resetCountdown();
+          });
+        },6600);
       }
 
-      function resetCountdown() {
-        lineEl.style.animation = 'none';
-        void lineEl.offsetWidth;
-        lineEl.style.animation = `countdownShrink ${numberInterval}ms linear forwards`;
-      }
-
-      function revealNumber() {
-        numberEl.textContent = randomNumber();
-        numberEl.classList.remove('reveal-number');
-        void numberEl.offsetWidth;
-        numberEl.classList.add('reveal-number');
+      function revealNumber(){
+        if(omenActive) return;
+        const value = randomNumber();
+        numberEl.textContent = value;
+        numberEl.classList.remove('reveal-number'); void numberEl.offsetWidth; numberEl.classList.add('reveal-number');
         resetCountdown();
+        if(value === 666) triggerOmen666();
       }
 
-      let phraseIndex = Math.floor(Math.random() * ancientPhrases.length);
+      let phraseIndex = Math.floor(Math.random()*ancientPhrases.length);
       phraseEl.textContent = ancientPhrases[phraseIndex];
-
-      function changePhrase() {
+      function changePhrase(){
+        if(omenActive) return;
         phraseEl.classList.add('fading');
         setTimeout(() => {
+          if(omenActive) return;
           let nextIndex;
-          do {
-            nextIndex = Math.floor(Math.random() * ancientPhrases.length);
-          } while (nextIndex === phraseIndex);
-          phraseIndex = nextIndex;
-          phraseEl.textContent = ancientPhrases[phraseIndex];
-          phraseEl.classList.remove('fading');
-        }, 700);
+          do { nextIndex = Math.floor(Math.random()*ancientPhrases.length); } while(nextIndex === phraseIndex);
+          phraseIndex = nextIndex; phraseEl.textContent = ancientPhrases[phraseIndex]; phraseEl.classList.remove('fading');
+        },700);
       }
 
-      function randomThemeDelay() {
-        return 10000 + Math.floor(Math.random() * 10001);
+      function randomThemeDelay(){ return 10000 + Math.floor(Math.random()*10001); }
+      function switchAncientTheme(){
+        if(!omenActive){
+          const light = body.classList.toggle('ancient-light');
+          themeColorEl.setAttribute('content', light ? '#d7c8a7' : '#090806');
+        }
+        setTimeout(switchAncientTheme,randomThemeDelay());
       }
 
-      function switchAncientTheme() {
-        const light = document.body.classList.toggle('ancient-light');
-        themeColorEl.setAttribute('content', light ? '#d7c8a7' : '#090806');
-        setTimeout(switchAncientTheme, randomThemeDelay());
-      }
-
-      document.addEventListener('copy', (event) => event.preventDefault());
-      document.addEventListener('cut', (event) => event.preventDefault());
-      document.addEventListener('dragstart', (event) => event.preventDefault());
-      document.addEventListener('contextmenu', (event) => event.preventDefault());
+      document.addEventListener('copy',e=>e.preventDefault());
+      document.addEventListener('cut',e=>e.preventDefault());
+      document.addEventListener('dragstart',e=>e.preventDefault());
+      document.addEventListener('contextmenu',e=>e.preventDefault());
 
       revealNumber();
-      setInterval(revealNumber, numberInterval);
-      setInterval(changePhrase, phraseInterval);
-      setTimeout(switchAncientTheme, randomThemeDelay());
+      setInterval(revealNumber,numberInterval);
+      setInterval(changePhrase,phraseInterval);
+      setTimeout(switchAncientTheme,randomThemeDelay());
     })();
   </script>
 </body>
