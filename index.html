@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/layout-fix.css" />
   <link rel="stylesheet" href="css/interaction-upgrade.css" />
   <link rel="stylesheet" href="css/final-patch.css" />
+  <link rel="stylesheet" href="css/ux-upgrade.css" />
 </head>
 <body>
   <div class="viewport">
@@ -30,7 +31,28 @@
         <div class="pillar p1 fall-piece"></div>
         <div class="pillar p2 fall-piece"></div>
         <div class="window-recess fall-piece" id="window-recess"><div class="arch-window" id="arch-window"><div class="moon-stack"><div class="moon-aura"></div><div class="moon-disc"></div><div class="moon-cloud c1"></div><div class="moon-cloud c2"></div><div class="moon-cloud c3"></div></div><div class="window-frame-overlay" aria-hidden="true"></div></div></div>
-        <div class="table fall-piece"><div class="book"><div class="page left"></div><div class="page right"></div></div><div class="inkwell"></div><div class="quill"></div><div class="desk-lamp" id="desk-lamp" role="button" tabindex="0" aria-label="Nyalakan lampu meja" aria-pressed="false"><div class="lamp-shade"></div><div class="lamp-bulb"></div><div class="lamp-stem"></div><div class="lamp-base"></div><span class="lamp-switch" aria-hidden="true"></span></div></div>
+        <div class="table fall-piece">
+          <div class="book" id="ancient-book" role="group" aria-label="Buku tua interaktif">
+            <div class="page left book-page" id="book-left-page" role="button" tabindex="0" aria-label="Balik ke halaman sebelumnya">
+              <div class="book-glyph" aria-hidden="true">☩ · ✦ · ☾</div>
+              <p class="book-script" id="book-left-text"></p>
+              <span class="book-folio" id="book-left-folio"></span>
+            </div>
+            <div class="page right book-page" id="book-right-page" role="button" tabindex="0" aria-label="Balik ke halaman berikutnya">
+              <div class="book-glyph" aria-hidden="true">☽ · ✧ · ☩</div>
+              <p class="book-script" id="book-right-text"></p>
+              <span class="book-folio" id="book-right-folio"></span>
+            </div>
+            <div class="turning-page" id="book-turning-page" aria-hidden="true">
+              <div class="book-glyph">✦ · ☩ · ✦</div>
+              <p class="book-script" id="book-turning-text"></p>
+            </div>
+            <button class="book-control book-prev" id="book-prev" type="button" aria-label="Halaman sebelumnya">‹</button>
+            <button class="book-control book-next" id="book-next" type="button" aria-label="Halaman berikutnya">›</button>
+          </div>
+          <div class="inkwell"></div><div class="quill"></div>
+          <div class="desk-lamp" id="desk-lamp" role="button" tabindex="0" aria-label="Nyalakan lampu meja" aria-pressed="false"><div class="lamp-shade"></div><div class="lamp-bulb"></div><div class="lamp-stem"></div><div class="lamp-base"></div><span class="lamp-switch" aria-hidden="true"></span></div>
+        </div>
         <div class="lockbox fall-piece" id="lockbox" role="button" tabindex="0" aria-label="Buka PIN lock tiga digit" aria-expanded="false"><button class="lock-close" id="lock-close" type="button" aria-label="Tutup PIN lock">×</button><div class="lock-crest">PIN LOCK</div><div class="lock-arrow up" id="arrow-up"><span>▲</span></div><div class="lock-cage"><div class="lock-window" id="lock-window"><div class="digit-viewport" data-digit-index="0" role="spinbutton" tabindex="-1" aria-label="Digit ratusan" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0"><div class="digit-track" id="digit-hundreds"></div></div><div class="digit-separator"></div><div class="digit-viewport" data-digit-index="1" role="spinbutton" tabindex="-1" aria-label="Digit puluhan" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0"><div class="digit-track" id="digit-tens"></div></div><div class="digit-separator"></div><div class="digit-viewport" data-digit-index="2" role="spinbutton" tabindex="-1" aria-label="Digit satuan" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0"><div class="digit-track" id="digit-ones"></div></div><div class="lock-glass"></div></div><div class="lock-progress"><i id="progress"></i></div></div><div class="lock-arrow down" id="arrow-down"><span>▼</span></div></div>
         <div class="red-orb" id="red-orb" aria-hidden="true"></div>
         <div class="rat r1"></div><div class="rat r2"></div><div class="rat r3"></div>
@@ -42,5 +64,6 @@
   </div>
   <div class="scroll-space" aria-hidden="true"></div>
   <script src="js/main.js" defer></script>
+  <script src="js/book-upgrade.js" defer></script>
 </body>
 </html>
