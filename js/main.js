@@ -117,7 +117,7 @@
   function animateTrack(track,index,targetDigit,direction){
     const currentIndex=reelState[index];
     const currentDigit=((currentIndex%10)+10)%10;
-    const loops=1+Math.floor(Math.random()*2)+(index===2?0:1);
+    const loops=index===2?1:2;
     let targetIndex;
     if(direction>0){
       const offset=(targetDigit-currentDigit+10)%10;
