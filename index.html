@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests; require-trusted-types-for 'script'; trusted-types 'none'" />
   <meta name="referrer" content="no-referrer" />
   <meta name="theme-color" content="#070605" id="theme-color" />
@@ -11,11 +11,13 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/layout-fix.css" />
   <link rel="stylesheet" href="css/interaction-upgrade.css" />
+  <link rel="stylesheet" href="css/final-patch.css" />
 </head>
 <body>
   <div class="viewport">
     <div class="sync-world" id="world">
       <div class="room" id="room">
+        <div class="lock-focus-backdrop" id="lock-focus-backdrop" aria-hidden="true"></div>
         <div class="ceiling fall-piece"></div>
         <div class="vault-ribs fall-piece"></div>
         <div class="side left fall-piece"></div>
@@ -27,76 +29,17 @@
         <div class="floor-mist fall-piece"></div>
         <div class="pillar p1 fall-piece"></div>
         <div class="pillar p2 fall-piece"></div>
-
-        <div class="window-recess fall-piece" id="window-recess">
-          <div class="arch-window" id="arch-window">
-            <div class="moon-stack">
-              <div class="moon-aura"></div>
-              <div class="moon-disc"></div>
-              <div class="moon-cloud c1"></div>
-              <div class="moon-cloud c2"></div>
-              <div class="moon-cloud c3"></div>
-            </div>
-            <div class="window-frame-overlay" aria-hidden="true"></div>
-          </div>
-        </div>
-
-        <div class="table fall-piece">
-          <div class="book"><div class="page left"></div><div class="page right"></div></div>
-          <div class="inkwell"></div>
-          <div class="quill"></div>
-          <div class="desk-lamp" aria-label="Lampu meja jadul">
-            <div class="lamp-shade"></div>
-            <div class="lamp-bulb"></div>
-            <div class="lamp-stem"></div>
-            <div class="lamp-base"></div>
-            <button class="lamp-switch" id="lamp-switch" type="button" aria-label="Nyalakan lampu meja" aria-pressed="false"></button>
-          </div>
-        </div>
-
-        <div class="lockbox fall-piece" id="lockbox" aria-label="PIN lock tiga digit">
-          <div class="lock-crest">PIN LOCK</div>
-          <div class="lock-arrow up" id="arrow-up"><span>▲</span></div>
-          <div class="lock-cage">
-            <div class="lock-window" id="lock-window">
-              <div class="digit-viewport" data-digit-index="0"><div class="digit-track" id="digit-hundreds"></div></div>
-              <div class="digit-separator"></div>
-              <div class="digit-viewport" data-digit-index="1"><div class="digit-track" id="digit-tens"></div></div>
-              <div class="digit-separator"></div>
-              <div class="digit-viewport" data-digit-index="2"><div class="digit-track" id="digit-ones"></div></div>
-              <div class="lock-glass"></div>
-            </div>
-            <div class="lock-progress"><i id="progress"></i></div>
-          </div>
-          <div class="lock-arrow down" id="arrow-down"><span>▼</span></div>
-        </div>
-
+        <div class="window-recess fall-piece" id="window-recess"><div class="arch-window" id="arch-window"><div class="moon-stack"><div class="moon-aura"></div><div class="moon-disc"></div><div class="moon-cloud c1"></div><div class="moon-cloud c2"></div><div class="moon-cloud c3"></div></div><div class="window-frame-overlay" aria-hidden="true"></div></div></div>
+        <div class="table fall-piece"><div class="book"><div class="page left"></div><div class="page right"></div></div><div class="inkwell"></div><div class="quill"></div><div class="desk-lamp" id="desk-lamp" role="button" tabindex="0" aria-label="Nyalakan lampu meja" aria-pressed="false"><div class="lamp-shade"></div><div class="lamp-bulb"></div><div class="lamp-stem"></div><div class="lamp-base"></div><span class="lamp-switch" aria-hidden="true"></span></div></div>
+        <div class="lockbox fall-piece" id="lockbox" role="button" tabindex="0" aria-label="Buka PIN lock tiga digit" aria-expanded="false"><button class="lock-close" id="lock-close" type="button" aria-label="Tutup PIN lock">×</button><div class="lock-crest">PIN LOCK</div><div class="lock-arrow up" id="arrow-up"><span>▲</span></div><div class="lock-cage"><div class="lock-window" id="lock-window"><div class="digit-viewport" data-digit-index="0" role="spinbutton" tabindex="-1" aria-label="Digit ratusan" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0"><div class="digit-track" id="digit-hundreds"></div></div><div class="digit-separator"></div><div class="digit-viewport" data-digit-index="1" role="spinbutton" tabindex="-1" aria-label="Digit puluhan" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0"><div class="digit-track" id="digit-tens"></div></div><div class="digit-separator"></div><div class="digit-viewport" data-digit-index="2" role="spinbutton" tabindex="-1" aria-label="Digit satuan" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0"><div class="digit-track" id="digit-ones"></div></div><div class="lock-glass"></div></div><div class="lock-progress"><i id="progress"></i></div></div><div class="lock-arrow down" id="arrow-down"><span>▼</span></div></div>
         <div class="red-orb" id="red-orb" aria-hidden="true"></div>
         <div class="rat r1"></div><div class="rat r2"></div><div class="rat r3"></div>
       </div>
-
-      <div class="content fall-piece">
-        <div class="hero">
-          <div class="sigil" aria-hidden="true"><span>†</span></div>
-          <h1>Dolenthis</h1>
-          <div class="divider" aria-hidden="true">◆</div>
-          <p class="tagline">Ada hal-hal yang datang tanpa nama, bergerak pelan di antara cahaya, waktu, dan kemungkinan.</p>
-          <p class="latin" id="phrase">Lux in tenebris</p>
-        </div>
-      </div>
-
-      <button class="theme-toggle fall-piece" id="theme" type="button" aria-label="Ganti tema" aria-pressed="false">
-        <svg class="star" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="currentColor"/><path d="M32 5 37 25 54 16 41 31 59 35 39 39 48 56 33 43 28 60 25 41 8 49 22 34 5 29 25 26Z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
-        <svg class="sun" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="12" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M32 4v11M32 49v11M4 32h11M49 32h11M12 12l8 8M44 44l8 8M52 12l-8 8M20 44l-8 8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-      </button>
-
-      <div class="cursor-light" id="cursor-light" aria-hidden="true"></div>
-      <div class="shade fall-piece" aria-hidden="true"></div>
-      <div class="noise fall-piece" aria-hidden="true"></div>
-      <div class="frame fall-piece" aria-hidden="true"></div>
+      <div class="content fall-piece"><div class="hero"><div class="sigil" aria-hidden="true"><span>†</span></div><h1>Dolenthis</h1><div class="divider" aria-hidden="true">◆</div><p class="tagline">Ada hal-hal yang datang tanpa nama, bergerak pelan di antara cahaya, waktu, dan kemungkinan.</p><p class="latin" id="phrase">Lux in tenebris</p></div></div>
+      <button class="theme-toggle fall-piece" id="theme" type="button" aria-label="Ganti tema" aria-pressed="false"><svg class="star" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="currentColor"/><path d="M32 5 37 25 54 16 41 31 59 35 39 39 48 56 33 43 28 60 25 41 8 49 22 34 5 29 25 26Z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><svg class="sun" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="12" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M32 4v11M32 49v11M4 32h11M49 32h11M12 12l8 8M44 44l8 8M52 12l-8 8M20 44l-8 8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+      <div class="cursor-light" id="cursor-light" aria-hidden="true"></div><div class="shade fall-piece" aria-hidden="true"></div><div class="noise fall-piece" aria-hidden="true"></div><div class="frame fall-piece" aria-hidden="true"></div>
     </div>
   </div>
-
   <div class="scroll-space" aria-hidden="true"></div>
   <script src="js/main.js" defer></script>
 </body>
