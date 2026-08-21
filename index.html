@@ -3,35 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0a0908" />
-  <meta name="description" content="Dolenthis — sebuah ruang gelap untuk cerita, ingatan, dan hal-hal yang tertinggal." />
+  <meta name="theme-color" content="#070605" />
+  <meta name="description" content="Dolenthis — ruang gelap, ingatan lama, dan sebuah oracle angka dari 1 sampai 100." />
   <title>Dolenthis</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=UnifrakturCook:wght@700&display=swap');
 
     :root {
-      --bg: #080706;
-      --ink: #d8cfbd;
-      --muted: #81796d;
-      --faint: #3a342d;
-      --accent: #7b1f1f;
+      --bg: #070605;
+      --panel: rgba(18, 15, 12, .78);
       --paper: #15120f;
+      --ink: #d8cfbd;
+      --soft: #aaa090;
+      --muted: #756d62;
+      --faint: #342e28;
+      --accent: #7f2222;
+      --accent-soft: rgba(127, 34, 34, .18);
+      --line: rgba(216, 207, 189, .12);
     }
 
     * { box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
       min-height: 100vh;
-      background:
-        radial-gradient(circle at 50% 25%, rgba(82, 64, 43, .12), transparent 35%),
-        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-        #080706;
-      background-size: auto, 100% 4px, auto;
       color: var(--ink);
       font-family: 'Cormorant Garamond', Georgia, serif;
+      background:
+        radial-gradient(circle at 50% 15%, rgba(94, 67, 43, .12), transparent 30%),
+        radial-gradient(circle at 15% 70%, rgba(80, 18, 18, .06), transparent 25%),
+        linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, auto, 100% 4px, auto;
       overflow-x: hidden;
     }
 
@@ -40,28 +44,25 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 20;
-      background:
-        radial-gradient(circle at center, transparent 45%, rgba(0,0,0,.72) 100%),
-        repeating-radial-gradient(circle at 30% 20%, rgba(255,255,255,.015) 0 1px, transparent 1px 3px);
-      mix-blend-mode: multiply;
+      z-index: 50;
+      background: radial-gradient(circle at center, transparent 35%, rgba(0,0,0,.78) 100%);
     }
 
     .noise {
       position: fixed;
       inset: 0;
-      z-index: 19;
+      z-index: 49;
       pointer-events: none;
-      opacity: .035;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+      opacity: .045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
     }
 
     .frame {
       position: fixed;
-      inset: 16px;
-      border: 1px solid rgba(216, 207, 189, .14);
+      inset: 15px;
+      border: 1px solid var(--line);
       pointer-events: none;
-      z-index: 10;
+      z-index: 40;
     }
 
     .frame::before,
@@ -70,56 +71,87 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
+      padding: 0 12px;
+      background: var(--bg);
       color: var(--faint);
       font-size: 12px;
-      background: var(--bg);
-      padding: 0 12px;
     }
 
     .frame::before { top: -7px; }
     .frame::after { bottom: -7px; }
 
+    .embers {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .ember {
+      position: absolute;
+      bottom: -20px;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: #6f3127;
+      opacity: 0;
+      animation: drift var(--duration) linear infinite;
+      animation-delay: var(--delay);
+      left: var(--left);
+      box-shadow: 0 0 7px rgba(127, 34, 34, .45);
+    }
+
+    @keyframes drift {
+      0% { transform: translate3d(0, 0, 0); opacity: 0; }
+      12% { opacity: .5; }
+      75% { opacity: .2; }
+      100% { transform: translate3d(var(--sway), -105vh, 0); opacity: 0; }
+    }
+
     main {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 72px 28px;
+      width: min(1120px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 82px 0 64px;
       position: relative;
+      z-index: 2;
     }
 
     .hero {
-      width: min(920px, 100%);
+      min-height: 72vh;
+      display: grid;
+      place-items: center;
       text-align: center;
-      position: relative;
-      animation: reveal 1.8s ease both;
+      animation: reveal 1.5s ease both;
     }
 
+    .hero-inner { width: min(900px, 100%); }
+
     .sigil {
-      width: 84px;
-      height: 84px;
+      width: 82px;
+      height: 82px;
       margin: 0 auto 28px;
       border: 1px solid var(--faint);
       border-radius: 50%;
       display: grid;
       place-items: center;
       color: var(--muted);
-      font-size: 31px;
+      font-size: 29px;
       transform: rotate(45deg);
       position: relative;
-      opacity: .85;
+      opacity: .86;
+      animation: breathe 5s ease-in-out infinite;
     }
 
     .sigil span { transform: rotate(-45deg); }
+    .sigil::before, .sigil::after { content: ''; position: absolute; background: var(--faint); }
+    .sigil::before { width: 116px; height: 1px; }
+    .sigil::after { width: 1px; height: 116px; }
 
-    .sigil::before,
-    .sigil::after {
-      content: '';
-      position: absolute;
-      background: var(--faint);
+    @keyframes breathe {
+      0%, 100% { filter: drop-shadow(0 0 0 rgba(127,34,34,0)); }
+      50% { filter: drop-shadow(0 0 10px rgba(127,34,34,.25)); }
     }
-
-    .sigil::before { width: 118px; height: 1px; }
-    .sigil::after { width: 1px; height: 118px; }
 
     .eyebrow {
       margin: 0 0 8px;
@@ -132,12 +164,12 @@
     h1 {
       margin: 0;
       font-family: 'UnifrakturCook', 'Times New Roman', serif;
-      font-size: clamp(5rem, 15vw, 10rem);
+      font-size: clamp(5.4rem, 16vw, 10.5rem);
       line-height: .86;
       font-weight: 700;
       letter-spacing: -.035em;
-      color: #c8bdab;
-      text-shadow: 0 2px 0 #1b1713, 0 0 36px rgba(117, 79, 50, .10);
+      color: #c9beac;
+      text-shadow: 0 2px 0 #1b1713, 0 0 36px rgba(117, 79, 50, .11);
     }
 
     .divider {
@@ -150,107 +182,374 @@
       color: var(--accent);
     }
 
-    .divider::before,
-    .divider::after {
+    .divider::before, .divider::after {
       content: '';
       height: 1px;
       flex: 1;
       background: linear-gradient(90deg, transparent, var(--faint));
     }
-
     .divider::after { transform: scaleX(-1); }
 
     .tagline {
       margin: 0 auto;
       max-width: 650px;
+      color: var(--soft);
       font-size: clamp(1.25rem, 3vw, 1.8rem);
       line-height: 1.6;
       font-style: italic;
-      color: #aaa090;
     }
 
     .latin {
-      margin-top: 25px;
+      margin: 24px 0 0;
+      color: #5c554d;
       font-size: .72rem;
       letter-spacing: .32em;
       text-transform: uppercase;
-      color: #5f584f;
     }
 
     .enter {
-      display: inline-block;
-      margin-top: 46px;
-      padding: 12px 24px 10px;
-      color: #8d8478;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 42px;
+      padding: 12px 22px 11px;
+      border: 1px solid #332d27;
+      color: #91877a;
       text-decoration: none;
       text-transform: uppercase;
-      letter-spacing: .34em;
-      font-size: .72rem;
-      border: 1px solid #332d27;
-      transition: .35s ease;
+      letter-spacing: .28em;
+      font-size: .7rem;
+      transition: .3s ease;
     }
 
     .enter:hover {
       color: #d5cbbb;
       border-color: #62554a;
       background: rgba(255,255,255,.025);
-      letter-spacing: .42em;
+      transform: translateY(-2px);
     }
 
-    .footer {
+    .oracle-wrap {
+      padding: 58px 0 72px;
+      scroll-margin-top: 20px;
+    }
+
+    .section-label {
+      margin: 0 0 12px;
+      color: var(--muted);
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: .38em;
+      font-size: .68rem;
+    }
+
+    .oracle {
+      position: relative;
+      width: min(760px, 100%);
+      margin: 0 auto;
+      padding: clamp(28px, 6vw, 54px);
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.018), transparent 35%),
+        var(--panel);
+      backdrop-filter: blur(8px);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .oracle::before,
+    .oracle::after {
+      content: '';
       position: absolute;
-      left: 50%;
-      bottom: 34px;
-      transform: translateX(-50%);
-      white-space: nowrap;
-      color: #403b35;
-      font-size: .67rem;
+      width: 70px;
+      height: 70px;
+      border-color: rgba(216,207,189,.18);
+      pointer-events: none;
+    }
+
+    .oracle::before {
+      top: 12px;
+      left: 12px;
+      border-top: 1px solid;
+      border-left: 1px solid;
+    }
+
+    .oracle::after {
+      right: 12px;
+      bottom: 12px;
+      border-right: 1px solid;
+      border-bottom: 1px solid;
+    }
+
+    .oracle h2 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.1rem);
+      font-weight: 500;
+      letter-spacing: .04em;
+    }
+
+    .oracle-desc {
+      max-width: 540px;
+      margin: 10px auto 30px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.55;
+    }
+
+    .number-stage {
+      width: min(250px, 65vw);
+      aspect-ratio: 1;
+      margin: 0 auto 28px;
+      border: 1px solid #40372f;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      position: relative;
+      background: radial-gradient(circle, rgba(127,34,34,.08), transparent 64%);
+    }
+
+    .number-stage::before,
+    .number-stage::after {
+      content: '';
+      position: absolute;
+      border: 1px solid rgba(216,207,189,.08);
+      border-radius: 50%;
+    }
+
+    .number-stage::before { inset: 11px; }
+    .number-stage::after { inset: 24px; border-style: dashed; animation: rotate 24s linear infinite; }
+
+    @keyframes rotate { to { transform: rotate(360deg); } }
+
+    #number {
+      position: relative;
+      z-index: 2;
+      font-size: clamp(4rem, 12vw, 7rem);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      color: #c9beac;
+      text-shadow: 0 0 26px rgba(127,34,34,.18);
+    }
+
+    #number.reveal-number { animation: numberReveal .48s ease; }
+
+    @keyframes numberReveal {
+      0% { opacity: .15; transform: scale(.72); filter: blur(7px); }
+      65% { transform: scale(1.08); }
+      100% { opacity: 1; transform: scale(1); filter: blur(0); }
+    }
+
+    .oracle-button {
+      appearance: none;
+      border: 1px solid #51443a;
+      background: #110e0c;
+      color: #c6baa8;
+      padding: 13px 24px 12px;
+      cursor: pointer;
+      font: inherit;
+      font-size: .78rem;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      transition: .25s ease;
+    }
+
+    .oracle-button:hover {
+      border-color: #775349;
+      background: var(--accent-soft);
+      color: #efe5d4;
+      transform: translateY(-2px);
+    }
+
+    .oracle-button:active { transform: translateY(0); }
+    .oracle-button:focus-visible { outline: 2px solid #8a6255; outline-offset: 4px; }
+
+    .hint {
+      margin: 13px 0 0;
+      color: #5d554d;
+      font-size: .76rem;
+      letter-spacing: .08em;
+    }
+
+    .history {
+      margin-top: 30px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .history-title {
+      margin: 0 0 13px;
+      color: #655d54;
+      text-transform: uppercase;
+      letter-spacing: .24em;
+      font-size: .66rem;
+    }
+
+    .history-list {
+      min-height: 34px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .history-chip {
+      min-width: 40px;
+      padding: 6px 10px;
+      border: 1px solid #302a25;
+      color: #867d71;
+      background: rgba(0,0,0,.18);
+      font-size: .92rem;
+    }
+
+    .empty-history { color: #4e4841; font-style: italic; }
+
+    .footer {
+      padding: 0 0 22px;
+      color: #403a34;
+      text-align: center;
+      font-size: .65rem;
       letter-spacing: .22em;
       text-transform: uppercase;
     }
 
     @keyframes reveal {
       from { opacity: 0; transform: translateY(18px); filter: blur(3px); }
-      to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
     }
 
     @media (max-width: 600px) {
-      .frame { inset: 9px; }
-      main { padding-inline: 24px; }
+      .frame { inset: 8px; }
+      main { width: min(100% - 32px, 1120px); padding-top: 64px; }
+      .hero { min-height: 78vh; }
       .sigil { width: 66px; height: 66px; }
       .sigil::before { width: 92px; }
       .sigil::after { height: 92px; }
-      .footer { bottom: 22px; font-size: .55rem; }
+      .oracle { padding: 34px 20px; }
+      .oracle-wrap { padding-top: 38px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
     }
   </style>
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
   <div class="frame" aria-hidden="true"></div>
+  <div class="embers" aria-hidden="true">
+    <i class="ember" style="--left:8%;--delay:-2s;--duration:16s;--sway:25px"></i>
+    <i class="ember" style="--left:19%;--delay:-9s;--duration:20s;--sway:-18px"></i>
+    <i class="ember" style="--left:34%;--delay:-5s;--duration:18s;--sway:34px"></i>
+    <i class="ember" style="--left:51%;--delay:-13s;--duration:22s;--sway:-30px"></i>
+    <i class="ember" style="--left:68%;--delay:-7s;--duration:17s;--sway:20px"></i>
+    <i class="ember" style="--left:82%;--delay:-11s;--duration:21s;--sway:-24px"></i>
+    <i class="ember" style="--left:93%;--delay:-4s;--duration:19s;--sway:15px"></i>
+  </div>
 
   <main>
     <section class="hero" aria-labelledby="title">
-      <div class="sigil" aria-hidden="true"><span>†</span></div>
-      <p class="eyebrow">Est. in the shadows</p>
-      <h1 id="title">Dolenthis</h1>
-
-      <div class="divider" aria-hidden="true">◆</div>
-
-      <p class="tagline">
-        Di antara sunyi yang membusuk dan kenangan yang enggan mati,
-        selalu ada sesuatu yang memilih untuk tetap tinggal.
-      </p>
-
-      <p class="latin">Memoria manet · tenebrae loquuntur</p>
-
-      <a class="enter" href="#" onclick="return false;">Enter the silence</a>
+      <div class="hero-inner">
+        <div class="sigil" aria-hidden="true"><span>†</span></div>
+        <p class="eyebrow">Est. in the shadows</p>
+        <h1 id="title">Dolenthis</h1>
+        <div class="divider" aria-hidden="true">◆</div>
+        <p class="tagline">
+          Di antara sunyi yang membusuk dan kenangan yang enggan mati,
+          selalu ada sesuatu yang memilih untuk tetap tinggal.
+        </p>
+        <p class="latin">Memoria manet · tenebrae loquuntur</p>
+        <a class="enter" href="#oracle">Enter the silence <span aria-hidden="true">↓</span></a>
+      </div>
     </section>
 
-    <div class="footer">Dolenthis · MMXXVI</div>
+    <section class="oracle-wrap" id="oracle" aria-labelledby="oracle-title">
+      <p class="section-label">Instrumentum Aleae</p>
+      <div class="oracle">
+        <h2 id="oracle-title">The Number Oracle</h2>
+        <p class="oracle-desc">Biarkan kebetulan memilih. Tekan segel di bawah untuk menghasilkan satu angka dari 1 sampai 100.</p>
+
+        <div class="number-stage" aria-hidden="true">
+          <div id="number">—</div>
+        </div>
+
+        <button class="oracle-button" id="generate" type="button">Reveal a number</button>
+        <p class="hint">Tekan tombol atau gunakan tombol <strong>Space</strong>.</p>
+
+        <div class="history" aria-live="polite">
+          <p class="history-title">Jejak terakhir</p>
+          <div class="history-list" id="history">
+            <span class="empty-history">Belum ada angka yang dipanggil.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">Dolenthis · MMXXVI · The silence remembers</footer>
   </main>
+
+  <script>
+    (() => {
+      const button = document.getElementById('generate');
+      const numberEl = document.getElementById('number');
+      const historyEl = document.getElementById('history');
+      const history = [];
+      let rolling = false;
+
+      function randomNumber() {
+        return Math.floor(Math.random() * 100) + 1;
+      }
+
+      function renderHistory() {
+        historyEl.innerHTML = '';
+        history.forEach((value) => {
+          const chip = document.createElement('span');
+          chip.className = 'history-chip';
+          chip.textContent = value;
+          historyEl.appendChild(chip);
+        });
+      }
+
+      function revealNumber() {
+        if (rolling) return;
+        rolling = true;
+        button.disabled = true;
+        button.textContent = 'Consulting...';
+
+        let ticks = 0;
+        const timer = setInterval(() => {
+          numberEl.textContent = randomNumber();
+          ticks += 1;
+
+          if (ticks >= 12) {
+            clearInterval(timer);
+            const finalNumber = randomNumber();
+            numberEl.textContent = finalNumber;
+            numberEl.classList.remove('reveal-number');
+            void numberEl.offsetWidth;
+            numberEl.classList.add('reveal-number');
+
+            history.unshift(finalNumber);
+            if (history.length > 7) history.pop();
+            renderHistory();
+
+            button.disabled = false;
+            button.textContent = 'Reveal another';
+            rolling = false;
+          }
+        }, 55);
+      }
+
+      button.addEventListener('click', revealNumber);
+
+      document.addEventListener('keydown', (event) => {
+        const target = event.target;
+        const tag = target && target.tagName ? target.tagName.toLowerCase() : '';
+        if (event.code === 'Space' && tag !== 'input' && tag !== 'textarea' && tag !== 'button') {
+          event.preventDefault();
+          revealNumber();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
