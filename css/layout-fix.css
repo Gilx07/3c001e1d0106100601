@@ -1,0 +1,9 @@
+.lockbox{
+  left:clamp(110px,12vw,180px);
+}
+
+@media(max-width:820px){
+  .lockbox{
+    left:clamp(88px,16vw,120px);
+  }
+}
