@@ -44,21 +44,37 @@
     body {
       margin:0; min-height:100vh; color:var(--ink); font-family:'Cormorant Garamond',Georgia,serif;
       background:
-        radial-gradient(circle at 50% 15%, color-mix(in srgb,var(--accent) 10%,transparent), transparent 31%),
-        radial-gradient(circle at 16% 72%, color-mix(in srgb,var(--faint) 13%,transparent), transparent 27%),
-        linear-gradient(var(--scanline) 1px,transparent 1px), var(--bg);
+        radial-gradient(circle at 50% 15%,color-mix(in srgb,var(--accent) 10%,transparent),transparent 31%),
+        radial-gradient(circle at 16% 72%,color-mix(in srgb,var(--faint) 13%,transparent),transparent 27%),
+        linear-gradient(var(--scanline) 1px,transparent 1px),var(--bg);
       background-size:auto,auto,100% 4px,auto; overflow-x:hidden;
       transition:background 1.25s ease,color 1.25s ease;
     }
     body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:50; background:radial-gradient(circle at center,transparent 34%,var(--vignette) 100%); transition:background 1.25s ease; }
     body::after { content:''; position:fixed; inset:0; pointer-events:none; z-index:48; opacity:.22; background:repeating-linear-gradient(91deg,transparent 0 37px,color-mix(in srgb,var(--faint) 7%,transparent) 38px,transparent 39px),repeating-linear-gradient(3deg,transparent 0 53px,color-mix(in srgb,var(--faint) 5%,transparent) 54px,transparent 55px); mix-blend-mode:multiply; }
-    .noise { position:fixed; inset:0; z-index:49; pointer-events:none; opacity:var(--noise-opacity); transition:opacity 1.25s ease; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E"); }
-    .frame { position:fixed; inset:15px; border:1px solid var(--line); pointer-events:none; z-index:40; transition:border-color 1.25s ease; }
-    .frame::before,.frame::after { content:'✦'; position:absolute; left:50%; transform:translateX(-50%); padding:0 12px; background:var(--frame-fill); color:var(--faint); font-size:12px; transition:background 1.25s ease,color 1.25s ease; }
+
+    .noise { position:fixed; inset:0; z-index:49; pointer-events:none; opacity:var(--noise-opacity); background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E"); }
+    .frame { position:fixed; inset:15px; border:1px solid var(--line); pointer-events:none; z-index:40; }
+    .frame::before,.frame::after { content:'✦'; position:absolute; left:50%; transform:translateX(-50%); padding:0 12px; background:var(--frame-fill); color:var(--faint); font-size:12px; }
     .frame::before { top:-7px; } .frame::after { bottom:-7px; }
     .embers { position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:1; }
     .ember { position:absolute; bottom:-20px; width:2px; height:2px; border-radius:50%; background:var(--dust); opacity:0; animation:drift var(--duration) linear infinite; animation-delay:var(--delay); left:var(--left); box-shadow:0 0 7px color-mix(in srgb,var(--accent) 35%,transparent); }
     @keyframes drift { 0%{transform:translate3d(0,0,0);opacity:0} 12%{opacity:.45} 75%{opacity:.18} 100%{transform:translate3d(var(--sway),-105vh,0);opacity:0} }
+
+    .theme-toggle {
+      position:fixed; top:30px; right:32px; z-index:60; width:54px; height:54px; padding:0;
+      border:1px solid var(--line); border-radius:50%; color:var(--title); background:color-mix(in srgb,var(--panel) 90%,transparent);
+      display:grid; place-items:center; cursor:pointer; backdrop-filter:blur(8px);
+      box-shadow:inset 0 0 0 4px color-mix(in srgb,var(--faint) 12%,transparent),0 6px 22px rgba(0,0,0,.14);
+      transition:background 1.25s ease,color 1.25s ease,border-color 1.25s ease,transform .25s ease;
+    }
+    .theme-toggle:hover { transform:rotate(8deg) scale(1.04); }
+    .theme-toggle:active { transform:scale(.96); }
+    .theme-toggle svg { width:28px; height:28px; overflow:visible; }
+    .theme-toggle .sun-icon { display:none; }
+    body.ancient-light .theme-toggle .star-icon { display:none; }
+    body.ancient-light .theme-toggle .sun-icon { display:block; }
+
     main { width:min(1120px,calc(100% - 48px)); margin:0 auto; padding:82px 0 64px; position:relative; z-index:2; }
     .hero { min-height:72vh; display:grid; place-items:center; text-align:center; animation:reveal 1.5s ease both; }
     .hero-inner { width:min(900px,100%); }
@@ -93,36 +109,55 @@
     @keyframes countdownShrink { from{transform:scaleX(1)} to{transform:scaleX(0)} }
     .footer { padding:0 0 22px; color:var(--faint); text-align:center; font-size:.65rem; letter-spacing:.22em; text-transform:uppercase; }
     body.omen-666::after { opacity:.42; mix-blend-mode:screen; }
-    body.omen-666 .number-stage { box-shadow:0 0 60px rgba(255,0,0,.18), inset 0 0 42px rgba(255,0,0,.09); }
+    body.omen-666 .number-stage { box-shadow:0 0 60px rgba(255,0,0,.18),inset 0 0 42px rgba(255,0,0,.09); }
     @keyframes reveal { from{opacity:0;transform:translateY(18px);filter:blur(3px)} to{opacity:1;transform:translateY(0);filter:blur(0)} }
-    @media(max-width:600px){ .frame{inset:8px} main{width:min(100% - 32px,1120px);padding-top:64px}.hero{min-height:78vh}.sigil{width:66px;height:66px}.sigil::before{width:92px}.sigil::after{height:92px}.oracle{padding:34px 20px}.oracle-wrap{padding-top:38px} }
+    @media(max-width:600px){ .frame{inset:8px}.theme-toggle{top:20px;right:20px;width:48px;height:48px}main{width:min(100% - 32px,1120px);padding-top:64px}.hero{min-height:78vh}.sigil{width:66px;height:66px}.sigil::before{width:92px}.sigil::after{height:92px}.oracle{padding:34px 20px}.oracle-wrap{padding-top:38px} }
     @media(prefers-reduced-motion:reduce){ .latin{transition:none} }
   </style>
 </head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="frame" aria-hidden="true"></div>
-  <div class="embers" aria-hidden="true">
-    <i class="ember" style="--left:8%;--delay:-2s;--duration:16s;--sway:25px"></i><i class="ember" style="--left:19%;--delay:-9s;--duration:20s;--sway:-18px"></i><i class="ember" style="--left:34%;--delay:-5s;--duration:18s;--sway:34px"></i><i class="ember" style="--left:51%;--delay:-13s;--duration:22s;--sway:-30px"></i><i class="ember" style="--left:68%;--delay:-7s;--duration:17s;--sway:20px"></i><i class="ember" style="--left:82%;--delay:-11s;--duration:21s;--sway:-24px"></i><i class="ember" style="--left:93%;--delay:-4s;--duration:19s;--sway:15px"></i>
+  <div class="noise fallable" aria-hidden="true"></div>
+  <div class="frame fallable" aria-hidden="true"></div>
+  <div class="embers fallable" aria-hidden="true">
+    <i class="ember" style="--left:8%;--delay:-2s;--duration:16s;--sway:25px"></i>
+    <i class="ember" style="--left:19%;--delay:-9s;--duration:20s;--sway:-18px"></i>
+    <i class="ember" style="--left:34%;--delay:-5s;--duration:18s;--sway:34px"></i>
+    <i class="ember" style="--left:51%;--delay:-13s;--duration:22s;--sway:-30px"></i>
+    <i class="ember" style="--left:68%;--delay:-7s;--duration:17s;--sway:20px"></i>
+    <i class="ember" style="--left:82%;--delay:-11s;--duration:21s;--sway:-24px"></i>
+    <i class="ember" style="--left:93%;--delay:-4s;--duration:19s;--sway:15px"></i>
   </div>
+
+  <button class="theme-toggle fallable" id="theme-toggle" type="button" aria-label="Ganti tema kuno" title="Ganti tema">
+    <svg class="star-icon" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" stroke-width="3"/>
+      <path d="M50 8 L58 38 L86 50 L58 59 L50 90 L42 59 L14 50 L42 39 Z" fill="none" stroke="currentColor" stroke-width="3"/>
+      <circle cx="50" cy="50" r="5" fill="currentColor"/>
+    </svg>
+    <svg class="sun-icon" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="3"/>
+      <circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 7"/>
+      <path d="M50 6V22M50 78V94M6 50H22M78 50H94M19 19L30 30M70 70L81 81M81 19L70 30M30 70L19 81" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </button>
 
   <main>
     <section class="hero" aria-labelledby="title">
-      <div class="hero-inner">
-        <div class="sigil fallable" aria-hidden="true"><span>†</span></div>
-        <h1 id="title" class="fallable">Dolenthis</h1>
-        <div class="divider fallable" aria-hidden="true">◆</div>
-        <p class="tagline fallable">Ada hal-hal yang datang tanpa nama, bergerak pelan di antara cahaya, waktu, dan kemungkinan.</p>
-        <p class="latin fallable" id="ancient-phrase" aria-live="polite">Lux in tenebris</p>
+      <div class="hero-inner fallable">
+        <div class="sigil" aria-hidden="true"><span>†</span></div>
+        <h1 id="title">Dolenthis</h1>
+        <div class="divider" aria-hidden="true">◆</div>
+        <p class="tagline">Ada hal-hal yang datang tanpa nama, bergerak pelan di antara cahaya, waktu, dan kemungkinan.</p>
+        <p class="latin" id="ancient-phrase" aria-live="polite">Lux in tenebris</p>
       </div>
     </section>
 
-    <section class="oracle-wrap" id="oracle" aria-labelledby="oracle-title">
-      <p class="section-label fallable">Instrumentum Aleae</p>
+    <section class="oracle-wrap fallable" id="oracle" aria-labelledby="oracle-title">
+      <p class="section-label">Instrumentum Aleae</p>
       <div class="oracle">
-        <h2 id="oracle-title" class="fallable">The Number Oracle</h2>
-        <div class="number-stage fallable"><div id="number" aria-live="polite">—</div></div>
-        <div class="countdown fallable" aria-hidden="true"><div class="countdown-line" id="countdown-line"></div></div>
+        <h2 id="oracle-title">The Number Oracle</h2>
+        <div class="number-stage"><div id="number" aria-live="polite">—</div></div>
+        <div class="countdown" aria-hidden="true"><div class="countdown-line" id="countdown-line"></div></div>
       </div>
     </section>
 
@@ -136,6 +171,7 @@
       const lineEl = document.getElementById('countdown-line');
       const phraseEl = document.getElementById('ancient-phrase');
       const themeColorEl = document.getElementById('theme-color');
+      const themeToggle = document.getElementById('theme-toggle');
       const numberInterval = 1500;
       const phraseInterval = 5000;
       let omenActive = false;
@@ -145,6 +181,17 @@
 
       function randomNumber(){ return Math.floor(Math.random()*999)+1; }
       function resetCountdown(){ lineEl.style.animation='none'; void lineEl.offsetWidth; lineEl.style.animation=`countdownShrink ${numberInterval}ms linear forwards`; }
+
+      function setTheme(light){
+        body.classList.toggle('ancient-light',light);
+        themeColorEl.setAttribute('content',light ? '#d7c8a7' : '#090806');
+        themeToggle.setAttribute('aria-label',light ? 'Ganti ke tema malam kuno' : 'Ganti ke tema kerajaan lusuh');
+      }
+
+      themeToggle.addEventListener('click',() => {
+        if(omenActive) return;
+        setTheme(!body.classList.contains('ancient-light'));
+      });
 
       function triggerOmen666(){
         if(omenActive) return;
@@ -158,26 +205,26 @@
         const elements = [...document.querySelectorAll('.fallable')];
         const animations = elements.map((el,index) => {
           const rect = el.getBoundingClientRect();
-          const maxDrop = Math.max(120, window.innerHeight - rect.top + 120);
-          const drift = (Math.random()*90)-45;
-          const rotate = (Math.random()*16)-8;
-          const delay = Math.min(420,index*55 + Math.random()*90);
+          const drop = Math.max(window.innerHeight + rect.height + 180, window.innerHeight - rect.top + rect.height + 260);
+          const drift = (Math.random()*180)-90;
+          const rotate = (Math.random()*26)-13;
+          const delay = Math.min(520,index*70 + Math.random()*100);
           return el.animate([
             { transform:'translate3d(0,0,0) rotate(0deg)', opacity:1, filter:'blur(0px)' },
-            { transform:`translate3d(${drift*.18}px,${maxDrop*.12}px,0) rotate(${rotate*.18}deg)`, opacity:.98, offset:.25 },
-            { transform:`translate3d(${drift*.55}px,${maxDrop*.5}px,0) rotate(${rotate*.62}deg)`, opacity:.92, offset:.62 },
-            { transform:`translate3d(${drift}px,${maxDrop}px,0) rotate(${rotate}deg)`, opacity:.22, filter:'blur(1.2px)' }
-          ],{ duration:1750, delay, easing:'cubic-bezier(.22,.72,.18,1)', fill:'both' });
+            { transform:`translate3d(${drift*.12}px,${drop*.08}px,0) rotate(${rotate*.12}deg)`, opacity:1, offset:.16 },
+            { transform:`translate3d(${drift*.38}px,${drop*.30}px,0) rotate(${rotate*.35}deg)`, opacity:.97, offset:.38 },
+            { transform:`translate3d(${drift*.72}px,${drop*.67}px,0) rotate(${rotate*.72}deg)`, opacity:.78, offset:.72 },
+            { transform:`translate3d(${drift}px,${drop}px,0) rotate(${rotate}deg)`, opacity:0, filter:'blur(2px)' }
+          ],{duration:2100,delay,easing:'cubic-bezier(.28,.04,.35,1)',fill:'both'});
         });
 
         setTimeout(() => {
-          animations.forEach(anim => { anim.playbackRate = -0.85; anim.play(); });
+          animations.forEach(anim => { anim.playbackRate=-0.72; anim.play(); });
           Promise.all(animations.map(anim => anim.finished.catch(()=>null))).then(() => {
             animations.forEach(anim => anim.cancel());
             body.classList.remove('omen-666');
-            if(savedLightTheme) body.classList.add('ancient-light');
-            themeColorEl.setAttribute('content', savedLightTheme ? '#d7c8a7' : '#090806');
-            omenActive = false;
+            setTheme(savedLightTheme);
+            omenActive=false;
             resetCountdown();
           });
         },6600);
@@ -185,33 +232,26 @@
 
       function revealNumber(){
         if(omenActive) return;
-        const value = randomNumber();
-        numberEl.textContent = value;
+        const value=randomNumber();
+        numberEl.textContent=value;
         numberEl.classList.remove('reveal-number'); void numberEl.offsetWidth; numberEl.classList.add('reveal-number');
         resetCountdown();
-        if(value === 666) triggerOmen666();
+        if(value===666) triggerOmen666();
       }
 
-      let phraseIndex = Math.floor(Math.random()*ancientPhrases.length);
-      phraseEl.textContent = ancientPhrases[phraseIndex];
+      let phraseIndex=Math.floor(Math.random()*ancientPhrases.length);
+      phraseEl.textContent=ancientPhrases[phraseIndex];
       function changePhrase(){
         if(omenActive) return;
         phraseEl.classList.add('fading');
         setTimeout(() => {
-          if(omenActive) return;
+          if(omenActive){ phraseEl.classList.remove('fading'); return; }
           let nextIndex;
-          do { nextIndex = Math.floor(Math.random()*ancientPhrases.length); } while(nextIndex === phraseIndex);
-          phraseIndex = nextIndex; phraseEl.textContent = ancientPhrases[phraseIndex]; phraseEl.classList.remove('fading');
+          do { nextIndex=Math.floor(Math.random()*ancientPhrases.length); } while(nextIndex===phraseIndex);
+          phraseIndex=nextIndex;
+          phraseEl.textContent=ancientPhrases[phraseIndex];
+          phraseEl.classList.remove('fading');
         },700);
-      }
-
-      function randomThemeDelay(){ return 10000 + Math.floor(Math.random()*10001); }
-      function switchAncientTheme(){
-        if(!omenActive){
-          const light = body.classList.toggle('ancient-light');
-          themeColorEl.setAttribute('content', light ? '#d7c8a7' : '#090806');
-        }
-        setTimeout(switchAncientTheme,randomThemeDelay());
       }
 
       document.addEventListener('copy',e=>e.preventDefault());
@@ -219,10 +259,10 @@
       document.addEventListener('dragstart',e=>e.preventDefault());
       document.addEventListener('contextmenu',e=>e.preventDefault());
 
+      setTheme(false);
       revealNumber();
       setInterval(revealNumber,numberInterval);
       setInterval(changePhrase,phraseInterval);
-      setTimeout(switchAncientTheme,randomThemeDelay());
     })();
   </script>
 </body>
