@@ -1,0 +1,59 @@
+/* UX refinement: clearer focus, larger hit targets, stronger lamp, interactive book. */
+body.lock-focused .content{z-index:8!important;opacity:.08;filter:blur(4px) brightness(.42);transform:scale(.985);transition:opacity .25s ease,filter .25s ease,transform .25s ease;pointer-events:none}
+body.lock-focused .theme-toggle{z-index:8!important;opacity:.18;filter:blur(1.5px);pointer-events:none;transition:opacity .2s ease,filter .2s ease}
+body.lock-focused .shade{opacity:.72}
+.lock-focus-backdrop{z-index:46!important;background:radial-gradient(circle at 50% 50%,rgba(10,7,5,.24) 0 18%,rgba(3,2,2,.76) 58%,rgba(0,0,0,.92) 100%)!important}
+.lockbox.focused{z-index:64!important;scale:1.52!important}
+.lockbox.focused .lock-cage{left:18px;right:18px}
+.lockbox.focused .lock-window{padding:15px 8px;grid-template-columns:minmax(44px,1fr) 6px minmax(44px,1fr) 6px minmax(44px,1fr);gap:1px}
+.lockbox.focused .digit-viewport{position:relative;border:1px solid rgba(226,190,129,.50);box-shadow:inset 0 0 18px rgba(0,0,0,.46),0 0 0 2px rgba(194,131,70,.08),0 8px 18px rgba(0,0,0,.18);cursor:grab;transition:background .12s ease,border-color .12s ease,box-shadow .12s ease,scale .12s ease}
+.lockbox.focused .digit-viewport::before{content:'↕';position:absolute;right:4px;top:2px;z-index:5;font:600 10px/1 Arial,sans-serif;color:rgba(224,184,122,.52);pointer-events:none}
+.lockbox.focused .digit-viewport:hover,.lockbox.focused .digit-viewport:focus-visible{border-color:rgba(245,209,149,.90);background:linear-gradient(180deg,rgba(255,225,174,.09),rgba(0,0,0,.08));box-shadow:inset 0 0 18px rgba(0,0,0,.42),0 0 0 3px rgba(222,167,96,.16),0 0 22px rgba(182,111,50,.18);scale:1.035;outline:none}
+.lockbox.focused .digit-viewport:active{cursor:grabbing;scale:1.015}
+.lockbox.focused .lock-cage::before{content:'DRAG  ↑  /  ↓';position:absolute;left:0;right:0;top:-17px;text-align:center;font:600 8px/1 Arial,sans-serif;letter-spacing:.22em;color:rgba(213,176,119,.66);pointer-events:none}
+.digit-track{transform:translateZ(0);backface-visibility:hidden}
+.digit-track.dragging{transition:transform 48ms linear!important;filter:blur(.28px)!important;will-change:transform;cursor:grabbing}
+
+/* Antique lamp: bigger visual target and a brighter but still nocturnal pool of light. */
+.desk-lamp{scale:1.22!important;transform-origin:bottom center;min-width:78px;min-height:112px;touch-action:manipulation}
+.desk-lamp::before{content:'';position:absolute;inset:-22px -24px -16px;border-radius:32px;background:transparent;pointer-events:auto}
+.desk-lamp::after{content:'';position:absolute;left:-92px;top:17px;width:250px;height:190px;z-index:-1;pointer-events:none;opacity:0;clip-path:polygon(42% 0,59% 0,100% 100%,0 100%);background:radial-gradient(ellipse at 50% 12%,rgba(255,224,166,.34),rgba(255,184,89,.13) 38%,transparent 72%);filter:blur(9px);transition:opacity .35s ease}
+.desk-lamp:hover{filter:drop-shadow(0 14px 13px rgba(0,0,0,.50)) brightness(1.16)!important}
+body.lamp-on .desk-lamp::after{opacity:1}
+body.lamp-on .lamp-bulb{background:#fff0bd!important;box-shadow:0 0 22px rgba(255,225,156,.98),0 0 68px rgba(255,183,80,.62),0 0 118px rgba(255,142,50,.26)!important}
+body.lamp-on .room::after{background:radial-gradient(ellipse 58% 57% at 31% 67%,rgba(255,215,144,.28),rgba(245,160,76,.13) 33%,rgba(186,91,29,.045) 55%,transparent 74%)!important;mix-blend-mode:screen}
+body.lamp-on .table{filter:brightness(1.11) saturate(1.04);box-shadow:0 40px 65px rgba(0,0,0,.50),inset 0 1px rgba(255,255,255,.10),0 -18px 72px rgba(255,176,83,.16)!important}
+
+/* Ancient book content and tactile page flip. */
+.book{pointer-events:auto;perspective:900px;transform-style:preserve-3d;cursor:default}
+.book .page{overflow:hidden;backface-visibility:hidden;transform-style:preserve-3d}
+.book-page{cursor:pointer;transition:filter .18s ease,box-shadow .18s ease}
+.book-page:hover{filter:brightness(1.10);box-shadow:inset 0 0 18px rgba(105,68,35,.11)}
+.book-page:focus-visible{outline:2px solid rgba(106,72,40,.62);outline-offset:-4px}
+.book-glyph{position:absolute;left:12%;right:12%;top:9%;text-align:center;font:600 clamp(7px,.65vw,10px)/1 Georgia,serif;letter-spacing:.18em;color:rgba(49,35,23,.64);opacity:.82}
+.book-script{position:absolute;left:13%;right:11%;top:24%;bottom:16%;margin:0;overflow:hidden;white-space:pre-line;font:600 clamp(7px,.72vw,11px)/1.38 'Cormorant Garamond',Georgia,serif;letter-spacing:.035em;color:rgba(48,34,21,.82);text-align:left;text-shadow:0 1px rgba(255,239,201,.08)}
+.book-folio{position:absolute;bottom:7%;left:0;right:0;text-align:center;font:italic 600 clamp(7px,.62vw,9px)/1 Georgia,serif;color:rgba(58,41,27,.62)}
+.turning-page{position:absolute;top:0;width:52%;height:100%;z-index:9;opacity:0;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0 13px,rgba(47,35,24,.24) 14px 15px),linear-gradient(96deg,#705a3d,var(--paper));border:1px solid rgba(47,35,24,.3);backface-visibility:hidden;transform-style:preserve-3d;filter:drop-shadow(0 8px 10px rgba(0,0,0,.24))}
+.turning-page.next{right:0;left:auto;opacity:1;transform-origin:left center;animation:bookNextFlip .66s cubic-bezier(.22,.72,.2,1) forwards}
+.turning-page.prev{left:0;right:auto;opacity:1;transform-origin:right center;animation:bookPrevFlip .66s cubic-bezier(.22,.72,.2,1) forwards}
+@keyframes bookNextFlip{0%{transform:rotateY(0deg) skewY(-2deg)}55%{filter:drop-shadow(-12px 9px 12px rgba(0,0,0,.30));}100%{transform:rotateY(-178deg) skewY(-1deg);filter:drop-shadow(-3px 8px 8px rgba(0,0,0,.15))}}
+@keyframes bookPrevFlip{0%{transform:rotateY(0deg) skewY(2deg)}55%{filter:drop-shadow(12px 9px 12px rgba(0,0,0,.30));}100%{transform:rotateY(178deg) skewY(1deg);filter:drop-shadow(3px 8px 8px rgba(0,0,0,.15))}}
+.book-control{position:absolute;z-index:12;top:50%;translate:0 -50%;width:26px;height:34px;border:0;border-radius:50%;display:grid;place-items:center;background:rgba(47,31,18,.18);color:rgba(62,42,24,.66);font:700 22px/1 Georgia,serif;cursor:pointer;opacity:.35;transition:opacity .16s ease,background .16s ease,scale .16s ease;padding:0}
+.book:hover .book-control,.book-control:focus-visible{opacity:.86}
+.book-control:hover{background:rgba(47,31,18,.29);scale:1.08}.book-control:focus-visible{outline:1px solid rgba(65,43,24,.65);outline-offset:1px}
+.book-prev{left:2px}.book-next{right:2px}
+.book.is-flipping .book-page,.book.is-flipping .book-control{pointer-events:none}
+body.lamp-on .book-script,body.lamp-on .book-glyph,body.lamp-on .book-folio{color:rgba(43,29,17,.92)}
+
+@media(max-width:820px){
+  .lockbox.focused{scale:1.25!important}
+  .desk-lamp{scale:1.02!important}
+  .book-script{font-size:8px;line-height:1.30}.book-glyph{font-size:7px}.book-control{width:24px;height:30px}
+}
+@media(max-width:520px){
+  .lockbox.focused{scale:1.08!important}
+  .desk-lamp{scale:.88!important}
+  body.lock-focused .content{opacity:.04;filter:blur(3px) brightness(.35)}
+}
+@media(max-height:720px){.lockbox.focused{scale:1.18!important}}
+@media(prefers-reduced-motion:reduce){.digit-track.dragging{transition:none!important}.turning-page.next,.turning-page.prev{animation-duration:.01ms!important}.desk-lamp::after{transition:none}}
