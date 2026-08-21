@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0908" />
+  <meta name="description" content="Dolenthis — sebuah ruang gelap untuk cerita, ingatan, dan hal-hal yang tertinggal." />
+  <title>Dolenthis</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=UnifrakturCook:wght@700&display=swap');
+
+    :root {
+      --bg: #080706;
+      --ink: #d8cfbd;
+      --muted: #81796d;
+      --faint: #3a342d;
+      --accent: #7b1f1f;
+      --paper: #15120f;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% 25%, rgba(82, 64, 43, .12), transparent 35%),
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        #080706;
+      background-size: auto, 100% 4px, auto;
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 20;
+      background:
+        radial-gradient(circle at center, transparent 45%, rgba(0,0,0,.72) 100%),
+        repeating-radial-gradient(circle at 30% 20%, rgba(255,255,255,.015) 0 1px, transparent 1px 3px);
+      mix-blend-mode: multiply;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: 19;
+      pointer-events: none;
+      opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+    }
+
+    .frame {
+      position: fixed;
+      inset: 16px;
+      border: 1px solid rgba(216, 207, 189, .14);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .frame::before,
+    .frame::after {
+      content: '✦';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--faint);
+      font-size: 12px;
+      background: var(--bg);
+      padding: 0 12px;
+    }
+
+    .frame::before { top: -7px; }
+    .frame::after { bottom: -7px; }
+
+    main {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 72px 28px;
+      position: relative;
+    }
+
+    .hero {
+      width: min(920px, 100%);
+      text-align: center;
+      position: relative;
+      animation: reveal 1.8s ease both;
+    }
+
+    .sigil {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto 28px;
+      border: 1px solid var(--faint);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 31px;
+      transform: rotate(45deg);
+      position: relative;
+      opacity: .85;
+    }
+
+    .sigil span { transform: rotate(-45deg); }
+
+    .sigil::before,
+    .sigil::after {
+      content: '';
+      position: absolute;
+      background: var(--faint);
+    }
+
+    .sigil::before { width: 118px; height: 1px; }
+    .sigil::after { width: 1px; height: 118px; }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .46em;
+      font-size: clamp(.62rem, 1.4vw, .78rem);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: 'UnifrakturCook', 'Times New Roman', serif;
+      font-size: clamp(5rem, 15vw, 10rem);
+      line-height: .86;
+      font-weight: 700;
+      letter-spacing: -.035em;
+      color: #c8bdab;
+      text-shadow: 0 2px 0 #1b1713, 0 0 36px rgba(117, 79, 50, .10);
+    }
+
+    .divider {
+      margin: 32px auto 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      width: min(420px, 80%);
+      color: var(--accent);
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(90deg, transparent, var(--faint));
+    }
+
+    .divider::after { transform: scaleX(-1); }
+
+    .tagline {
+      margin: 0 auto;
+      max-width: 650px;
+      font-size: clamp(1.25rem, 3vw, 1.8rem);
+      line-height: 1.6;
+      font-style: italic;
+      color: #aaa090;
+    }
+
+    .latin {
+      margin-top: 25px;
+      font-size: .72rem;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: #5f584f;
+    }
+
+    .enter {
+      display: inline-block;
+      margin-top: 46px;
+      padding: 12px 24px 10px;
+      color: #8d8478;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: .34em;
+      font-size: .72rem;
+      border: 1px solid #332d27;
+      transition: .35s ease;
+    }
+
+    .enter:hover {
+      color: #d5cbbb;
+      border-color: #62554a;
+      background: rgba(255,255,255,.025);
+      letter-spacing: .42em;
+    }
+
+    .footer {
+      position: absolute;
+      left: 50%;
+      bottom: 34px;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      color: #403b35;
+      font-size: .67rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(18px); filter: blur(3px); }
+      to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+
+    @media (max-width: 600px) {
+      .frame { inset: 9px; }
+      main { padding-inline: 24px; }
+      .sigil { width: 66px; height: 66px; }
+      .sigil::before { width: 92px; }
+      .sigil::after { height: 92px; }
+      .footer { bottom: 22px; font-size: .55rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="frame" aria-hidden="true"></div>
+
+  <main>
+    <section class="hero" aria-labelledby="title">
+      <div class="sigil" aria-hidden="true"><span>†</span></div>
+      <p class="eyebrow">Est. in the shadows</p>
+      <h1 id="title">Dolenthis</h1>
+
+      <div class="divider" aria-hidden="true">◆</div>
+
+      <p class="tagline">
+        Di antara sunyi yang membusuk dan kenangan yang enggan mati,
+        selalu ada sesuatu yang memilih untuk tetap tinggal.
+      </p>
+
+      <p class="latin">Memoria manet · tenebrae loquuntur</p>
+
+      <a class="enter" href="#" onclick="return false;">Enter the silence</a>
+    </section>
+
+    <div class="footer">Dolenthis · MMXXVI</div>
+  </main>
+</body>
+</html>
