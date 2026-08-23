@@ -7,9 +7,13 @@
 .perf-paused .turning-page,
 .perf-paused .viewport{animation-play-state:paused!important}
 
-/* Touch devices do not benefit from mouse-following parallax or cursor light. */
+/* Only touch-only devices lose mouse-only effects. Never change scene framing. */
 .perf-touch .cursor-light{display:none!important}
-.perf-touch .sync-world{will-change:auto!important;transform:translate3d(0,0,0) scale(1.02)!important}
+.perf-touch .sync-world{will-change:auto!important}
+
+/* A real fine pointer always keeps the cursor light available, even if the
+   runtime quality tier later drops because of FPS. */
+.perf-pointer .cursor-light{display:block!important}
 
 /* Balanced tier: preserve the scene but trim costly decorative work. */
 .perf-balanced .noise{opacity:.028!important}
@@ -21,8 +25,8 @@
 .perf-balanced .lock-focus-backdrop{backdrop-filter:blur(1px)!important}
 .perf-balanced.ritual-shaking .viewport{animation-duration:.095s!important}
 
-/* Low tier: keep all interactions and core visuals, remove expensive decoration. */
-.perf-low .cursor-light,
+/* Low tier: reduce expensive decoration without changing viewport scale or
+   desktop cursor behavior. */
 .perf-low .noise,
 .perf-low .ambient-haze,
 .perf-low .floor-mist,
@@ -32,7 +36,7 @@
 .perf-low .moon-cloud.c2,
 .perf-low .moon-cloud.c3{display:none!important}
 
-.perf-low .sync-world{transform:translate3d(0,0,0) scale(1)!important;will-change:auto!important}
+.perf-low .sync-world{will-change:auto!important}
 .perf-low .back-wall::after{display:none!important}
 .perf-low .moon-aura{filter:blur(8px)!important;animation:none!important;opacity:.72!important}
 .perf-low .moon-disc{box-shadow:0 0 18px rgba(255,98,80,.20),0 0 42px rgba(215,22,12,.10),inset -10px -8px 16px rgba(67,3,3,.45)!important}
@@ -52,8 +56,9 @@ body.perf-low.lock-focused .content{filter:none!important}
 .perf-low.ritual-shaking .viewport{animation-duration:.13s!important}
 .perf-low.ritual-impact .fall-piece{filter:none!important;will-change:transform!important}
 
-/* Mobile-first fallback works even before JS tier detection runs. */
-@media (hover:none),(pointer:coarse),(max-width:700px){
+/* Mobile fallback only. Desktop/hybrid devices with a fine pointer are handled
+   by .perf-pointer and keep cursor-light visible. */
+@media (max-width:700px){
   .cursor-light{display:none!important}
   .noise{opacity:.02!important}
   .r3{display:none!important}
