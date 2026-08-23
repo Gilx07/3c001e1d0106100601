@@ -1,0 +1,30 @@
+/* Public-content deterrence. This is not DRM and cannot prevent OS-level screenshots. */
+html,body,body *{
+  -webkit-user-select:none!important;
+  user-select:none!important;
+  -webkit-touch-callout:none!important;
+}
+
+img,svg,canvas{
+  -webkit-user-drag:none;
+  user-drag:none;
+}
+
+/* Keep keyboard focus visible even though text selection is disabled. */
+a:focus-visible,button:focus-visible,[role="button"]:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid rgba(229,185,117,.86);
+  outline-offset:3px;
+}
+
+@media print{
+  html,body{background:#000!important}
+  body>*{display:none!important}
+  body::before{
+    content:'Printing is disabled for this page.';
+    display:block!important;
+    padding:48px;
+    color:#aaa;
+    background:#000;
+    font:16px/1.5 sans-serif;
+  }
+}
