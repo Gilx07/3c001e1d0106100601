@@ -1,0 +1,15 @@
+{
+  "name": "Dolenthis",
+  "short_name": "Dolenthis",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070504",
+  "theme_color": "#070504",
+  "icons": [
+    {
+      "src": "/assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
