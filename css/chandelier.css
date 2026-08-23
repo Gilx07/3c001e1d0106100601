@@ -1,4 +1,4 @@
-/* Ancient hanging chandelier - light, GPU-friendly flicker layer. */
+/* Ancient hanging chandelier - optimized flicker and lighting. */
 .ancient-chandelier{
   position:absolute;
   left:50%;
@@ -9,188 +9,76 @@
   z-index:7;
   pointer-events:none;
   transform:translateZ(80px);
-  filter:drop-shadow(0 18px 16px rgba(0,0,0,.48));
+  filter:drop-shadow(0 14px 12px rgba(0,0,0,.42));
   transform-origin:50% 0;
-  animation:chandelierSway 7.8s ease-in-out infinite alternate;
+  animation:chandelierSway 8.8s ease-in-out infinite alternate;
 }
 .ancient-chandelier::before{
   content:'';
   position:absolute;
   left:50%;
   top:86px;
-  width:min(78vw,760px);
-  height:min(76vh,620px);
+  width:min(74vw,700px);
+  height:min(68vh,560px);
   translate:-50% 0;
   z-index:-2;
   border-radius:50%;
-  background:radial-gradient(ellipse at 50% 0%,rgba(255,216,146,.24) 0 8%,rgba(232,150,67,.13) 25%,rgba(168,73,24,.055) 47%,transparent 72%);
-  opacity:.78;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,216,146,.22) 0 8%,rgba(232,150,67,.11) 25%,rgba(168,73,24,.045) 47%,transparent 70%);
+  opacity:.74;
   mix-blend-mode:screen;
-  will-change:opacity;
-  animation:chandelierRoomFlicker 4.9s steps(1,end) infinite;
+  animation:chandelierRoomFlicker 5.6s steps(1,end) infinite;
 }
 .ancient-chandelier::after{
   content:'';
   position:absolute;
   left:50%;
   top:104px;
-  width:480px;
-  height:260px;
+  width:420px;
+  height:230px;
   translate:-50% 0;
   z-index:-1;
-  clip-path:polygon(34% 0,66% 0,100% 100%,0 100%);
-  background:linear-gradient(180deg,rgba(255,213,141,.16),rgba(214,126,48,.055) 48%,transparent 94%);
-  opacity:.72;
-  will-change:opacity;
-  animation:chandelierBeamFlicker 3.7s steps(1,end) infinite;
+  clip-path:polygon(35% 0,65% 0,96% 100%,4% 100%);
+  background:linear-gradient(180deg,rgba(255,213,141,.14),rgba(214,126,48,.045) 48%,transparent 92%);
+  opacity:.60;
+  animation:chandelierBeamFlicker 4.8s steps(1,end) infinite;
 }
-.chandelier-chain{
-  position:absolute;
-  left:50%;
-  top:0;
-  width:8px;
-  height:104px;
-  translate:-50% 0;
-  border-radius:4px;
-  background:repeating-linear-gradient(180deg,#17120e 0 8px,#755538 8px 11px,#201710 11px 18px);
-  box-shadow:inset 2px 0 rgba(255,255,255,.035),0 0 8px rgba(0,0,0,.5);
-}
-.chandelier-hook{
-  position:absolute;
-  left:50%;
-  top:92px;
-  width:34px;
-  height:28px;
-  translate:-50% 0;
-  border:6px solid #4a3828;
-  border-top:0;
-  border-radius:0 0 50% 50%;
-  box-shadow:inset 0 -3px rgba(0,0,0,.35);
-}
-.chandelier-ring{
-  position:absolute;
-  left:50%;
-  top:116px;
-  width:184px;
-  height:62px;
-  translate:-50% 0;
-  border:9px solid #4a3524;
-  border-radius:50%;
-  background:radial-gradient(ellipse,transparent 51%,rgba(151,105,65,.12) 53%,transparent 65%);
-  box-shadow:0 11px 18px rgba(0,0,0,.42),inset 0 0 0 2px rgba(170,119,73,.12);
-}
-.chandelier-ring::before,
-.chandelier-ring::after{
-  content:'';
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:164px;
-  height:5px;
-  translate:-50% -50%;
-  background:linear-gradient(90deg,#20160f,#775538 48%,#20160f);
-  transform-origin:center;
-}
+.chandelier-chain{position:absolute;left:50%;top:0;width:8px;height:104px;translate:-50% 0;border-radius:4px;background:repeating-linear-gradient(180deg,#17120e 0 8px,#755538 8px 11px,#201710 11px 18px);box-shadow:inset 2px 0 rgba(255,255,255,.035),0 0 6px rgba(0,0,0,.42)}
+.chandelier-hook{position:absolute;left:50%;top:92px;width:34px;height:28px;translate:-50% 0;border:6px solid #4a3828;border-top:0;border-radius:0 0 50% 50%;box-shadow:inset 0 -3px rgba(0,0,0,.35)}
+.chandelier-ring{position:absolute;left:50%;top:116px;width:184px;height:62px;translate:-50% 0;border:9px solid #4a3524;border-radius:50%;background:radial-gradient(ellipse,transparent 51%,rgba(151,105,65,.12) 53%,transparent 65%);box-shadow:0 8px 14px rgba(0,0,0,.38),inset 0 0 0 2px rgba(170,119,73,.10)}
+.chandelier-ring::before,.chandelier-ring::after{content:'';position:absolute;left:50%;top:50%;width:164px;height:5px;translate:-50% -50%;background:linear-gradient(90deg,#20160f,#775538 48%,#20160f);transform-origin:center}
 .chandelier-ring::after{transform:rotate(90deg)}
-.chandelier-center{
-  position:absolute;
-  left:50%;
-  top:133px;
-  width:34px;
-  height:68px;
-  translate:-50% 0;
-  border-radius:44% 44% 50% 50%;
-  background:linear-gradient(90deg,#1d140e,#765338 46%,#281a11 78%);
-  box-shadow:inset 4px 0 rgba(255,255,255,.035),0 10px 16px rgba(0,0,0,.42);
-}
-.chandelier-spike{
-  position:absolute;
-  left:50%;
-  top:190px;
-  width:12px;
-  height:40px;
-  translate:-50% 0;
-  background:linear-gradient(90deg,#1b120c,#69492f,#1c120c);
-  clip-path:polygon(20% 0,80% 0,100% 68%,50% 100%,0 68%);
-}
-.chandelier-candle{
-  position:absolute;
-  top:91px;
-  width:18px;
-  height:54px;
-  border-radius:4px 4px 7px 7px;
-  background:linear-gradient(90deg,#6d573c,#c6aa70 42%,#7e6748 78%);
-  box-shadow:inset -3px 0 rgba(38,24,14,.28),0 8px 9px rgba(0,0,0,.3);
-}
-.chandelier-candle::before{
-  content:'';
-  position:absolute;
-  left:50%;
-  bottom:-26px;
-  width:44px;
-  height:8px;
-  translate:-50% 0;
-  border-radius:50%;
-  background:linear-gradient(180deg,#78543a,#2e1e14);
-  box-shadow:0 5px 7px rgba(0,0,0,.35);
-}
-.chandelier-candle::after{
-  content:'';
-  position:absolute;
-  left:50%;
-  top:-25px;
-  width:18px;
-  height:30px;
-  translate:-50% 0;
-  border-radius:52% 48% 52% 48% / 70% 70% 34% 34%;
-  background:radial-gradient(circle at 50% 64%,#fff6c8 0 16%,#ffd26d 28%,#eb7d24 58%,rgba(186,54,15,.62) 72%,transparent 75%);
-  box-shadow:0 0 13px rgba(255,214,112,.85),0 0 30px rgba(255,144,42,.42);
-  transform-origin:50% 100%;
-  will-change:opacity,transform;
-  animation:candleFlicker 2.9s steps(1,end) infinite;
-}
+.chandelier-center{position:absolute;left:50%;top:133px;width:34px;height:68px;translate:-50% 0;border-radius:44% 44% 50% 50%;background:linear-gradient(90deg,#1d140e,#765338 46%,#281a11 78%);box-shadow:inset 4px 0 rgba(255,255,255,.035),0 8px 12px rgba(0,0,0,.38)}
+.chandelier-spike{position:absolute;left:50%;top:190px;width:12px;height:40px;translate:-50% 0;background:linear-gradient(90deg,#1b120c,#69492f,#1c120c);clip-path:polygon(20% 0,80% 0,100% 68%,50% 100%,0 68%)}
+.chandelier-candle{position:absolute;top:91px;width:18px;height:54px;border-radius:4px 4px 7px 7px;background:linear-gradient(90deg,#6d573c,#c6aa70 42%,#7e6748 78%);box-shadow:inset -3px 0 rgba(38,24,14,.28),0 6px 7px rgba(0,0,0,.28)}
+.chandelier-candle::before{content:'';position:absolute;left:50%;bottom:-26px;width:44px;height:8px;translate:-50% 0;border-radius:50%;background:linear-gradient(180deg,#78543a,#2e1e14);box-shadow:0 4px 6px rgba(0,0,0,.3)}
+.chandelier-candle::after{content:'';position:absolute;left:50%;top:-25px;width:18px;height:30px;translate:-50% 0;border-radius:52% 48% 52% 48% / 70% 70% 34% 34%;background:radial-gradient(circle at 50% 64%,#fff6c8 0 16%,#ffd26d 28%,#eb7d24 58%,rgba(186,54,15,.56) 72%,transparent 75%);box-shadow:0 0 10px rgba(255,214,112,.78),0 0 22px rgba(255,144,42,.32);transform-origin:50% 100%;animation:candleFlicker 3.4s steps(1,end) infinite}
 .chandelier-candle.c1{left:28px}.chandelier-candle.c2{left:78px}.chandelier-candle.c3{right:78px}.chandelier-candle.c4{right:28px}
 .chandelier-candle.c2::after{animation-delay:-.8s}.chandelier-candle.c3::after{animation-delay:-1.5s}.chandelier-candle.c4::after{animation-delay:-2.1s}
 
-body.lamp-on .ancient-chandelier::before{opacity:.66}
-body.ritual-active .ancient-chandelier::before{opacity:.46}
-body.ritual-active .chandelier-candle::after{animation-duration:1.3s}
+body.lamp-on .ancient-chandelier::before{opacity:.62}
+body.ritual-active .ancient-chandelier::before{opacity:.44}
+body.ritual-active .chandelier-candle::after{animation-duration:1.8s}
 
-@keyframes chandelierSway{
-  0%{transform:translateZ(80px) rotate(-.45deg)}
-  100%{transform:translateZ(80px) rotate(.45deg)}
-}
-@keyframes candleFlicker{
-  0%,18%,24%,56%,62%,100%{opacity:1;transform:scaleY(1) skewX(0deg)}
-  19%,23%{opacity:.68;transform:scaleY(.84) skewX(-4deg)}
-  57%,61%{opacity:.82;transform:scaleY(.92) skewX(3deg)}
-}
-@keyframes chandelierRoomFlicker{
-  0%,13%,18%,47%,52%,78%,100%{opacity:.78}
-  14%,17%{opacity:.56}
-  48%,51%{opacity:.66}
-  79%{opacity:.61}
-}
-@keyframes chandelierBeamFlicker{
-  0%,30%,36%,69%,74%,100%{opacity:.72}
-  31%,35%{opacity:.52}
-  70%,73%{opacity:.60}
-}
+@keyframes chandelierSway{0%{transform:translateZ(80px) rotate(-.35deg)}100%{transform:translateZ(80px) rotate(.35deg)}}
+@keyframes candleFlicker{0%,20%,27%,58%,65%,100%{opacity:1;transform:scaleY(1)}21%,26%{opacity:.72;transform:scaleY(.88)}59%,64%{opacity:.84;transform:scaleY(.94)}}
+@keyframes chandelierRoomFlicker{0%,15%,21%,50%,56%,81%,100%{opacity:.74}16%,20%{opacity:.58}51%,55%{opacity:.66}82%{opacity:.62}}
+@keyframes chandelierBeamFlicker{0%,33%,39%,71%,77%,100%{opacity:.60}34%,38%{opacity:.46}72%,76%{opacity:.52}}
 
-/* Performance tiers: keep chandelier present, trim only expensive ambience. */
-.perf-balanced .ancient-chandelier::before{width:min(72vw,640px);height:min(68vh,520px);opacity:.66}
-.perf-balanced .ancient-chandelier::after{opacity:.58}
-.perf-low .ancient-chandelier{filter:none;animation-duration:11s}
-.perf-low .ancient-chandelier::before{width:min(68vw,520px);height:min(58vh,430px);opacity:.52;mix-blend-mode:normal;animation-duration:7.5s}
+.perf-balanced .ancient-chandelier{filter:drop-shadow(0 10px 8px rgba(0,0,0,.34))}
+.perf-balanced .ancient-chandelier::before{width:min(68vw,580px);height:min(60vh,470px);opacity:.58;mix-blend-mode:normal;animation-duration:7.2s}
+.perf-balanced .ancient-chandelier::after{width:360px;height:190px;opacity:.42;animation-duration:6.4s}
+.perf-balanced .chandelier-candle::after{box-shadow:0 0 8px rgba(255,214,112,.68),0 0 16px rgba(255,144,42,.22);animation-duration:4.2s}
+
+.perf-low .ancient-chandelier{filter:none;animation:none}
+.perf-low .ancient-chandelier::before{width:min(62vw,460px);height:min(48vh,360px);opacity:.46;mix-blend-mode:normal;animation:chandelierRoomFlicker 8s steps(1,end) infinite}
 .perf-low .ancient-chandelier::after{display:none}
-.perf-low .chandelier-candle::after{box-shadow:0 0 10px rgba(255,214,112,.65),0 0 18px rgba(255,144,42,.25);animation-duration:4.8s}
+.perf-low .chandelier-candle::after{box-shadow:0 0 7px rgba(255,214,112,.58);animation-duration:5.8s}
 
-@media(max-width:700px){
-  .ancient-chandelier{top:-7%;width:200px;height:220px;scale:.78}
-  .ancient-chandelier::before{width:100vw;height:60vh;top:86px;opacity:.56}
-  .ancient-chandelier::after{width:360px;height:210px;opacity:.46}
-}
+.perf-paused .ancient-chandelier,
+.perf-paused .ancient-chandelier::before,
+.perf-paused .ancient-chandelier::after,
+.perf-paused .chandelier-candle::after{animation-play-state:paused!important}
+
+@media(max-width:700px){.ancient-chandelier{top:-7%;width:200px;height:220px;scale:.78}.ancient-chandelier::before{width:92vw;height:52vh;top:86px;opacity:.48;mix-blend-mode:normal}.ancient-chandelier::after{display:none}}
 @media(max-height:620px){.ancient-chandelier{top:-12%;scale:.72}}
-@media(prefers-reduced-motion:reduce){
-  .ancient-chandelier,.ancient-chandelier::before,.ancient-chandelier::after,.chandelier-candle::after{animation:none!important}
-}
+@media(prefers-reduced-motion:reduce){.ancient-chandelier,.ancient-chandelier::before,.ancient-chandelier::after,.chandelier-candle::after{animation:none!important}}
