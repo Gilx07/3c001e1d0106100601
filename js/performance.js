@@ -23,19 +23,22 @@
   document.addEventListener('visibilitychange',syncVisibility,{passive:true});
   syncVisibility();
 
-  // Keep expensive decorative layers out of the compositor on touch devices.
   if(coarse){
     body.style.setProperty('--sx','0px');
     body.style.setProperty('--sy','0px');
   }
 
-  // Avoid retaining temporary will-change layers after ritual animations finish.
   const observer=new MutationObserver(()=>{
     if(!body.classList.contains('ritual-active')){
-      document.querySelectorAll('.fall-piece').forEach(el=>{
-        el.style.removeProperty('will-change');
-      });
+      document.querySelectorAll('.fall-piece').forEach(el=>el.style.removeProperty('will-change'));
     }
   });
   observer.observe(body,{attributes:true,attributeFilter:['class']});
+
+  if(!document.querySelector('script[src="js/navigation.js"]')){
+    const navigation=document.createElement('script');
+    navigation.src='js/navigation.js';
+    navigation.defer=true;
+    document.body.appendChild(navigation);
+  }
 })();
