@@ -7,9 +7,9 @@
 .perf-paused .turning-page,
 .perf-paused .viewport{animation-play-state:paused!important}
 
-/* Touch devices do not benefit from a mouse-following light. */
+/* Touch devices do not benefit from mouse-following parallax or cursor light. */
 .perf-touch .cursor-light{display:none!important}
-.perf-touch .sync-world{will-change:auto!important}
+.perf-touch .sync-world{will-change:auto!important;transform:translate3d(0,0,0) scale(1.02)!important}
 
 /* Balanced tier: preserve the scene but trim costly decorative work. */
 .perf-balanced .noise{opacity:.028!important}
@@ -32,6 +32,7 @@
 .perf-low .moon-cloud.c2,
 .perf-low .moon-cloud.c3{display:none!important}
 
+.perf-low .sync-world{transform:translate3d(0,0,0) scale(1)!important;will-change:auto!important}
 .perf-low .back-wall::after{display:none!important}
 .perf-low .moon-aura{filter:blur(8px)!important;animation:none!important;opacity:.72!important}
 .perf-low .moon-disc{box-shadow:0 0 18px rgba(255,98,80,.20),0 0 42px rgba(215,22,12,.10),inset -10px -8px 16px rgba(67,3,3,.45)!important}
@@ -41,7 +42,7 @@
 .perf-low .table{box-shadow:0 26px 42px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.05)!important}
 .perf-low .pinlock-modal-layer,
 .perf-low .lock-focus-backdrop{backdrop-filter:none!important}
-.perf-low body.lock-focused .content{filter:none!important}
+body.perf-low.lock-focused .content{filter:none!important}
 .perf-low .turning-page{filter:none!important}
 .perf-low .book-page{transition:none!important}
 .perf-low .digit-track{will-change:auto!important}
