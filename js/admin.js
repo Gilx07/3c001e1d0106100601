@@ -58,8 +58,11 @@
     if(response.status===204)return null;
     const data=await response.json().catch(()=>null);
     if(!response.ok){
-      const message=data?.message||`GitHub API error ${response.status}`;
-      throw new Error(message);
+      const error=new Error(data?.message||`GitHub API error ${response.status}`);
+      error.status=response.status;
+      error.acceptedPermissions=response.headers.get('x-accepted-github-permissions')||'';
+      error.requestId=response.headers.get('x-github-request-id')||'';
+      throw error;
     }
     return data;
   }
@@ -137,9 +140,10 @@
     setStatus(loginStatus,'Memeriksa akses GitHub...');
     try{
       const user=await api('/user');
-      await api(`/repos/${OWNER}/${REPO}`);
+      const repo=await api(`/repos/${OWNER}/${REPO}`);
       sessionStorage.setItem('dolenthis_github_token',token);
-      account.textContent=`Terhubung sebagai ${user.login}`;
+      const push=repo.permissions?.push===true?'push access: yes':repo.permissions?.push===false?'push access: no':'push access: unknown';
+      account.textContent=`Terhubung sebagai ${user.login} · ${push}`;
       loginCard.classList.add('hidden');
       workspace.classList.remove('hidden');
       setStatus(loginStatus,'');
@@ -162,9 +166,7 @@
     postList.appendChild(loading);
     try{
       const files=await api(`/repos/${OWNER}/${REPO}/contents?ref=${encodeURIComponent(BRANCH)}`);
-      const posts=files
-        .filter(item=>item.type==='file'&&/^blog-.+\.html$/i.test(item.name))
-        .sort((a,b)=>a.name.localeCompare(b.name));
+      const posts=files.filter(item=>item.type==='file'&&/^blog-.+\.html$/i.test(item.name)).sort((a,b)=>a.name.localeCompare(b.name));
       postList.replaceChildren();
       if(!posts.length){
         const empty=document.createElement('div');
@@ -230,27 +232,27 @@
     setStatus(editorStatus,'Memeriksa versi terbaru...');
     try{
       const latest=await api(`/repos/${OWNER}/${REPO}/contents/${encodePath(selectedPath)}?ref=${encodeURIComponent(BRANCH)}`);
-      if(latest.sha!==selectedSha){
-        throw new Error('File berubah sejak dibuka. Refresh dan buka kembali post sebelum menyimpan.');
-      }
+      if(latest.sha!==selectedSha)throw new Error('File berubah sejak dibuka. Refresh dan buka kembali post sebelum menyimpan.');
       const html=serializePost();
       const message=commitInput.value.trim()||`content: update ${selectedPath}`;
       setStatus(editorStatus,'Menyimpan dan membuat commit...');
       const result=await api(`/repos/${OWNER}/${REPO}/contents/${encodePath(selectedPath)}`,{
         method:'PUT',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          message,
-          content:encodeBase64(html),
-          sha:selectedSha,
-          branch:BRANCH
-        })
+        body:JSON.stringify({message,content:encodeBase64(html),sha:selectedSha,branch:BRANCH})
       });
       selectedSha=result.content.sha;
       originalHtml=html;
       setStatus(editorStatus,`Tersimpan. Commit ${result.commit.sha.slice(0,12)}.`,'success');
     }catch(error){
-      setStatus(editorStatus,`Gagal menyimpan: ${error.message}`,'error');
+      let detail=`Gagal menyimpan: ${error.message}`;
+      if(error.status===403){
+        detail+=' · HTTP 403.';
+        if(error.acceptedPermissions)detail+=` GitHub meminta: ${error.acceptedPermissions}.`;
+        detail+=' Disconnect, masukkan ulang token terbaru, dan pastikan Fine-grained PAT memakai Resource owner Gilx07 serta Contents: Read and write.';
+      }
+      if(error.requestId)detail+=` Request ID: ${error.requestId}`;
+      setStatus(editorStatus,detail,'error');
     }finally{
       saveBtn.disabled=false;
     }
@@ -265,22 +267,13 @@
     previewDialog.showModal();
   }
 
-  function escapeHtml(value){
-    return value.replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  }
+  function escapeHtml(value){return value.replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));}
 
   function logout(){
-    token='';
-    selectedPath='';
-    selectedSha='';
-    originalHtml='';
+    token='';selectedPath='';selectedSha='';originalHtml='';
     sessionStorage.removeItem('dolenthis_github_token');
-    tokenInput.value='';
-    workspace.classList.add('hidden');
-    loginCard.classList.remove('hidden');
-    editor.classList.add('hidden');
-    emptyEditor.classList.remove('hidden');
-    setStatus(loginStatus,'Sesi GitHub telah diputus.');
+    tokenInput.value='';workspace.classList.add('hidden');loginCard.classList.remove('hidden');editor.classList.add('hidden');emptyEditor.classList.remove('hidden');
+    setStatus(loginStatus,'Sesi GitHub telah diputus. Masukkan token kembali untuk membuat sesi baru.');
   }
 
   connectBtn.addEventListener('click',connect);
@@ -292,8 +285,5 @@
   previewClose.addEventListener('click',()=>previewDialog.close());
   previewDialog.addEventListener('click',event=>{if(event.target===previewDialog)previewDialog.close();});
 
-  if(token){
-    tokenInput.value=token;
-    connect();
-  }
+  if(token){tokenInput.value=token;connect();}
 })();
