@@ -1,9 +1,7 @@
-/* Dramatic 666 ritual layer */
-body.ritual-shaking .viewport{animation:ritualQuake .075s steps(2,end) infinite;transform-origin:center center}
-body.ritual-shaking .room{filter:contrast(1.04) brightness(.96)}
-body.ritual-shaking .frame{box-shadow:inset 0 0 28px rgba(0,0,0,.5)}
-body.ritual-impact .fall-piece{filter:drop-shadow(0 14px 16px rgba(0,0,0,.5));will-change:transform,filter}
-body.ritual-impact .room{perspective:1450px}
+/* Dramatic 666 ritual layer — compositor-friendly */
+body.ritual-shaking .viewport{animation:ritualQuake .075s steps(2,end) infinite;transform-origin:center center;will-change:transform}
+body.ritual-shaking .frame{box-shadow:inset 0 0 24px rgba(0,0,0,.42)}
+body.ritual-impact .fall-piece{will-change:transform}
 body.ritual-impact .shade{opacity:.82}
 @keyframes ritualQuake{
   0%{transform:translate3d(-2px,1px,0) rotate(-.08deg)}
@@ -13,5 +11,5 @@ body.ritual-impact .shade{opacity:.82}
   80%{transform:translate3d(-2px,-3px,0) rotate(-.08deg)}
   100%{transform:translate3d(2px,2px,0) rotate(.06deg)}
 }
-@media(max-width:700px){body.ritual-shaking .viewport{animation-duration:.09s}}
+@media(max-width:700px){body.ritual-shaking .viewport{animation-duration:.10s}}
 @media(prefers-reduced-motion:reduce){body.ritual-shaking .viewport{animation:none!important}}
