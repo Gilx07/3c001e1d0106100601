@@ -1,4 +1,5 @@
 /* Adaptive performance layer. Loaded last. */
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 /* Pause decorative CSS animation while the tab is not visible. */
 .perf-paused .moon-aura,
@@ -64,11 +65,16 @@ body.perf-low.lock-focused .content{filter:none!important}
   .r3{display:none!important}
   .pinlock-modal-layer{backdrop-filter:none!important}
   .lock-focus-backdrop{backdrop-filter:none!important}
+  .red-orb,.back-wall::after{mix-blend-mode:normal!important}
+  .ambient-haze{filter:blur(7px)!important}
+  .floor-mist{filter:blur(8px)!important}
+  .moon-aura{filter:blur(11px)!important}
+  .table,.pillar,.window-recess{box-shadow:none!important}
 }
 
 @media(max-width:520px){
   .ambient-haze,.floor-mist{display:none!important}
-  .moon-aura{filter:blur(10px)!important}
+  .moon-aura{filter:blur(8px)!important}
   .r2{display:none!important}
 }
 
