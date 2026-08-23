@@ -17,8 +17,22 @@
   <link rel="stylesheet" href="css/ritual-drama.css" />
   <link rel="stylesheet" href="css/performance.css" />
   <link rel="stylesheet" href="css/chandelier.css" />
+  <link rel="stylesheet" href="css/navigation.css" />
 </head>
 <body>
+  <header class="site-header" id="site-header">
+    <nav class="site-nav" aria-label="Navigasi utama">
+      <button class="nav-brand" type="button" data-nav-action="home" aria-label="Kembali ke halaman utama">Dolenthis</button>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Buka navigasi" aria-expanded="false"><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <button class="nav-link active" type="button" data-nav-action="home">Home</button>
+        <button class="nav-link" type="button" data-nav-action="book">Book</button>
+        <button class="nav-link" type="button" data-nav-action="pinlock">Pin Lock</button>
+        <button class="nav-link" type="button" data-nav-action="lamp">Lamp</button>
+      </div>
+    </nav>
+  </header>
+
   <div class="viewport">
     <div class="sync-world" id="world">
       <div class="room" id="room">
@@ -74,5 +88,6 @@
   <script src="js/book-upgrade.js" defer></script>
   <script src="js/pinlock-stability.js" defer></script>
   <script src="js/ritual-drama.js" defer></script>
+  <script src="js/navigation.js" defer></script>
 </body>
 </html>
