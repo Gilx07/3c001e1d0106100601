@@ -29,7 +29,7 @@ body.page-body::before{content:'';position:fixed;inset:0;pointer-events:none;bac
 .about-label{display:block;color:#775f43;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase}
 .about-value{display:block;margin-top:4px;color:#c5aa80;font-size:1.02rem}
 .article-shell{width:min(820px,calc(100% - 36px))}
-.article-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.05rem,5.2vw,3.75rem);font-weight:600;line-height:1.08;letter-spacing:0;text-wrap:balance}
+.article-title{font-family:Georgia,'Times New Roman',serif;font-size:clamp(1.95rem,4.8vw,3.4rem);font-weight:700;line-height:1.16;letter-spacing:-.015em;text-wrap:balance}
 .article-meta{display:flex;flex-wrap:wrap;gap:9px 18px;margin:14px 0 0;color:#806f58;font-size:.82rem;letter-spacing:.05em}
 .article-panel{padding:clamp(24px,4vw,42px)}
 .article-panel h2{margin:32px 0 10px;color:#d5b789;font-size:1.42rem;font-weight:600}
@@ -42,5 +42,5 @@ body.page-body::before{content:'';position:fixed;inset:0;pointer-events:none;bac
 .article-back{display:inline-block;margin-top:26px;color:#b88752;text-decoration:none;border-bottom:1px solid rgba(184,135,82,.35)}
 .article-back:hover{color:#d0ad7d}
 .page-footer{margin-top:42px;padding-top:18px;border-top:1px solid rgba(181,132,76,.14);color:#6f604c;font-size:.83rem;letter-spacing:.08em}
-@media(max-width:700px){.page-shell{width:min(100% - 24px,980px);padding-top:96px}.article-shell{width:min(100% - 24px,820px)}.page-title{font-size:clamp(2.35rem,12vw,3.8rem);line-height:1.04}.article-title{font-size:clamp(2rem,9.5vw,3rem);line-height:1.1}.post-card{grid-template-columns:1fr;gap:8px;padding:18px}.post-mark{display:none}.about-grid{grid-template-columns:1fr}.about-panel,.article-panel{padding:22px}}
+@media(max-width:700px){.page-shell{width:min(100% - 24px,980px);padding-top:96px}.article-shell{width:min(100% - 24px,820px)}.page-title{font-size:clamp(2.35rem,12vw,3.8rem);line-height:1.04}.article-title{font-size:clamp(1.85rem,8.5vw,2.7rem);line-height:1.18}.post-card{grid-template-columns:1fr;gap:8px;padding:18px}.post-mark{display:none}.about-grid{grid-template-columns:1fr}.about-panel,.article-panel{padding:22px}}
 @media(prefers-reduced-motion:reduce){.post-card{transition:none!important}}
