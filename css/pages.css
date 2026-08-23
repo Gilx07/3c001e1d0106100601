@@ -1,0 +1,33 @@
+/* Shared lightweight interior pages for Dolenthis. */
+:root{color-scheme:dark;--bg:#070504;--panel:#100b08;--panel2:#17100b;--line:rgba(181,132,76,.28);--gold:#d1ae78;--ink:#eadbc1;--soft:#aa9475;--dim:#756650}
+*{box-sizing:border-box}
+html{min-height:100%;background:var(--bg)}
+body.page-body{margin:0;min-height:100vh;color:var(--ink);font-family:'Cormorant Garamond',Georgia,serif;background:radial-gradient(circle at 50% -10%,rgba(125,69,29,.18),transparent 34%),linear-gradient(180deg,#0d0907 0,#070504 58%,#030202 100%);overflow-x:hidden}
+body.page-body::before{content:'';position:fixed;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.58),transparent 18% 82%,rgba(0,0,0,.58)),radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.62) 100%);z-index:0}
+.page-shell{position:relative;z-index:1;width:min(980px,calc(100% - 36px));margin:0 auto;padding:118px 0 64px}
+.page-kicker{margin:0 0 8px;color:#b98750;font-size:.78rem;letter-spacing:.24em;text-transform:uppercase}
+.page-title{margin:0;color:#e6c99b;font-family:'UnifrakturCook',Georgia,serif;font-size:clamp(2.8rem,8vw,5.6rem);font-weight:400;letter-spacing:.02em;text-shadow:0 8px 30px rgba(0,0,0,.75)}
+.page-lead{max-width:690px;margin:14px 0 0;color:#bca98b;font-size:clamp(1.05rem,2vw,1.25rem);line-height:1.7}
+.page-rule{height:1px;margin:28px 0 34px;background:linear-gradient(90deg,#8d6034,rgba(141,96,52,.18) 48%,transparent)}
+.post-list{display:grid;gap:14px}
+.post-card,.about-panel{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(23,16,11,.9),rgba(10,7,5,.92));box-shadow:0 22px 50px rgba(0,0,0,.28),inset 0 1px rgba(255,235,194,.025)}
+.post-card{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:22px;padding:22px 24px;text-decoration:none;color:inherit;transition:border-color .16s ease,background .16s ease,translate .16s ease}
+.post-card:hover{border-color:rgba(203,151,88,.47);background:linear-gradient(180deg,rgba(29,20,13,.94),rgba(12,8,6,.95));translate:0 -2px}
+.post-date{color:#806b50;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.post-copy h2{margin:0 0 5px;color:#dbc095;font-size:1.32rem;font-weight:600}
+.post-copy p{margin:0;color:#9e8a6e;line-height:1.5}
+.post-mark{color:#a87642;font-size:1.05rem}
+.empty-note{padding:28px;border:1px dashed rgba(181,132,76,.25);border-radius:15px;color:#8f7d65;text-align:center;background:rgba(17,11,8,.42)}
+.about-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+.about-panel{padding:28px}
+.about-panel h2{margin:0 0 14px;color:#d5b789;font-size:1.35rem;font-weight:600}
+.about-panel p{margin:0 0 14px;color:#aa9679;font-size:1.04rem;line-height:1.72}
+.about-panel p:last-child{margin-bottom:0}
+.about-note{display:grid;align-content:start;gap:12px}
+.about-item{padding:13px 0;border-bottom:1px solid rgba(181,132,76,.13)}
+.about-item:last-child{border-bottom:0}
+.about-label{display:block;color:#775f43;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase}
+.about-value{display:block;margin-top:4px;color:#c5aa80;font-size:1.02rem}
+.page-footer{margin-top:42px;padding-top:18px;border-top:1px solid rgba(181,132,76,.14);color:#6f604c;font-size:.83rem;letter-spacing:.08em}
+@media(max-width:700px){.page-shell{width:min(100% - 24px,980px);padding-top:96px}.post-card{grid-template-columns:1fr;gap:8px;padding:18px}.post-mark{display:none}.about-grid{grid-template-columns:1fr}.about-panel{padding:22px}}
+@media(prefers-reduced-motion:reduce){.post-card{transition:none!important}}
