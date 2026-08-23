@@ -8,22 +8,51 @@
     document.head.appendChild(stylesheet);
   }
 
+  const make=(tag,className,text)=>{
+    const el=document.createElement(tag);
+    if(className)el.className=className;
+    if(text!==undefined)el.textContent=text;
+    return el;
+  };
+
   let header=document.getElementById('site-header');
   if(!header){
-    header=document.createElement('header');
-    header.className='site-header';
+    header=make('header','site-header');
     header.id='site-header';
-    header.innerHTML=`
-      <nav class="site-nav" aria-label="Navigasi utama">
-        <button class="nav-brand" type="button" data-nav-action="home" aria-label="Kembali ke halaman utama">Dolenthis</button>
-        <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Buka navigasi" aria-expanded="false"><span></span></button>
-        <div class="nav-links" id="nav-links">
-          <button class="nav-link active" type="button" data-nav-action="home">Home</button>
-          <button class="nav-link" type="button" data-nav-action="book">Book</button>
-          <button class="nav-link" type="button" data-nav-action="pinlock">Pin Lock</button>
-          <button class="nav-link" type="button" data-nav-action="lamp">Lamp</button>
-        </div>
-      </nav>`;
+
+    const nav=make('nav','site-nav');
+    nav.setAttribute('aria-label','Navigasi utama');
+
+    const brand=make('button','nav-brand','Dolenthis');
+    brand.type='button';
+    brand.dataset.navAction='home';
+    brand.setAttribute('aria-label','Kembali ke halaman utama');
+
+    const toggle=make('button','nav-toggle');
+    toggle.id='nav-toggle';
+    toggle.type='button';
+    toggle.setAttribute('aria-label','Buka navigasi');
+    toggle.setAttribute('aria-expanded','false');
+    toggle.appendChild(make('span'));
+
+    const linksWrap=make('div','nav-links');
+    linksWrap.id='nav-links';
+
+    const items=[
+      ['home','Home'],
+      ['book','Book'],
+      ['pinlock','Pin Lock'],
+      ['lamp','Lamp']
+    ];
+    items.forEach(([action,label],index)=>{
+      const button=make('button',`nav-link${index===0?' active':''}`,label);
+      button.type='button';
+      button.dataset.navAction=action;
+      linksWrap.appendChild(button);
+    });
+
+    nav.append(brand,toggle,linksWrap);
+    header.appendChild(nav);
     document.body.appendChild(header);
   }
 
@@ -79,6 +108,7 @@
     const open=!header.classList.contains('nav-open');
     header.classList.toggle('nav-open',open);
     toggle.setAttribute('aria-expanded',String(open));
+    toggle.setAttribute('aria-label',open?'Tutup navigasi':'Buka navigasi');
   });
 
   links.forEach(link=>link.addEventListener('click',()=>runAction(link.dataset.navAction,link)));
