@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=UnifrakturCook:wght@700&display=swap');
+
 /* Gothic navigation bar - lightweight, theme-matched, responsive. */
 .site-header{position:fixed;top:0;left:0;right:0;z-index:2147483000;display:flex!important;justify-content:center;padding:14px clamp(14px,3.2vw,46px) 0;pointer-events:none;visibility:visible!important;opacity:1;transform:none!important;contain:none!important}
 .site-nav{position:relative;width:min(1080px,100%);min-height:58px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:7px 9px 7px 18px;border:1px solid rgba(184,137,78,.34);border-radius:18px;background:linear-gradient(180deg,rgba(28,19,13,.96),rgba(8,6,5,.93));box-shadow:0 16px 42px rgba(0,0,0,.46),inset 0 1px rgba(255,226,177,.055),inset 0 -1px rgba(0,0,0,.55);backdrop-filter:blur(7px);pointer-events:auto;isolation:isolate;visibility:visible!important;opacity:1!important}
