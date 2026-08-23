@@ -15,6 +15,13 @@
     return el;
   };
 
+  const items=[
+    ['home','Home'],
+    ['blog','Blog'],
+    ['downloads','Downloads'],
+    ['about','About']
+  ];
+
   let header=document.getElementById('site-header');
   if(!header){
     header=make('header','site-header');
@@ -37,30 +44,24 @@
 
     const linksWrap=make('div','nav-links');
     linksWrap.id='nav-links';
-
-    const items=[
-      ['home','Home'],
-      ['book','Book'],
-      ['pinlock','Pin Lock'],
-      ['lamp','Lamp']
-    ];
-    items.forEach(([action,label],index)=>{
-      const button=make('button',`nav-link${index===0?' active':''}`,label);
-      button.type='button';
-      button.dataset.navAction=action;
-      linksWrap.appendChild(button);
-    });
-
     nav.append(brand,toggle,linksWrap);
     header.appendChild(nav);
     document.body.appendChild(header);
   }
 
+  const linksWrap=header.querySelector('.nav-links');
+  if(linksWrap){
+    const buttons=items.map(([action,label],index)=>{
+      const button=make('button',`nav-link${index===0?' active':''}`,label);
+      button.type='button';
+      button.dataset.navAction=action;
+      return button;
+    });
+    linksWrap.replaceChildren(...buttons);
+  }
+
   const toggle=document.getElementById('nav-toggle');
   const links=[...header.querySelectorAll('[data-nav-action]')];
-  const book=document.getElementById('ancient-book');
-  const lockbox=document.getElementById('lockbox');
-  const lamp=document.getElementById('desk-lamp');
   const hero=document.querySelector('.hero');
 
   const closeMenu=()=>{
@@ -87,20 +88,6 @@
     if(action==='home'){
       if(document.body.classList.contains('lock-focused'))document.getElementById('lock-close')?.click();
       pulse(hero);
-      return;
-    }
-    if(action==='book'){
-      pulse(book);
-      book?.querySelector('.book-page')?.focus({preventScroll:true});
-      return;
-    }
-    if(action==='pinlock'){
-      if(!document.body.classList.contains('lock-focused'))lockbox?.click();
-      return;
-    }
-    if(action==='lamp'){
-      pulse(lamp);
-      lamp?.focus({preventScroll:true});
     }
   }
 
