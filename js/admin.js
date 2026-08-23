@@ -131,6 +131,33 @@
     return `<!DOCTYPE html>\n${parsed.documentElement.outerHTML}\n`;
   }
 
+  async function syncBlogListing(){
+    const indexFile=await api(`/repos/${OWNER}/${REPO}/contents/blog.html?ref=${encodeURIComponent(BRANCH)}`);
+    const indexHtml=decodeBase64(indexFile.content||'');
+    const doc=new DOMParser().parseFromString(indexHtml,'text/html');
+    const card=[...doc.querySelectorAll('a.post-card')].find(item=>item.getAttribute('href')===selectedPath);
+    if(!card)throw new Error(`Kartu untuk ${selectedPath} tidak ditemukan di blog.html.`);
+
+    const title=card.querySelector('h2');
+    const description=card.querySelector('.post-copy p');
+    const date=card.querySelector('.post-date');
+    if(title)title.textContent=titleInput.value.trim();
+    if(description)description.textContent=descriptionInput.value.trim();
+    if(date)date.textContent=dateInput.value.trim();
+
+    const updated=`<!DOCTYPE html>\n${doc.documentElement.outerHTML}\n`;
+    return api(`/repos/${OWNER}/${REPO}/contents/blog.html`,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        message:`content: sync blog listing for ${selectedPath}`,
+        content:encodeBase64(updated),
+        sha:indexFile.sha,
+        branch:BRANCH
+      })
+    });
+  }
+
   async function connect(){
     const entered=tokenInput.value.trim();
     if(entered)token=entered;
@@ -235,7 +262,7 @@
       if(latest.sha!==selectedSha)throw new Error('File berubah sejak dibuka. Refresh dan buka kembali post sebelum menyimpan.');
       const html=serializePost();
       const message=commitInput.value.trim()||`content: update ${selectedPath}`;
-      setStatus(editorStatus,'Menyimpan dan membuat commit...');
+      setStatus(editorStatus,'Menyimpan artikel...');
       const result=await api(`/repos/${OWNER}/${REPO}/contents/${encodePath(selectedPath)}`,{
         method:'PUT',
         headers:{'Content-Type':'application/json'},
@@ -243,7 +270,9 @@
       });
       selectedSha=result.content.sha;
       originalHtml=html;
-      setStatus(editorStatus,`Tersimpan. Commit ${result.commit.sha.slice(0,12)}.`,'success');
+      setStatus(editorStatus,'Artikel tersimpan. Menyinkronkan daftar Blog...');
+      const listingResult=await syncBlogListing();
+      setStatus(editorStatus,`Tersimpan dan sinkron. Commit artikel ${result.commit.sha.slice(0,12)}, listing ${listingResult.commit.sha.slice(0,12)}.`,'success');
     }catch(error){
       let detail=`Gagal menyimpan: ${error.message}`;
       if(error.status===403){
