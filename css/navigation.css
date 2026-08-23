@@ -1,0 +1,104 @@
+/* Lightweight gothic header navigation */
+.site-header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:120;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 clamp(18px,4vw,64px);
+  pointer-events:none;
+}
+.site-nav{
+  width:min(1120px,100%);
+  min-height:46px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+  padding:7px 10px 7px 18px;
+  border:1px solid rgba(207,177,132,.14);
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(18,13,10,.74),rgba(7,5,4,.58));
+  box-shadow:0 12px 34px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.025);
+  backdrop-filter:blur(8px);
+  pointer-events:auto;
+}
+.nav-brand{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  border:0;
+  background:none;
+  color:var(--title);
+  font-family:'UnifrakturCook',Georgia,serif;
+  font-size:1.34rem;
+  letter-spacing:.035em;
+  cursor:pointer;
+  padding:4px 6px;
+}
+.nav-brand::before{content:'†';font-family:Georgia,serif;font-size:.9rem;color:var(--accent2);opacity:.72}
+.nav-brand:hover{color:var(--ink)}
+.nav-brand:focus-visible,.nav-link:focus-visible,.nav-toggle:focus-visible{outline:1px solid rgba(221,184,126,.72);outline-offset:3px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{
+  position:relative;
+  border:0;
+  background:transparent;
+  color:var(--soft);
+  font:600 .82rem/1 'Cormorant Garamond',Georgia,serif;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  padding:11px 13px;
+  border-radius:11px;
+  cursor:pointer;
+  transition:color .16s ease,background .16s ease;
+}
+.nav-link::after{content:'';position:absolute;left:13px;right:13px;bottom:6px;height:1px;background:var(--accent2);scale:0 1;opacity:.7;transition:scale .16s ease;transform-origin:center}
+.nav-link:hover,.nav-link.active{color:var(--ink);background:rgba(255,255,255,.025)}
+.nav-link:hover::after,.nav-link.active::after{scale:1 1}
+.nav-toggle{display:none;width:38px;height:36px;border:1px solid rgba(207,177,132,.14);border-radius:10px;background:rgba(18,13,10,.74);color:var(--soft);cursor:pointer;padding:0}
+.nav-toggle span,.nav-toggle::before,.nav-toggle::after{content:'';display:block;width:16px;height:1px;margin:4px auto;background:currentColor;transition:transform .18s ease,opacity .18s ease}
+.site-header.nav-open .nav-toggle span{opacity:0}
+.site-header.nav-open .nav-toggle::before{transform:translateY(5px) rotate(45deg)}
+.site-header.nav-open .nav-toggle::after{transform:translateY(-5px) rotate(-45deg)}
+
+/* Small temporary visual cue when navigation targets a scene object. */
+.nav-target-pulse{animation:navTargetPulse .72s ease}
+@keyframes navTargetPulse{0%,100%{filter:none}45%{filter:brightness(1.22) drop-shadow(0 0 18px rgba(202,142,72,.24))}}
+
+body.lock-focused .site-header{opacity:.10;pointer-events:none;transition:opacity .18s ease}
+body.ritual-active .site-header{opacity:.16;pointer-events:none}
+
+@media(max-width:700px){
+  .site-header{height:auto;padding:10px 12px;align-items:flex-start}
+  .site-nav{position:relative;min-height:44px;padding:6px 7px 6px 14px;border-radius:15px;backdrop-filter:none}
+  .nav-brand{font-size:1.16rem}
+  .nav-toggle{display:block}
+  .nav-links{
+    position:absolute;
+    top:calc(100% + 7px);
+    left:0;
+    right:0;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:5px;
+    padding:8px;
+    border:1px solid rgba(207,177,132,.14);
+    border-radius:14px;
+    background:rgba(8,6,5,.94);
+    box-shadow:0 14px 30px rgba(0,0,0,.32);
+    opacity:0;
+    translate:0 -7px;
+    pointer-events:none;
+    transition:opacity .16s ease,translate .16s ease;
+  }
+  .site-header.nav-open .nav-links{opacity:1;translate:0 0;pointer-events:auto}
+  .nav-link{font-size:.74rem;padding:12px 8px}
+}
+@media(max-width:390px){.nav-links{grid-template-columns:1fr}}
+.perf-low .site-nav{backdrop-filter:none!important;background:rgba(9,7,5,.92)}
+@media(prefers-reduced-motion:reduce){.nav-link,.nav-link::after,.nav-links,.nav-target-pulse{transition:none!important;animation:none!important}}
