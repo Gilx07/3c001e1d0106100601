@@ -23,7 +23,7 @@
     const nav=make('nav','site-nav');
     nav.setAttribute('aria-label','Navigasi utama');
 
-    const brand=make('button','nav-brand','xor');
+    const brand=make('button','nav-brand','Dolenthis');
     brand.type='button';
     brand.dataset.navAction='home';
     brand.setAttribute('aria-label','Kembali ke halaman utama');
