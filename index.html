@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="css/pinlock-stability.css" />
   <link rel="stylesheet" href="css/ritual-drama.css" />
   <link rel="stylesheet" href="css/performance.css" />
+  <link rel="stylesheet" href="css/chandelier.css" />
 </head>
 <body>
   <div class="viewport">
@@ -33,6 +34,19 @@
         <div class="floor-mist fall-piece"></div>
         <div class="pillar p1 fall-piece"></div>
         <div class="pillar p2 fall-piece"></div>
+
+        <div class="ancient-chandelier fall-piece" id="ancient-chandelier" aria-hidden="true">
+          <div class="chandelier-chain"></div>
+          <div class="chandelier-hook"></div>
+          <div class="chandelier-ring"></div>
+          <div class="chandelier-center"></div>
+          <div class="chandelier-spike"></div>
+          <span class="chandelier-candle c1"></span>
+          <span class="chandelier-candle c2"></span>
+          <span class="chandelier-candle c3"></span>
+          <span class="chandelier-candle c4"></span>
+        </div>
+
         <div class="window-recess fall-piece" id="window-recess"><div class="arch-window" id="arch-window"><div class="moon-stack"><div class="moon-aura"></div><div class="moon-disc"></div><div class="moon-cloud c1"></div><div class="moon-cloud c2"></div><div class="moon-cloud c3"></div></div><div class="window-frame-overlay" aria-hidden="true"></div></div></div>
         <div class="table fall-piece">
           <div class="book" id="ancient-book" role="group" aria-label="Buku tua interaktif">
@@ -49,7 +63,8 @@
         <div class="rat r1"></div><div class="rat r2"></div><div class="rat r3"></div>
       </div>
       <div class="content fall-piece"><div class="hero"><div class="sigil" aria-hidden="true"><span>†</span></div><h1>Dolenthis</h1><div class="divider" aria-hidden="true">◆</div><p class="tagline">Sebuah tempat di suatu dunia di antara kegelapan, tempat waktu berjalan pelan, cahaya tersisa sebagai bayang-bayang, dan setiap sudut menyimpan sesuatu yang telah lama dilupakan.</p><p class="latin" id="phrase">Lux in tenebris</p></div></div>
-      <button class="theme-toggle fall-piece" id="theme" type="button" aria-label="Ganti tema" aria-pressed="false"><svg class="star" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="currentColor"/><path d="M32 5 37 25 54 16 41 31 59 35 39 39 48 56 33 43 28 60 25 41 8 49 22 34 5 29 25 26Z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><svg class="sun" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="12" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M32 4v11M32 49v11M4 32h11M49 32h11M12 12l8 8M44 44l8 8M52 12l-8 8M20 44l-8 8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+
+      <button id="theme" type="button" hidden aria-hidden="true" tabindex="-1"></button>
       <div class="cursor-light" id="cursor-light" aria-hidden="true"></div><div class="shade fall-piece" aria-hidden="true"></div><div class="noise fall-piece" aria-hidden="true"></div><div class="frame fall-piece" aria-hidden="true"></div>
     </div>
   </div>
