@@ -43,7 +43,8 @@ body.page-body::before{content:'';position:fixed;inset:0;pointer-events:none;bac
 .article-video-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin:0 2px 12px}
 .article-video-head strong{color:#d5bb92;font-size:1rem}
 .article-video-head span{color:#8f7a60;font-size:.84rem;overflow-wrap:anywhere;text-align:right}
-.article-video video{display:block;width:100%;max-width:100%;aspect-ratio:16/9;border:1px solid rgba(181,132,76,.18);border-radius:10px;background:#000;object-fit:contain}
+.article-video video,.article-video iframe{display:block;width:100%;max-width:100%;aspect-ratio:16/9;border:1px solid rgba(181,132,76,.18);border-radius:10px;background:#000}
+.article-video iframe{height:auto}
 .article-back{display:inline-block;margin-top:26px;color:#b88752;text-decoration:none;border-bottom:1px solid rgba(184,135,82,.35)}
 .article-back:hover{color:#d0ad7d}
 .page-footer{margin-top:42px;padding-top:18px;border-top:1px solid rgba(181,132,76,.14);color:#6f604c;font-size:.83rem;letter-spacing:.08em}
