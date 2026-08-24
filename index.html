@@ -6,16 +6,16 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests; require-trusted-types-for 'script'; trusted-types 'none'" />
   <meta name="referrer" content="no-referrer" />
   <meta name="theme-color" content="#070605" id="theme-color" />
-  <meta name="description" content="Dolenthis — ruang pribadi untuk catatan, tulisan, dan eksperimen." />
+  <meta name="description" content="Dolenthis — catatan, riset, dan eksperimen." />
   <link rel="canonical" href="https://dolenthis.my.id/" />
   <meta property="og:title" content="Dolenthis" />
-  <meta property="og:description" content="Ruang pribadi untuk catatan, tulisan, dan eksperimen." />
+  <meta property="og:description" content="Catatan, riset, dan eksperimen." />
   <meta property="og:url" content="https://dolenthis.my.id/" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://dolenthis.my.id/assets/preview.svg" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Dolenthis" />
-  <meta name="twitter:description" content="Ruang pribadi untuk catatan, tulisan, dan eksperimen." />
+  <meta name="twitter:description" content="Catatan, riset, dan eksperimen." />
   <meta name="twitter:image" content="https://dolenthis.my.id/assets/preview.svg" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="manifest" href="site.webmanifest" />
@@ -50,59 +50,23 @@
     <div class="sync-world" id="world">
       <div class="room" id="room">
         <div class="lock-focus-backdrop" id="lock-focus-backdrop" aria-hidden="true"></div>
-        <div class="ceiling fall-piece"></div>
-        <div class="vault-ribs fall-piece"></div>
-        <div class="side left fall-piece"></div>
-        <div class="side right fall-piece"></div>
-        <div class="back-wall fall-piece"></div>
-        <div class="back-arches fall-piece"></div>
-        <div class="ambient-haze fall-piece"></div>
-        <div class="floor3d fall-piece"></div>
-        <div class="floor-mist fall-piece"></div>
-        <div class="pillar p1 fall-piece"></div>
-        <div class="pillar p2 fall-piece"></div>
-
-        <div class="ancient-chandelier fall-piece" id="ancient-chandelier" aria-hidden="true">
-          <div class="chandelier-chain"></div>
-          <div class="chandelier-hook"></div>
-          <div class="chandelier-ring"></div>
-          <div class="chandelier-center"></div>
-          <div class="chandelier-spike"></div>
-          <span class="chandelier-candle c1"></span>
-          <span class="chandelier-candle c2"></span>
-          <span class="chandelier-candle c3"></span>
-          <span class="chandelier-candle c4"></span>
-        </div>
-
+        <div class="ceiling fall-piece"></div><div class="vault-ribs fall-piece"></div><div class="side left fall-piece"></div><div class="side right fall-piece"></div><div class="back-wall fall-piece"></div><div class="back-arches fall-piece"></div><div class="ambient-haze fall-piece"></div><div class="floor3d fall-piece"></div><div class="floor-mist fall-piece"></div><div class="pillar p1 fall-piece"></div><div class="pillar p2 fall-piece"></div>
+        <div class="ancient-chandelier fall-piece" id="ancient-chandelier" aria-hidden="true"><div class="chandelier-chain"></div><div class="chandelier-hook"></div><div class="chandelier-ring"></div><div class="chandelier-center"></div><div class="chandelier-spike"></div><span class="chandelier-candle c1"></span><span class="chandelier-candle c2"></span><span class="chandelier-candle c3"></span><span class="chandelier-candle c4"></span></div>
         <div class="window-recess fall-piece" id="window-recess"><div class="arch-window" id="arch-window"><div class="moon-stack"><div class="moon-aura"></div><div class="moon-disc"></div><div class="moon-cloud c1"></div><div class="moon-cloud c2"></div><div class="moon-cloud c3"></div></div><div class="window-frame-overlay" aria-hidden="true"></div></div></div>
         <div class="table fall-piece">
-          <div class="book" id="ancient-book" role="group" aria-label="Buku tua interaktif">
-            <div class="page left book-page" id="book-left-page" role="button" tabindex="0" aria-label="Balik ke halaman sebelumnya"><div class="book-glyph" aria-hidden="true">☩ · ✦ · ☾</div><p class="book-script" id="book-left-text"></p><span class="book-folio" id="book-left-folio"></span></div>
-            <div class="page right book-page" id="book-right-page" role="button" tabindex="0" aria-label="Balik ke halaman berikutnya"><div class="book-glyph" aria-hidden="true">☽ · ✧ · ☩</div><p class="book-script" id="book-right-text"></p><span class="book-folio" id="book-right-folio"></span></div>
-            <div class="turning-page" id="book-turning-page" aria-hidden="true"><div class="book-glyph">✦ · ☩ · ✦</div><p class="book-script" id="book-turning-text"></p></div>
-            <button class="book-control book-prev" id="book-prev" type="button" aria-label="Halaman sebelumnya">‹</button><button class="book-control book-next" id="book-next" type="button" aria-label="Halaman berikutnya">›</button>
-          </div>
+          <div class="book" id="ancient-book" role="group" aria-label="Buku tua interaktif"><div class="page left book-page" id="book-left-page" role="button" tabindex="0" aria-label="Balik ke halaman sebelumnya"><div class="book-glyph" aria-hidden="true">☩ · ✦ · ☾</div><p class="book-script" id="book-left-text"></p><span class="book-folio" id="book-left-folio"></span></div><div class="page right book-page" id="book-right-page" role="button" tabindex="0" aria-label="Balik ke halaman berikutnya"><div class="book-glyph" aria-hidden="true">☽ · ✧ · ☩</div><p class="book-script" id="book-right-text"></p><span class="book-folio" id="book-right-folio"></span></div><div class="turning-page" id="book-turning-page" aria-hidden="true"><div class="book-glyph">✦ · ☩ · ✦</div><p class="book-script" id="book-turning-text"></p></div><button class="book-control book-prev" id="book-prev" type="button" aria-label="Halaman sebelumnya">‹</button><button class="book-control book-next" id="book-next" type="button" aria-label="Halaman berikutnya">›</button></div>
           <div class="inkwell"></div><div class="quill"></div>
           <div class="desk-lamp" id="desk-lamp" role="button" tabindex="0" aria-label="Nyalakan lampu meja" aria-pressed="false"><div class="lamp-shade"></div><div class="lamp-bulb"></div><div class="lamp-stem"></div><div class="lamp-base"></div><span class="lamp-switch" aria-hidden="true"></span></div>
         </div>
-        <p id="pin-help" class="sr-only">PIN lock memiliki tiga digit. Gunakan keyboard pada setiap digit dan tombol tutup untuk keluar dari dialog.</p>
-        <p id="pin-status" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+        <p id="pin-help" class="sr-only">PIN lock memiliki tiga digit. Gunakan keyboard pada setiap digit dan tombol tutup untuk keluar dari dialog.</p><p id="pin-status" class="sr-only" aria-live="polite" aria-atomic="true"></p>
         <div class="lockbox fall-piece" id="lockbox" role="button" tabindex="0" aria-label="Buka PIN lock tiga digit" aria-expanded="false" aria-haspopup="dialog" aria-describedby="pin-help"><button class="lock-close" id="lock-close" type="button" aria-label="Tutup PIN lock">×</button><div class="lock-crest">PIN LOCK</div><div class="lock-arrow up" id="arrow-up"><span>▲</span></div><div class="lock-cage"><div class="lock-window" id="lock-window"><div class="digit-viewport" data-digit-index="0" role="spinbutton" tabindex="-1" aria-label="Digit ratusan" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0"><div class="digit-track" id="digit-hundreds"></div></div><div class="digit-separator"></div><div class="digit-viewport" data-digit-index="1" role="spinbutton" tabindex="-1" aria-label="Digit puluhan" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0"><div class="digit-track" id="digit-tens"></div></div><div class="digit-separator"></div><div class="digit-viewport" data-digit-index="2" role="spinbutton" tabindex="-1" aria-label="Digit satuan" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0"><div class="digit-track" id="digit-ones"></div></div><div class="lock-glass"></div></div><div class="lock-progress"><i id="progress"></i></div></div><div class="lock-arrow down" id="arrow-down"><span>▼</span></div></div>
-        <div class="red-orb" id="red-orb" aria-hidden="true"></div>
-        <div class="rat r1"></div><div class="rat r2"></div><div class="rat r3"></div>
+        <div class="red-orb" id="red-orb" aria-hidden="true"></div><div class="rat r1"></div><div class="rat r2"></div><div class="rat r3"></div>
       </div>
-      <div class="content fall-piece"><div class="hero"><div class="sigil" aria-hidden="true"><span>†</span></div><h1>Dolenthis</h1><div class="divider" aria-hidden="true">◆</div><p class="tagline">Ruang pribadi untuk menyimpan catatan, tulisan, dan berbagai eksperimen.</p><p class="latin" id="phrase">Lux in tenebris</p></div></div>
-
-      <button id="theme" type="button" hidden aria-hidden="true" tabindex="-1"></button>
-      <div class="cursor-light" id="cursor-light" aria-hidden="true"></div><div class="shade fall-piece" aria-hidden="true"></div><div class="noise fall-piece" aria-hidden="true"></div><div class="frame fall-piece" aria-hidden="true"></div>
+      <div class="content fall-piece"><div class="hero"><div class="sigil" aria-hidden="true"><span>†</span></div><h1>Dolenthis</h1><div class="divider" aria-hidden="true">◆</div><p class="tagline">Catatan, riset, dan eksperimen.</p><p class="latin" id="phrase">Lux in tenebris</p></div></div>
+      <button id="theme" type="button" hidden aria-hidden="true" tabindex="-1"></button><div class="cursor-light" id="cursor-light" aria-hidden="true"></div><div class="shade fall-piece" aria-hidden="true"></div><div class="noise fall-piece" aria-hidden="true"></div><div class="frame fall-piece" aria-hidden="true"></div>
     </div>
   </div>
   <div class="scroll-space" aria-hidden="true"></div>
-  <script src="js/performance.js" defer></script>
-  <script src="js/main.js" defer></script>
-  <script src="js/book-upgrade.js" defer></script>
-  <script src="js/pinlock-stability.js" defer></script>
-  <script src="js/ritual-drama.js" defer></script>
-  <script src="js/navigation.js" defer></script>
+  <script src="js/performance.js" defer></script><script src="js/main.js" defer></script><script src="js/book-upgrade.js" defer></script><script src="js/pinlock-stability.js" defer></script><script src="js/ritual-drama.js" defer></script><script src="js/navigation.js" defer></script>
 </body>
 </html>
