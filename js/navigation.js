@@ -35,6 +35,56 @@
     if(header.classList.contains('nav-open')&&!header.contains(event.target))closeMenu();
   });
 
+  let qrModal=null;
+  let qrClose=null;
+  const closeQrModal=()=>{
+    if(!qrModal||!qrModal.classList.contains('is-open'))return;
+    qrModal.classList.remove('is-open');
+    qrModal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('crypto-modal-open');
+  };
+
+  const ensureQrModal=()=>{
+    if(qrModal)return qrModal;
+    qrModal=document.createElement('div');
+    qrModal.className='crypto-modal';
+    qrModal.setAttribute('aria-hidden','true');
+    qrModal.innerHTML='<div class="crypto-modal-panel" role="dialog" aria-modal="true" aria-labelledby="crypto-modal-name"><button class="crypto-modal-close" type="button" aria-label="Tutup">×</button><img class="crypto-modal-qr" alt=""><div class="crypto-modal-info"><div class="crypto-modal-name" id="crypto-modal-name"></div><div class="crypto-modal-address"></div></div></div>';
+    document.body.appendChild(qrModal);
+    qrClose=qrModal.querySelector('.crypto-modal-close');
+    qrClose.addEventListener('click',closeQrModal);
+    qrModal.addEventListener('click',event=>{if(event.target===qrModal)closeQrModal();});
+    return qrModal;
+  };
+
+  document.querySelectorAll('.crypto-qr').forEach(image=>{
+    image.setAttribute('role','button');
+    image.setAttribute('tabindex','0');
+    image.setAttribute('aria-label','Perbesar informasi wallet');
+    const openModal=event=>{
+      event.preventDefault();
+      event.stopPropagation();
+      const card=image.closest('.crypto-card');
+      if(!card)return;
+      const modal=ensureQrModal();
+      const name=card.querySelector('.crypto-name')?.textContent?.trim()||'Wallet';
+      const address=card.querySelector('.crypto-address')?.textContent?.trim()||'';
+      const modalImage=modal.querySelector('.crypto-modal-qr');
+      modalImage.src=image.src;
+      modalImage.alt=`QR ${name}`;
+      modal.querySelector('.crypto-modal-name').textContent=name;
+      modal.querySelector('.crypto-modal-address').textContent=address;
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden','false');
+      document.body.classList.add('crypto-modal-open');
+      requestAnimationFrame(()=>qrClose?.focus());
+    };
+    image.addEventListener('click',openModal);
+    image.addEventListener('keydown',event=>{
+      if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal(event);}
+    });
+  });
+
   const block=event=>event.preventDefault();
   document.addEventListener('copy',block);
   document.addEventListener('cut',block);
@@ -43,7 +93,11 @@
   document.addEventListener('selectstart',block);
 
   addEventListener('keydown',event=>{
-    if(event.key==='Escape'){closeMenu();return;}
+    if(event.key==='Escape'){
+      if(qrModal?.classList.contains('is-open')){closeQrModal();return;}
+      closeMenu();
+      return;
+    }
 
     const key=event.key.toLowerCase();
     const modifier=event.ctrlKey||event.metaKey;
