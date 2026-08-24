@@ -1,0 +1,82 @@
+/* Mobile-only composition for the interactive Home scene.
+   Desktop remains untouched. */
+@media (max-width:700px){
+  html,body{min-height:100dvh!important;}
+  body{overflow-x:hidden!important;}
+  .viewport{perspective:1100px!important;}
+  .sync-world{inset:0!important;transform:none!important;will-change:auto!important;}
+  .room{inset:0!important;background:linear-gradient(180deg,#18100c 0%,#100b08 58%,#060403 100%)!important;}
+
+  /* Remove small/expensive decorative layers that visually collide on phones. */
+  .ancient-chandelier,
+  .vault-ribs,
+  .back-arches,
+  .ambient-haze,
+  .floor-mist,
+  .noise,
+  .rat,
+  .inkwell,
+  .quill,
+  .side,
+  .pillar{display:none!important;}
+
+  .ceiling{opacity:.34!important;}
+  .back-wall{left:-10%!important;right:-10%!important;top:0!important;height:78%!important;transform:translateZ(-260px) scale(1.08)!important;opacity:.76!important;box-shadow:none!important;}
+  .back-wall::after{display:none!important;}
+  .floor3d{left:-20%!important;right:-20%!important;bottom:-46%!important;height:72%!important;opacity:.68!important;}
+
+  /* Give the hero its own clean readable zone. */
+  .content{position:absolute!important;z-index:30!important;left:50%!important;top:17%!important;width:min(88vw,440px)!important;transform:translateX(-50%)!important;text-align:center!important;pointer-events:none!important;}
+  .hero{width:100%!important;margin:0 auto!important;transform:none!important;}
+  .hero .sigil{transform:scale(.78)!important;margin-bottom:6px!important;}
+  .hero h1{font-size:clamp(3rem,15vw,4.8rem)!important;line-height:.95!important;margin:0!important;text-shadow:0 8px 24px rgba(0,0,0,.86)!important;}
+  .hero .divider{margin:8px auto!important;opacity:.58!important;}
+  .hero .tagline{font-size:clamp(.95rem,4.2vw,1.15rem)!important;line-height:1.35!important;margin:0 auto!important;max-width:300px!important;}
+  .hero .latin{font-size:.74rem!important;letter-spacing:.16em!important;margin-top:8px!important;opacity:.58!important;}
+
+  /* Keep window/moon visible, but smaller and pushed away from the hero. */
+  .window-recess{z-index:8!important;right:-5vw!important;left:auto!important;top:35%!important;width:clamp(145px,42vw,190px)!important;height:clamp(225px,33vh,280px)!important;padding:10px!important;transform:none!important;opacity:.86!important;box-shadow:none!important;}
+  .moon-aura{filter:blur(8px)!important;opacity:.58!important;}
+  .moon-cloud{display:none!important;}
+  .moon-disc{box-shadow:0 0 18px rgba(255,98,80,.20),0 0 36px rgba(215,22,12,.10)!important;}
+
+  /* Table becomes one simple foreground anchor. */
+  .table{z-index:14!important;left:3vw!important;right:auto!important;bottom:5vh!important;top:auto!important;width:94vw!important;height:clamp(145px,23vh,190px)!important;transform:none!important;box-shadow:none!important;}
+  .book{left:7%!important;bottom:22%!important;top:auto!important;transform:scale(.72)!important;transform-origin:left bottom!important;}
+  .desk-lamp{right:8%!important;left:auto!important;bottom:20%!important;top:auto!important;transform:scale(.76)!important;transform-origin:right bottom!important;}
+
+  /* PIN remains interactive but gets a dedicated lower-left spot. */
+  .lockbox{z-index:40!important;left:6vw!important;right:auto!important;top:auto!important;bottom:22vh!important;transform:scale(.78)!important;transform-origin:left bottom!important;}
+
+  /* Decorative full-screen layers should not obscure controls on mobile. */
+  .shade{opacity:.42!important;}
+  .frame{opacity:.38!important;}
+  .cursor-light{display:none!important;}
+
+  /* Ritual remains functional, but fewer objects are animated/falling. */
+  body.ritual-active .window-recess,
+  body.ritual-active .table,
+  body.ritual-active .lockbox{will-change:transform!important;}
+}
+
+@media (max-width:430px){
+  .content{top:15%!important;width:90vw!important;}
+  .hero h1{font-size:clamp(2.75rem,16vw,4rem)!important;}
+  .hero .sigil{display:none!important;}
+  .hero .latin{display:none!important;}
+  .window-recess{right:-8vw!important;top:37%!important;width:148px!important;height:225px!important;}
+  .table{bottom:3vh!important;height:150px!important;}
+  .book{left:3%!important;transform:scale(.62)!important;}
+  .desk-lamp{right:5%!important;transform:scale(.66)!important;}
+  .lockbox{left:4vw!important;bottom:20vh!important;transform:scale(.68)!important;}
+  .ceiling,.frame{display:none!important;}
+}
+
+@media (max-height:680px) and (max-width:700px){
+  .content{top:13%!important;}
+  .window-recess{top:34%!important;height:210px!important;}
+  .table{height:135px!important;bottom:2vh!important;}
+  .book{transform:scale(.58)!important;}
+  .desk-lamp{transform:scale(.62)!important;}
+  .lockbox{bottom:18vh!important;transform:scale(.64)!important;}
+}
