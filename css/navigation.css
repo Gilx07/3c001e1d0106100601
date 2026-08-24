@@ -14,6 +14,17 @@
 @media(max-width:700px){.site-header{padding:10px 11px 0}.site-nav{min-height:50px;padding:5px 6px 5px 12px;border-radius:14px;backdrop-filter:none}.site-nav::before,.site-nav::after{display:none}.nav-brand{min-width:0;font-size:1.24rem;padding:6px 8px}.nav-brand::before{width:22px;height:22px}.nav-brand::after{display:none}.nav-toggle{display:block}.nav-links{position:absolute;top:calc(100% + 7px);left:0;right:0;display:grid!important;grid-template-columns:1fr 1fr;gap:5px;padding:8px;border:1px solid rgba(184,137,78,.26);border-radius:13px;background:linear-gradient(180deg,rgba(20,13,9,.98),rgba(7,5,4,.98));box-shadow:0 18px 34px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.025);opacity:0!important;visibility:hidden!important;translate:0 -7px;pointer-events:none;transition:opacity .16s ease,translate .16s ease,visibility .16s ease}.site-header.nav-open .nav-links{opacity:1!important;visibility:visible!important;translate:0 0;pointer-events:auto}.nav-link{min-width:0;font-size:.72rem;padding:14px 8px 12px}}
 @media(max-width:390px){.nav-links{grid-template-columns:1fr}}.perf-balanced .site-nav{backdrop-filter:blur(3px)}.perf-low .site-nav{backdrop-filter:none!important;background:rgba(11,7,5,.95)}.perf-low .nav-link{box-shadow:none!important}@media(prefers-reduced-motion:reduce){.nav-link,.nav-link::before,.nav-link::after,.nav-links,.nav-target-pulse{transition:none!important;animation:none!important}}
 
+/* Shared crypto support footer. */
+.site-crypto-footer{position:relative;z-index:20;width:100%;color:#8f7b61;font-family:'Cormorant Garamond',Georgia,serif}
+.crypto-footer-title{margin-bottom:13px;color:#c5a77b;font-size:.78rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
+.crypto-footer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.crypto-card{display:grid;grid-template-columns:82px minmax(0,1fr);align-items:center;gap:14px;padding:13px;border:1px solid rgba(181,132,76,.20);border-radius:13px;background:rgba(17,11,8,.52);color:inherit;text-decoration:none;transition:border-color .16s ease,background .16s ease,translate .16s ease}
+.crypto-card:hover{border-color:rgba(203,151,88,.42);background:rgba(24,16,10,.70);translate:0 -1px}
+.crypto-qr{display:block;width:82px;height:82px;padding:5px;border-radius:9px;background:#fff;object-fit:contain}
+.crypto-copy{min-width:0;display:grid;gap:5px}.crypto-name{color:#d1b283;font-size:1rem;font-weight:600}.crypto-address{display:block;max-width:100%;overflow-wrap:anywhere;color:#8f7a60;font:500 .72rem/1.35 ui-monospace,SFMono-Regular,Consolas,monospace}.crypto-footer-brand{margin-top:15px;color:#6f604c;font-size:.78rem;letter-spacing:.08em}
+.home-crypto-footer{width:min(1080px,calc(100% - 32px));margin:24px auto 46px;padding:18px 0;border-top:1px solid rgba(181,132,76,.14)}
+@media(max-width:700px){.crypto-footer-grid{grid-template-columns:1fr}.crypto-card{grid-template-columns:68px minmax(0,1fr);gap:12px}.crypto-qr{width:68px;height:68px}.home-crypto-footer{margin-bottom:28px}}
+
 /* Public content deterrence. This prevents ordinary selection/copy/print, not OS screenshots or source inspection. */
 html,body,body *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
 img,svg,canvas{-webkit-user-drag:none;user-drag:none}
