@@ -16,15 +16,15 @@
       <div>
         <p class="eyebrow">Dolenthis</p>
         <h1>Blog Admin</h1>
-        <p class="subtitle">Editor statis yang menyimpan perubahan langsung ke repository melalui GitHub API.</p>
+        <p class="subtitle">Manage and publish blog content.</p>
       </div>
       <a class="site-link" href="../blog.html">Buka Blog</a>
     </header>
 
     <section class="login-card" id="login-card">
       <div class="login-copy">
-        <h2>Hubungkan GitHub</h2>
-        <p>Gunakan fine-grained personal access token dengan akses ke repository ini dan permission <strong>Contents: Read and write</strong>. Token tidak ditanam di source code atau browser storage; token hanya berada di memory halaman aktif dan hilang saat halaman direload atau ditutup.</p>
+        <h2>GitHub Access</h2>
+        <p>Gunakan fine-grained PAT dengan permission <strong>Contents: Read and write</strong>. Token hanya berada di memory halaman aktif.</p>
       </div>
       <div class="login-row">
         <label class="field grow">
@@ -39,10 +39,7 @@
     <section class="workspace hidden" id="workspace">
       <aside class="sidebar">
         <div class="sidebar-head">
-          <div>
-            <span class="muted">Repository</span>
-            <strong>Gilx07 / 3c001e1d0106100601</strong>
-          </div>
+          <div><span class="muted">Repository</span><strong>Gilx07 / 3c001e1d0106100601</strong></div>
           <button class="ghost small" id="refresh" type="button">Refresh</button>
         </div>
         <div class="account" id="account"></div>
@@ -51,48 +48,20 @@
       </aside>
 
       <section class="editor-area">
-        <div class="empty-editor" id="empty-editor">
-          <h2>Pilih post</h2>
-          <p>Pilih salah satu tulisan dari daftar untuk mulai mengedit.</p>
-        </div>
-
+        <div class="empty-editor" id="empty-editor"><h2>Pilih post</h2><p>Pilih tulisan untuk mulai mengedit.</p></div>
         <div class="editor hidden" id="editor">
           <div class="editor-top">
-            <div>
-              <span class="muted">File</span>
-              <strong id="current-path"></strong>
-            </div>
-            <div class="actions">
-              <button class="ghost" id="preview-btn" type="button">Preview</button>
-              <button class="primary" id="save" type="button">Save & Commit</button>
-            </div>
+            <div><span class="muted">File</span><strong id="current-path"></strong></div>
+            <div class="actions"><button class="ghost" id="preview-btn" type="button">Preview</button><button class="primary" id="save" type="button">Save & Commit</button></div>
           </div>
 
           <div class="form-grid">
-            <label class="field full">
-              <span>Judul</span>
-              <input id="post-title" type="text" />
-            </label>
-            <label class="field full">
-              <span>Meta description</span>
-              <textarea id="post-description" rows="2"></textarea>
-            </label>
-            <label class="field">
-              <span>Tanggal</span>
-              <input id="post-date" type="text" />
-            </label>
-            <label class="field">
-              <span>Kategori / label</span>
-              <input id="post-category" type="text" />
-            </label>
-            <label class="field full">
-              <span>Isi artikel (HTML)</span>
-              <textarea class="code-editor" id="post-body" rows="24" spellcheck="false"></textarea>
-            </label>
-            <label class="field full">
-              <span>Commit message</span>
-              <input id="commit-message" type="text" value="content: update blog post" />
-            </label>
+            <label class="field full"><span>Judul</span><input id="post-title" type="text" /></label>
+            <label class="field full"><span>Meta description</span><textarea id="post-description" rows="2"></textarea></label>
+            <label class="field"><span>Tanggal</span><input id="post-date" type="text" /></label>
+            <label class="field"><span>Kategori / label</span><input id="post-category" type="text" /></label>
+            <label class="field full"><span>Isi artikel (HTML)</span><textarea class="code-editor" id="post-body" rows="24" spellcheck="false"></textarea></label>
+            <label class="field full"><span>Commit message</span><input id="commit-message" type="text" value="content: update blog post" /></label>
           </div>
           <p class="status" id="editor-status" role="status"></p>
         </div>
@@ -101,10 +70,7 @@
   </main>
 
   <dialog class="preview-dialog" id="preview-dialog">
-    <div class="preview-head">
-      <strong>Preview</strong>
-      <button class="ghost small" id="preview-close" type="button">Tutup</button>
-    </div>
+    <div class="preview-head"><strong>Preview</strong><button class="ghost small" id="preview-close" type="button">Tutup</button></div>
     <iframe id="preview-frame" title="Preview post" sandbox=""></iframe>
   </dialog>
 
