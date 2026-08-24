@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=UnifrakturCook:wght@700&display=swap');
+
+:root{color-scheme:dark;--bg:#070504;--panel:#100b08;--line:rgba(181,132,76,.28);--gold:#d1ae78;--ink:#eadbc1;--soft:#aa9475;--dim:#756650}
+*{box-sizing:border-box}
+html,body{min-height:100%;margin:0;background:var(--bg)}
+body{min-height:100vh;display:grid;place-items:center;padding:24px;color:var(--ink);font-family:'Cormorant Garamond',Georgia,serif;background:radial-gradient(circle at 50% 10%,rgba(125,69,29,.18),transparent 34%),linear-gradient(180deg,#0d0907 0,#070504 58%,#030202 100%);overflow:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.58),transparent 18% 82%,rgba(0,0,0,.58)),radial-gradient(ellipse at center,transparent 38%,rgba(0,0,0,.68) 100%)}
+.error-shell{position:relative;z-index:1;width:min(760px,100%);text-align:center;padding:54px 28px 48px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,rgba(23,16,11,.9),rgba(10,7,5,.94));box-shadow:0 30px 80px rgba(0,0,0,.46),inset 0 1px rgba(255,235,194,.025)}
+.error-mark{margin:0;color:#9f3d32;font:600 clamp(5.5rem,18vw,10rem)/.85 Georgia,'Times New Roman',serif;letter-spacing:-.04em;text-shadow:0 12px 42px rgba(0,0,0,.78)}
+.error-kicker{margin:20px 0 8px;color:#b98750;font-size:.76rem;letter-spacing:.24em;text-transform:uppercase}
+.error-title{margin:0;color:#e6c99b;font-family:'UnifrakturCook',Georgia,serif;font-size:clamp(2.2rem,8vw,4.2rem);font-weight:700;line-height:1.05}
+.error-copy{max-width:520px;margin:16px auto 0;color:#b6a185;font-size:1.08rem;line-height:1.7}
+.error-rule{width:min(280px,72%);height:1px;margin:28px auto;background:linear-gradient(90deg,transparent,#8d6034,transparent)}
+.error-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.error-button{display:inline-flex;align-items:center;justify-content:center;min-width:180px;padding:12px 22px;border:1px solid rgba(203,151,88,.42);border-radius:999px;background:linear-gradient(180deg,rgba(42,28,17,.96),rgba(19,12,8,.98));color:#e1c08e;font-size:.85rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;transition:transform .16s ease,border-color .16s ease,background .16s ease}
+.error-button:hover{transform:translateY(-1px);border-color:rgba(220,174,112,.75);background:linear-gradient(180deg,rgba(52,34,20,.98),rgba(23,14,9,.98))}
+.error-button:focus-visible{outline:2px solid #d1ae78;outline-offset:4px}
+.error-foot{margin-top:28px;color:#6f604c;font-size:.78rem;letter-spacing:.08em}
+@media(max-width:520px){body{padding:14px}.error-shell{padding:40px 18px 34px}.error-copy{font-size:1rem}.error-button{width:100%}}
+@media(prefers-reduced-motion:reduce){.error-button{transition:none}}
