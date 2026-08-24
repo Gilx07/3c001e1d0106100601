@@ -37,7 +37,7 @@
 
   let qrModal=null;
   let qrClose=null;
-  let qrModalImage=null;
+  let qrImageSlot=null;
   let qrModalName=null;
   let qrModalAddress=null;
 
@@ -70,8 +70,7 @@
     qrClose.setAttribute('aria-label','Tutup');
     qrClose.textContent='×';
 
-    qrModalImage=makeElement('img','crypto-modal-qr');
-    qrModalImage.alt='';
+    qrImageSlot=makeElement('div','crypto-modal-image-slot');
 
     const info=makeElement('div','crypto-modal-info');
     qrModalName=makeElement('div','crypto-modal-name');
@@ -79,7 +78,7 @@
     qrModalAddress=makeElement('div','crypto-modal-address');
 
     info.append(qrModalName,qrModalAddress);
-    panel.append(qrClose,qrModalImage,info);
+    panel.append(qrClose,qrImageSlot,info);
     qrModal.append(panel);
     document.body.append(qrModal);
 
@@ -103,10 +102,14 @@
       ensureQrModal();
       const name=card.querySelector('.crypto-name')?.textContent?.trim()||'Wallet';
       const address=card.querySelector('.crypto-address')?.textContent?.trim()||'';
-      const source=image.getAttribute('src')||image.src;
+      const clone=image.cloneNode(true);
+      clone.className='crypto-modal-qr';
+      clone.removeAttribute('role');
+      clone.removeAttribute('tabindex');
+      clone.removeAttribute('aria-label');
+      clone.alt=`QR ${name}`;
 
-      qrModalImage.setAttribute('src',source);
-      qrModalImage.alt=`QR ${name}`;
+      qrImageSlot.replaceChildren(clone);
       qrModalName.textContent=name;
       qrModalAddress.textContent=address;
       qrModal.classList.add('is-open');
