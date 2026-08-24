@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <title>Blog — Dolenthis</title>
-  <link rel="stylesheet" href="css/navigation.css" />
+  <link rel="stylesheet" href="css/navigation.css?v=20260824-crypto" />
   <link rel="stylesheet" href="css/pages.css" />
 </head>
 <body class="page-body">
@@ -55,7 +55,20 @@
       </a>
     </section>
 
-    <footer class="page-footer">Dolenthis</footer>
+    <footer class="page-footer site-crypto-footer">
+      <div class="crypto-footer-title">Support</div>
+      <div class="crypto-footer-grid">
+        <a class="crypto-card" href="bitcoin:bc1q6uz95a7j3c6z9a2vr7a447l6y74pzyaxmsm8dl" aria-label="Bitcoin donation address">
+          <img class="crypto-qr" src="assets/btc-qr.svg" alt="Bitcoin QR code" />
+          <span class="crypto-copy"><span class="crypto-name">Bitcoin</span><code class="crypto-address">bc1q6uz95a7j3c6z9a2vr7a447l6y74pzyaxmsm8dl</code></span>
+        </a>
+        <a class="crypto-card" href="ethereum:0xd4a297aA173F1251e517a394B313d5972E2150e3" aria-label="Ethereum donation address">
+          <img class="crypto-qr" src="assets/eth-qr.svg" alt="Ethereum QR code" />
+          <span class="crypto-copy"><span class="crypto-name">Ethereum</span><code class="crypto-address">0xd4a297aA173F1251e517a394B313d5972E2150e3</code></span>
+        </a>
+      </div>
+      <div class="crypto-footer-brand">Dolenthis</div>
+    </footer>
   </main>
   <script src="js/navigation.js" defer></script>
 </body>
