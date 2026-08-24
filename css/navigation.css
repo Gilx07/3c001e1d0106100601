@@ -23,18 +23,18 @@
 .crypto-qr{display:block;width:82px;height:82px;padding:5px;border-radius:9px;background:#fff;object-fit:contain;cursor:zoom-in}
 .crypto-qr:focus-visible{outline:2px solid rgba(229,185,117,.86);outline-offset:3px}
 .crypto-copy{min-width:0;display:grid;gap:5px}.crypto-name{color:#d1b283;font-size:1rem;font-weight:600}.crypto-address{display:block;max-width:100%;overflow-wrap:anywhere;color:#8f7a60;font:500 .72rem/1.35 ui-monospace,SFMono-Regular,Consolas,monospace}.crypto-footer-brand{margin-top:15px;color:#6f604c;font-size:.78rem;letter-spacing:.08em}
-.home-crypto-footer{width:min(1080px,calc(100% - 32px));margin:24px auto 46px;padding:18px 0;border-top:1px solid rgba(181,132,76,.14)}
+.home-crypto-footer{display:none!important}
 body.crypto-modal-open{overflow:hidden}
 .crypto-modal{position:fixed;inset:0;z-index:2147483646;display:grid;place-items:center;padding:22px;background:rgba(0,0,0,.82);backdrop-filter:blur(7px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,visibility .18s ease}
 .crypto-modal.is-open{opacity:1;visibility:visible;pointer-events:auto}
-.crypto-modal-panel{position:relative;width:min(560px,100%);padding:26px;border:1px solid rgba(203,151,88,.36);border-radius:18px;background:linear-gradient(180deg,rgba(29,20,13,.99),rgba(8,6,5,.99));box-shadow:0 28px 80px rgba(0,0,0,.62),inset 0 1px rgba(255,235,194,.04);transform:scale(.96);transition:transform .18s ease}
+.crypto-modal-panel{position:relative;width:min(620px,100%);padding:28px;border:1px solid rgba(203,151,88,.36);border-radius:18px;background:linear-gradient(180deg,rgba(29,20,13,.99),rgba(8,6,5,.99));box-shadow:0 28px 80px rgba(0,0,0,.62),inset 0 1px rgba(255,235,194,.04);transform:scale(.96);transition:transform .18s ease}
 .crypto-modal.is-open .crypto-modal-panel{transform:scale(1)}
 .crypto-modal-close{position:absolute;top:12px;right:12px;width:38px;height:38px;border:1px solid rgba(184,137,78,.28);border-radius:10px;background:rgba(10,7,5,.82);color:#cdae80;font:400 1.5rem/1 Georgia,serif;cursor:pointer;z-index:2}
 .crypto-modal-close:hover{color:#f0d2a0;border-color:rgba(203,151,88,.48)}
 .crypto-modal-close:focus-visible{outline:2px solid rgba(229,185,117,.86);outline-offset:3px}
-.crypto-modal-qr{display:block;width:min(390px,78vw);height:auto;aspect-ratio:1;margin:14px auto 24px;padding:12px;border-radius:16px;background:#fff;object-fit:contain;box-shadow:0 18px 44px rgba(0,0,0,.42)}
-.crypto-modal-info{text-align:center}.crypto-modal-name{color:#d9bd8e;font-size:1.35rem;font-weight:600}.crypto-modal-address{margin:9px auto 0;max-width:480px;color:#aa9475;font:500 .88rem/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere}
-@media(max-width:700px){.crypto-footer-grid{grid-template-columns:1fr}.crypto-card{grid-template-columns:68px minmax(0,1fr);gap:12px}.crypto-qr{width:68px;height:68px}.home-crypto-footer{margin-bottom:28px}.crypto-modal{padding:14px}.crypto-modal-panel{padding:20px 16px 22px}.crypto-modal-qr{width:min(360px,82vw);margin-top:20px}.crypto-modal-address{font-size:.78rem}}
+.crypto-modal-qr{display:block!important;width:min(430px,78vw)!important;height:auto!important;aspect-ratio:1;margin:14px auto 24px;padding:12px;border-radius:16px;background:#fff;object-fit:contain;opacity:1!important;visibility:visible!important;box-shadow:0 18px 44px rgba(0,0,0,.42)}
+.crypto-modal-info{text-align:center}.crypto-modal-name{color:#d9bd8e;font-size:1.35rem;font-weight:600}.crypto-modal-address{margin:9px auto 0;max-width:520px;color:#aa9475;font:500 .88rem/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere}
+@media(max-width:700px){.crypto-footer-grid{grid-template-columns:1fr}.crypto-card{grid-template-columns:68px minmax(0,1fr);gap:12px}.crypto-qr{width:68px;height:68px}.crypto-modal{padding:14px}.crypto-modal-panel{padding:20px 16px 22px}.crypto-modal-qr{width:min(380px,82vw)!important;margin-top:20px}.crypto-modal-address{font-size:.78rem}}
 
 /* Public content deterrence. This prevents ordinary selection/copy/print, not OS screenshots or source inspection. */
 html,body,body *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
