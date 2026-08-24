@@ -31,10 +31,17 @@
   const previewFrame=document.getElementById('preview-frame');
   const previewClose=document.getElementById('preview-close');
 
-  let token=sessionStorage.getItem('dolenthis_github_token')||'';
+  // Remove credentials left by older versions. The active token now lives only
+  // in this page's JavaScript memory and disappears on refresh/navigation.
+  sessionStorage.removeItem('dolenthis_github_token');
+  let token='';
   let selectedPath='';
   let selectedSha='';
   let originalHtml='';
+
+  const ARTICLE_ALLOWED_TAGS=new Set(['p','h2','h3','h4','ul','ol','li','strong','em','b','i','code','pre','blockquote','a','div','span','br','hr']);
+  const ARTICLE_DROP_TAGS=new Set(['script','style','iframe','object','embed','form','input','button','textarea','select','option','meta','link','base','svg','math','template']);
+  const ARTICLE_ALLOWED_CLASSES=new Set(['article-note','article-points','note']);
 
   const setStatus=(el,message,type='')=>{
     el.textContent=message||'';
@@ -70,6 +77,46 @@
     let binary='';
     for(let i=0;i<bytes.length;i+=0x8000)binary+=String.fromCharCode(...bytes.subarray(i,i+0x8000));
     return btoa(binary);
+  }
+
+  function sanitizeArticleHtml(value){
+    const template=document.createElement('template');
+    template.innerHTML=value||'';
+    const nodes=[];
+    const walker=document.createTreeWalker(template.content,NodeFilter.SHOW_ELEMENT);
+    while(walker.nextNode())nodes.push(walker.currentNode);
+
+    for(const node of nodes){
+      if(!node.isConnected&&node.getRootNode()!==template.content)continue;
+      const tag=node.tagName.toLowerCase();
+      if(ARTICLE_DROP_TAGS.has(tag)){
+        node.remove();
+        continue;
+      }
+      if(!ARTICLE_ALLOWED_TAGS.has(tag)){
+        node.replaceWith(...node.childNodes);
+        continue;
+      }
+
+      for(const attr of [...node.attributes]){
+        const name=attr.name.toLowerCase();
+        if(name==='class'){
+          const safeClasses=attr.value.split(/\s+/).filter(item=>ARTICLE_ALLOWED_CLASSES.has(item));
+          if(safeClasses.length)node.setAttribute('class',safeClasses.join(' '));
+          else node.removeAttribute('class');
+          continue;
+        }
+        if(tag==='a'&&(name==='href'||name==='title'))continue;
+        node.removeAttribute(attr.name);
+      }
+
+      if(tag==='a'){
+        const href=(node.getAttribute('href')||'').trim();
+        if(href&&!/^(?:https?:\/\/|mailto:|#|\/|\.\.?\/)/i.test(href))node.removeAttribute('href');
+        if(node.hasAttribute('href'))node.setAttribute('rel','noopener noreferrer');
+      }
+    }
+    return template.innerHTML.trim();
   }
 
   function parsePost(html){
@@ -120,7 +167,9 @@
 
     const article=parsed.querySelector('.article-panel');
     if(!article)throw new Error('Struktur artikel tidak dikenali. Elemen .article-panel tidak ditemukan.');
-    article.innerHTML=bodyInput.value.trim();
+    const safeBody=sanitizeArticleHtml(bodyInput.value);
+    bodyInput.value=safeBody;
+    article.innerHTML=safeBody;
     return `<!DOCTYPE html>\n${parsed.documentElement.outerHTML}\n`;
   }
 
@@ -143,11 +192,11 @@
     connectBtn.disabled=true;setStatus(loginStatus,'Memeriksa akses GitHub...');
     try{
       const user=await api('/user');const repo=await api(`/repos/${OWNER}/${REPO}`);
-      sessionStorage.setItem('dolenthis_github_token',token);
+      tokenInput.value='';
       const push=repo.permissions?.push===true?'push access: yes':repo.permissions?.push===false?'push access: no':'push access: unknown';
       account.textContent=`Terhubung sebagai ${user.login} · ${push}`;
       loginCard.classList.add('hidden');workspace.classList.remove('hidden');setStatus(loginStatus,'');await loadPosts();
-    }catch(error){token='';sessionStorage.removeItem('dolenthis_github_token');setStatus(loginStatus,`Gagal terhubung: ${error.message}`,'error');}
+    }catch(error){token='';tokenInput.value='';setStatus(loginStatus,`Gagal terhubung: ${error.message}`,'error');}
     finally{connectBtn.disabled=false;}
   }
 
@@ -200,13 +249,12 @@
   }
 
   function showPreview(){
-    const title=titleInput.value.trim()||'Untitled',body=bodyInput.value,date=dateInput.value.trim(),category=categoryInput.value.trim();
+    const title=titleInput.value.trim()||'Untitled',body=sanitizeArticleHtml(bodyInput.value),date=dateInput.value.trim(),category=categoryInput.value.trim();
     previewFrame.srcdoc=`<!doctype html><html><head><meta charset="utf-8"><style>html{color-scheme:dark}body{margin:0;padding:36px;background:#080604;color:#e7d9c4;font:17px/1.72 Georgia,serif}main{max-width:760px;margin:auto}h1{color:#e2bd86;font-size:2.35rem;line-height:1.1;margin:0 0 10px}.meta{color:#8f7a60;font-size:.84rem;margin-bottom:28px}article{border-top:1px solid #4a3522;padding-top:24px}h2{color:#d4b182;margin-top:1.8em}p,li{color:#b9a58a}a{color:#d2a56d}.note,.article-note{padding:16px;border:1px solid #5a4028;border-radius:10px;background:#110c08}</style></head><body><main><h1>${escapeHtml(title)}</h1><div class="meta">${escapeHtml(date)}${date&&category?' · ':''}${escapeHtml(category)}</div><article>${body}</article></main></body></html>`;
     previewDialog.showModal();
   }
   function escapeHtml(value){return value.replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));}
-  function logout(){token='';selectedPath='';selectedSha='';originalHtml='';sessionStorage.removeItem('dolenthis_github_token');tokenInput.value='';workspace.classList.add('hidden');loginCard.classList.remove('hidden');editor.classList.add('hidden');emptyEditor.classList.remove('hidden');setStatus(loginStatus,'Sesi GitHub telah diputus. Masukkan token kembali untuk membuat sesi baru.');}
+  function logout(){token='';selectedPath='';selectedSha='';originalHtml='';tokenInput.value='';workspace.classList.add('hidden');loginCard.classList.remove('hidden');editor.classList.add('hidden');emptyEditor.classList.remove('hidden');setStatus(loginStatus,'Sesi GitHub telah diputus. Masukkan token kembali untuk membuat sesi baru.');}
 
   connectBtn.addEventListener('click',connect);tokenInput.addEventListener('keydown',event=>{if(event.key==='Enter')connect();});refreshBtn.addEventListener('click',loadPosts);logoutBtn.addEventListener('click',logout);saveBtn.addEventListener('click',savePost);previewBtn.addEventListener('click',showPreview);previewClose.addEventListener('click',()=>previewDialog.close());previewDialog.addEventListener('click',event=>{if(event.target===previewDialog)previewDialog.close();});
-  if(token){tokenInput.value=token;connect();}
 })();
