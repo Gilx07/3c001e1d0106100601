@@ -5,16 +5,16 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
   <meta name="referrer" content="no-referrer">
   <meta name="theme-color" content="#070504">
-  <meta name="description" content="Rangkuman hook serial validation pada Cheat Point Blank V1 Brand VVIP CASPER">
+  <meta name="description" content="Observasi runtime dan validasi serial pada Cheat Point Blank V1 Brand VVIP CASPER dalam lingkungan terkontrol.">
   <link rel="canonical" href="https://dolenthis.my.id/blog-runtime-instrumentation.html">
   <meta property="og:title" content="Hook serial validation pada Cheat Point Blank V1 Brand VVIP CASPER — Dolenthis">
-  <meta property="og:description" content="Rangkuman hook serial validation pada Cheat Point Blank V1 Brand VVIP CASPER">
+  <meta property="og:description" content="Observasi runtime dan validasi serial pada Cheat Point Blank V1 Brand VVIP CASPER dalam lingkungan terkontrol.">
   <meta property="og:url" content="https://dolenthis.my.id/blog-runtime-instrumentation.html">
   <meta property="og:type" content="article">
   <meta property="og:image" content="https://dolenthis.my.id/assets/preview.svg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Hook serial validation pada Cheat Point Blank V1 Brand VVIP CASPER — Dolenthis">
-  <meta name="twitter:description" content="Rangkuman hook serial validation pada Cheat Point Blank V1 Brand VVIP CASPER">
+  <meta name="twitter:description" content="Observasi runtime dan validasi serial pada Cheat Point Blank V1 Brand VVIP CASPER dalam lingkungan terkontrol.">
   <meta name="twitter:image" content="https://dolenthis.my.id/assets/preview.svg">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="site.webmanifest">
@@ -38,41 +38,28 @@
   </header>
 
   <main class="page-shell article-shell">
-    <p class="page-kicker">Catatan teknis</p>
+    <p class="page-kicker">Research Note</p>
     <h1 class="page-title article-title">Hook serial validation pada Cheat Point Blank V1 Brand VVIP CASPER</h1>
     <div class="article-meta"><span>23 Agustus 2026</span><span>Responsible disclosure</span></div>
     <div class="page-rule"></div>
 
-    <article class="article-panel"><h2>Latar belakang</h2>
-      <p>Telah dilakukan penelitian terbatas terhadap sebuah program Windows dengan tujuan memahami perilaku runtime, alur eksekusi, dan interaksi antarbagian program. Penelitian tersebut menggunakan pendekatan instrumentation dan observasi pada lingkungan yang dikendalikan.</p>
-      <p>Tulisan ini sengaja dibuat pada tingkat yang umum. Detail teknis yang dapat digunakan untuk mereproduksi analisis, mengidentifikasi bagian internal tertentu, atau memanfaatkan hasil penelitian tidak dipublikasikan.</p>
+    <article class="article-panel">
+      <h2>Overview</h2>
+      <p>Analisis dilakukan terhadap perilaku runtime dan alur validasi serial pada lingkungan terkontrol. Fokusnya adalah observasi state internal, pemanggilan fungsi, dan hubungan antarbagian program saat proses validasi berlangsung.</p>
 
-      <div class="article-note"><strong>Catatan penting:</strong> halaman ini bukan panduan eksploitasi, bypass, atau modifikasi terhadap program target. Tujuannya adalah menyediakan titik komunikasi yang dapat dibaca oleh pihak pemilik atau pengelola perangkat lunak apabila diperlukan proses klarifikasi dan mediasi.</div>
-
-      <h2>Apa yang diteliti</h2>
-      <p>Ruang lingkup penelitian berfokus pada observasi perilaku program ketika berjalan. Beberapa teknik diagnostic digunakan untuk memahami hubungan antara state internal, pemanggilan fungsi, dan aktivitas komunikasi program tanpa menjadikan halaman ini sebagai tempat publikasi rincian implementasi.</p>
-      <p>Informasi yang bersifat sensitif tidak disertakan, termasuk lokasi fungsi, signature, alamat atau offset, nilai hash, struktur request dan response, data internal, serta langkah teknis untuk melakukan reproduksi.</p>
-
-      <h2>Tujuan publikasi</h2>
-      <p>Publikasi ini ditujukan sebagai dokumentasi umum dan jalur komunikasi. Apabila pihak yang memiliki atau mengelola program terkait menemukan halaman ini, pembahasan dapat dilanjutkan secara privat untuk memastikan konteks penelitian dipahami dengan benar.</p>
-      <p>Pendekatan yang diutamakan adalah komunikasi yang terkoordinasi. Informasi teknis yang relevan dapat dipisahkan dari publikasi umum dan hanya dibahas dengan pihak yang dapat memverifikasi kewenangannya terhadap perangkat lunak tersebut.</p>
-
-      <h2>Batas publikasi</h2>
+      <h2>Scope</h2>
+      <p>Publikasi ini hanya mencakup konteks dan hasil observasi tingkat tinggi. Detail yang dapat digunakan untuk reproduksi langsung tidak disertakan.</p>
       <ul class="article-points">
-        <li>Tidak mencantumkan nama program atau modul target.</li>
-        <li>Tidak mempublikasikan kode, hook point, signature, offset, atau lokasi internal.</li>
-        <li>Tidak mempublikasikan data autentikasi, request, response, atau informasi yang dapat digunakan untuk melakukan bypass.</li>
-        <li>Tidak memberikan langkah reproduksi yang dapat langsung digunakan terhadap instalasi pihak lain.</li>
-        <li>Detail teknis hanya relevan untuk pembahasan privat dengan pihak yang berwenang.</li>
+        <li>Tidak mempublikasikan hook point, signature, offset, atau alamat internal.</li>
+        <li>Tidak mempublikasikan data autentikasi, request, response, atau material bypass.</li>
+        <li>Tidak menyertakan langkah reproduksi operasional.</li>
       </ul>
 
-      <h2>Untuk pemilik atau pengelola perangkat lunak</h2>
-      <p>Apabila halaman ini berkaitan dengan perangkat lunak yang dikelola oleh suatu pihak, tujuan utamanya adalah membuka ruang komunikasi, bukan mempublikasikan rincian yang dapat menimbulkan dampak tambahan.</p>
-      <p>Pembahasan dapat diarahkan pada verifikasi temuan, ruang lingkup penelitian, dampak yang mungkin ada, serta langkah penyelesaian yang dianggap tepat oleh kedua pihak. Materi teknis dapat disampaikan secara terbatas setelah identitas dan kewenangan pihak terkait dapat diverifikasi.</p>
+      <div class="article-note"><strong>Disclosure:</strong> detail teknis yang sensitif disimpan di luar publikasi terbuka dan hanya relevan untuk pembahasan terkoordinasi dengan pihak yang berwenang.</div>
 
-      <h2>Penutup</h2>
-      <p>Penelitian runtime dapat memberikan informasi yang berguna untuk memahami bagaimana suatu program bekerja, tetapi publikasi hasilnya perlu mempertimbangkan risiko. Karena itu, halaman ini hanya menyampaikan konteks umum dan mempertahankan detail penting di luar publikasi terbuka.</p>
-      <p>Jika diperlukan pembahasan lebih lanjut, komunikasi yang terarah dan privat menjadi jalur yang lebih tepat dibandingkan membuka rincian teknis kepada publik.</p></article>
+      <h2>Conclusion</h2>
+      <p>Observasi runtime memberikan gambaran yang cukup untuk memahami mekanisme validasi tanpa membuka rincian implementasi yang berisiko disalahgunakan.</p>
+    </article>
 
     <a class="article-back" href="blog.html">← Kembali ke Blog</a>
     <footer class="page-footer">Dolenthis</footer>
