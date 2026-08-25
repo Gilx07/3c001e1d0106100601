@@ -5,16 +5,16 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src https://www.youtube.com; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
   <meta name="referrer" content="no-referrer">
   <meta name="theme-color" content="#070504">
-  <meta name="description" content="Rangkuman hook serial validation pada Cheat Point Blank V1">
+  <meta name="description" content="Analisis teknis Hook serial validation pada Cheat Point Blank V1: MinHook, state tracing, MD5 pipeline, WinINet, response normalization, dan comparator runtime.">
   <link rel="canonical" href="https://dolenthis.my.id/blog-hook-serial-validation-cheat-point-blank-v1.html">
   <meta property="og:title" content="Hook serial validation pada Cheat Point Blank V1 — Dolenthis">
-  <meta property="og:description" content="Rangkuman hook serial validation pada Cheat Point Blank V1">
+  <meta property="og:description" content="Analisis teknis MinHook, state tracing, MD5 pipeline, WinINet, response normalization, dan comparator runtime pada Cheat Point Blank V1.">
   <meta property="og:url" content="https://dolenthis.my.id/blog-hook-serial-validation-cheat-point-blank-v1.html">
   <meta property="og:type" content="article">
   <meta property="og:image" content="https://dolenthis.my.id/assets/preview.svg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Hook serial validation pada Cheat Point Blank V1 — Dolenthis">
-  <meta name="twitter:description" content="Rangkuman hook serial validation pada Cheat Point Blank V1">
+  <meta name="twitter:description" content="Analisis teknis MinHook, state tracing, MD5 pipeline, WinINet, response normalization, dan comparator runtime pada Cheat Point Blank V1.">
   <meta name="twitter:image" content="https://dolenthis.my.id/assets/preview.svg">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="site.webmanifest">
@@ -40,22 +40,234 @@
   <main class="page-shell article-shell">
     <p class="page-kicker">Catatan teknis</p>
     <h1 class="page-title article-title">Hook serial validation pada Cheat Point Blank V1</h1>
-    <div class="article-meta"><span>23 Agustus 2026</span><span>Responsible disclosure</span></div>
+    <div class="article-meta"><span>23 Agustus 2026</span><span>Windows / MinHook / x86</span></div>
     <div class="page-rule"></div>
 
-    <article class="article-panel"><h2>Latar belakang</h2>
-      <p>Telah dilakukan penelitian terbatas terhadap sebuah program Windows dengan tujuan memahami perilaku runtime, alur eksekusi, dan interaksi antarbagian program. Penelitian tersebut menggunakan pendekatan instrumentation dan observasi pada lingkungan yang dikendalikan.</p>
-      <p>Tulisan ini sengaja dibuat pada tingkat yang umum. Detail teknis yang dapat digunakan untuk mereproduksi analisis, mengidentifikasi bagian internal tertentu, atau memanfaatkan hasil penelitian tidak dipublikasikan.</p>
+    <article class="article-panel">
+      <h2>Overview</h2>
+      <p>Penelitian ini berkembang dari laboratorium MinHook sederhana menjadi lingkungan diagnostic Windows x86/x64 untuk memetakan module, state internal, hash generation, komunikasi WinINet, response normalization, dan decision path pada sebuah target Point Blank yang diuji secara terkontrol.</p>
+      <p>Instrumentation target-specific menggunakan model <em>observe/delegate</em>: detour merekam argument dan state, memanggil original function melalui trampoline, mencatat hasil original, lalu mengembalikan hasil tersebut tanpa mengubah keputusan native program.</p>
 
-      <div class="article-note"><strong>Catatan penting:</strong> halaman ini bukan panduan eksploitasi, bypass, atau modifikasi terhadap program target. Tujuannya adalah menyediakan titik komunikasi yang dapat dibaca oleh pihak pemilik atau pengelola perangkat lunak apabila diperlukan proses klarifikasi dan mediasi.</div>
+      <div class="article-note"><strong>Status publikasi:</strong> detail analisis runtime yang sebelumnya ditahan sekarang dibuka untuk dokumentasi teknis. Fokus tetap pada observability dan pemetaan behavior original.</div>
 
-      <h2>Apa yang diteliti</h2>
-      <p>Ruang lingkup penelitian berfokus pada observasi perilaku program ketika berjalan. Beberapa teknik diagnostic digunakan untuk memahami hubungan antara state internal, pemanggilan fungsi, dan aktivitas komunikasi program tanpa menjadikan halaman ini sebagai tempat publikasi rincian implementasi.</p>
-      <p>Informasi yang bersifat sensitif tidak disertakan, termasuk lokasi fungsi, signature, alamat atau offset, nilai hash, struktur request dan response, data internal, serta langkah teknis untuk melakukan reproduksi.</p>
+      <h2>Evolusi project</h2>
+      <p>Implementasi awal hanya menguji hook pada exported function sederhana. Setelah itu project berkembang menjadi pipeline diagnostic yang mencakup:</p>
+      <ul class="article-points">
+        <li>build MinHook x86 dan x64;</li>
+        <li>controlled exported-function hook;</li>
+        <li>process dan module enumeration;</li>
+        <li>remote diagnostic DLL loading untuk test terkontrol;</li>
+        <li>diagnostic injector x86;</li>
+        <li>pemilihan target module dengan SHA-256;</li>
+        <li>signature-based payload discovery;</li>
+        <li>runtime logging ke <code>%TEMP%\dll_minhook.log</code>;</li>
+        <li>executable-section xref scanning terhadap global state;</li>
+        <li>state-generation tracing;</li>
+        <li>ABI-correct hook untuk MD5 wrapper x86;</li>
+        <li>WinINet request/response tracing;</li>
+        <li>lazy comparator tracing.</li>
+      </ul>
 
-      <h2>Tujuan publikasi</h2>
-      <p>Publikasi ini ditujukan sebagai dokumentasi umum dan jalur komunikasi. Apabila pihak yang memiliki atau mengelola program terkait menemukan halaman ini, pembahasan dapat dilanjutkan secara privat untuk memastikan konteks penelitian dipahami dengan benar.</p>
-      <p>Pendekatan yang diutamakan adalah komunikasi yang terkoordinasi. Informasi teknis yang relevan dapat dipisahkan dari publikasi umum dan hanya dibahas dengan pihak yang dapat memverifikasi kewenangannya terhadap perangkat lunak tersebut.</p>
+      <h2>Black-box observation pipeline</h2>
+      <pre><code>locate correct module
+        |
+        v
+load diagnostic DLL
+        |
+        v
+retain analyzed payload
+        |
+        v
+locate important state
+        |
+        v
+trace state generation
+        |
+        v
+trace network transport
+        |
+        v
+trace normalized response
+        |
+        v
+trace final comparison</code></pre>
+      <p>Model ini lebih berguna daripada hanya memeriksa satu conditional branch karena seluruh hubungan antar-state dapat dikorelasikan dalam satu timeline runtime.</p>
+
+      <h2>Pemilihan target module berbasis SHA-256</h2>
+      <p>Nama DLL payload dapat berubah, sehingga pemilihan berdasarkan filename tidak cukup stabil. Diagnostic launcher kemudian menggunakan SHA-256 sebagai identitas target module.</p>
+      <p>Secara konseptual launcher melakukan:</p>
+      <pre><code>enumerate matching process
+        |
+        v
+enumerate loaded modules
+        |
+        v
+map candidate read-only
+        |
+        v
+SHA-256 with Windows CNG
+        |
+        v
+compare expected digest
+        |
+        v
+retain matching target</code></pre>
+      <p>Pendekatan ini memisahkan random filename dari kontrak diagnostic dan membuat pemilihan payload lebih repeatable.</p>
+
+      <h2>Target retention dan initialization</h2>
+      <p>Setelah diagnostic DLL aktif, target payload dipertahankan sebagai module base untuk seluruh tracer. Setup berat tidak dijalankan langsung di bawah loader lock; <code>DllMain</code> membuat worker thread yang kemudian menjalankan initialization sequence.</p>
+      <pre><code>DllMain
+  └─ worker thread
+       └─ hooks initialization
+            ├─ logger
+            ├─ MinHook
+            ├─ retain target payload
+            ├─ verifier trace
+            ├─ dispatch trace
+            └─ response-handler trace
+
+       ├─ state-reference trace
+       ├─ MD5-call trace
+       ├─ state-generation trace
+       ├─ gate trace
+       └─ WinINet trace</code></pre>
+
+      <h2>Global state dan xref scanning</h2>
+      <p>Static analysis mengidentifikasi empat global <code>std::string</code> yang relevan dengan flow runtime. Lokasi relatif pada build yang dianalisis:</p>
+      <pre><code>stateB       RVA 0xD37B8
+context39A4  RVA 0xD39A4
+context3C50  RVA 0xD3C50
+stateA       RVA 0xD3C08</code></pre>
+      <p>Scanner berjalan pada executable PE sections dan mencari encoded absolute address dari global-global tersebut. Setiap reference dicatat bersama section, RVA, surrounding machine-code window, dan reference count.</p>
+      <p>Salah satu masalah yang ditemukan adalah verifier signature sudah berubah setelah MinHook memasang patch. Resolver kemudian menggunakan signature dari helper lain yang masih original agar target module tetap dapat ditemukan setelah initialization.</p>
+
+      <h2>State-generation trace</h2>
+      <p>Hook pada helper <code>std::string</code> move-assignment digunakan untuk mengamati write terhadap state terpilih. Event penting adalah write menuju <code>stateA</code>, karena event tersebut menghubungkan hash-generation pipeline dengan global value yang nantinya digunakan oleh response path.</p>
+      <pre><code>TRACE state-write target=stateA
+source_before="..."
+destination_after="..."
+stateB_before="..."
+context39A4="..."
+context3C50="..."
+caller_rva=...</code></pre>
+
+      <h2>MD5 wrapper reverse engineering</h2>
+      <p>Static analysis menemukan helper MD5 x86 pada <code>RVA 0x8FF30</code>. Fungsi tersebut menerima value <code>std::string</code>, menjalankan MD5 normal, lalu mengubah digest 16 byte menjadi string lowercase hexadecimal 32 karakter menggunakan formatting <code>%02x</code>.</p>
+      <pre><code>MD5_HEX(input) -> 32 lowercase hexadecimal characters</code></pre>
+
+      <h3>ABI caller-clean yang tidak biasa</h3>
+      <p>Calling pattern helper ini penting untuk stability detour:</p>
+      <ul class="article-points">
+        <li>destination string object berada di <code>ECX</code>;</li>
+        <li>24-byte <code>std::string</code> value dikirim melalui stack;</li>
+        <li>original function berakhir dengan plain <code>ret</code>;</li>
+        <li>caller melakukan <code>add esp, 0x18</code>.</li>
+      </ul>
+      <p>Typed detour konvensional tidak mempertahankan layout tersebut secara aman. Implementasi final menggunakan naked x86 entry shim, representasi POD 24-byte, manual trampoline call, dan preservation terhadap caller-owned stack arguments. Initialization log menandainya sebagai <code>abi=caller-clean-naked-shim</code>.</p>
+
+      <h2>Runtime hash pipeline</h2>
+      <p>Runtime trace akhirnya menunjukkan tiga MD5 call yang saling berhubungan.</p>
+
+      <h3>1. Producer stateB</h3>
+      <pre><code>stateB = MD5_HEX(producer_input)</code></pre>
+      <p>Pada salah satu sesi observasi:</p>
+      <pre><code>producer_input = 441944720010469927754526196619
+stateB        = ceb5f92a4b894d33387b969ed6d57ff7</code></pre>
+
+      <h3>2. stateA stage 1</h3>
+      <p>Program membentuk:</p>
+      <pre><code>context39A4 = stateB + "aktif" + stateB
+hash1       = MD5_HEX(context39A4)</code></pre>
+      <p>Pada sesi yang sama:</p>
+      <pre><code>context39A4 = ceb5f92a4b894d33387b969ed6d57ff7aktifceb5f92a4b894d33387b969ed6d57ff7
+hash1       = 954c1528c30c9a2107f2e2ce26137ff4</code></pre>
+
+      <h3>3. stateA stage 2</h3>
+      <pre><code>stateA = MD5_HEX(hash1)</code></pre>
+      <p>Hasil pada sesi tersebut:</p>
+      <pre><code>stateA = 4838bf55e43b5a6d3cc76e5effd87d69</code></pre>
+      <p>Hubungan lengkap yang teramati:</p>
+      <pre><code>stateB = MD5_HEX(producer_input)
+
+context39A4 = stateB + "aktif" + stateB
+hash1       = MD5_HEX(context39A4)
+stateA      = MD5_HEX(hash1)</code></pre>
+      <p>Instrumentation runtime juga menyelesaikan satu ambiguity pada verifikasi manual sebelumnya: stage-1 hash yang disalin secara manual sempat kehilangan karakter terakhir sehingga hasil second MD5 tampak tidak cocok.</p>
+
+      <h2>WinINet request tracing</h2>
+      <p>Network layer yang diamati menggunakan:</p>
+      <pre><code>InternetOpenA
+InternetConnectA
+HttpOpenRequestA
+HttpSendRequestA
+InternetReadFile</code></pre>
+      <p>Tracer mencatat server, port, HTTP verb, object/path, request result, Win32 error, HTTP status, serta returned bytes dalam ASCII dan hexadecimal.</p>
+      <p>Runtime trace menunjukkan bahwa outbound GET membawa <code>stateB</code> melalui query parameter <code>k</code>:</p>
+      <pre><code>...&amp;k=&lt;stateB&gt;</code></pre>
+      <p>Ini membedakan dua state utama: <code>stateB</code> dikirim melalui request, sedangkan <code>stateA</code> tetap berada lokal untuk digunakan oleh comparison path.</p>
+
+      <h2>Response normalization</h2>
+      <p>Body dari <code>InternetReadFile</code> tidak langsung menjadi comparator input. Response melewati normalization stage lebih dulu. Karena itu raw HTTP body dan string yang sampai ke comparator dapat berbeda, misalnya karena whitespace yang dihapus.</p>
+      <pre><code>HTTP response bytes
+        |
+        v
+application normalization
+        |
+        v
+normalized_response</code></pre>
+
+      <h2>Comparator trace</h2>
+      <p>Response-handler akhirnya menuju comparator sekitar <code>RVA 0xC6B0</code>. Hook comparator dipasang secara lazy tepat sebelum response handler berjalan karena manager/vtable pada path tersebut belum tentu valid saat startup awal diagnostic DLL.</p>
+      <p>Runtime comparison yang teramati berbentuk:</p>
+      <pre><code>left  = stateA
+right = normalized_response</code></pre>
+      <p>Comparator original mengembalikan <code>0</code> ketika equal dan non-zero ketika berbeda. Trace mencatat original return value serta label <code>equal</code> / <code>different</code>; hasil comparator tidak diganti.</p>
+
+      <h2>High-level validation model</h2>
+      <pre><code>producer_input
+    |
+    v
+MD5_HEX
+    |
+    v
+stateB
+    |
+    +-----------------------> HTTP request k=stateB
+    |
+    v
+stateB + "aktif" + stateB
+    |
+    v
+MD5_HEX
+    |
+    v
+hash1
+    |
+    v
+MD5_HEX
+    |
+    v
+stateA
+                               HTTP response
+                                    |
+                                    v
+                              normalization
+                                    |
+                                    v
+stateA ----------------------> comparator <--- normalized_response
+                                    |
+                                    v
+                         original target decision</code></pre>
+
+      <h2>Kenapa runtime instrumentation dibutuhkan</h2>
+      <p>Static analysis bisa menunjukkan imports, strings, signatures, global addresses, dan candidate control flow, tetapi tidak selalu menjelaskan nilai aktual yang bergerak antar-stage. Runtime tracing mengisi bagian itu dengan data konkret.</p>
+      <p>Pada kasus ini, instrumentation membuktikan hubungan antara producer input, <code>stateB</code>, concatenation dengan literal <code>aktif</code>, first hash, second hash menjadi <code>stateA</code>, transport <code>stateB</code> melalui HTTP, normalization response, dan final comparison terhadap <code>stateA</code>.</p>
+
+      <h2>Build diagnostic</h2>
+      <p>Target-specific tracing menggunakan build Win32/x86. Toolchain yang digunakan dalam project adalah CMake dan Visual Studio C++ dengan MinHook.</p>
+      <pre><code>cmake -S . -B build-x86 -A Win32
+cmake --build build-x86 --config Release</code></pre>
+      <p>Output diagnostic utama meliputi DLL instrumentation, diagnostic launcher, authorized host/launcher, dan module observer untuk pengujian terkontrol.</p>
 
       <div class="article-video" aria-label="Video POC">
         <div class="article-video-head">
@@ -65,23 +277,16 @@
         <iframe src="https://www.youtube.com/embed/ED2IaueA_Tc" title="Hook serial validation pada Cheat Point Blank V1" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
 
-      <div class="release-countdown article-release-countdown" data-release-countdown="2026-09-07T13:21:00+07:00" aria-label="Countdown rilis source code">
-        <span class="release-countdown-label" data-countdown-status>SOURCE CODE RELEASE</span>
-        <span class="release-countdown-value" data-countdown-value>14d 00h 00m 00s</span>
-        <span class="release-countdown-date">7 September 2026 · 13:21 WIB</span>
-      </div>
-
-      <h2>Untuk pemilik atau pengelola perangkat lunak</h2>
-      <p>Apabila halaman ini berkaitan dengan perangkat lunak yang dikelola oleh suatu pihak, tujuan utamanya adalah membuka ruang komunikasi, bukan mempublikasikan rincian yang dapat menimbulkan dampak tambahan.</p>
-      <p>Pembahasan dapat diarahkan pada verifikasi temuan, ruang lingkup penelitian, dampak yang mungkin ada, serta langkah penyelesaian yang dianggap tepat oleh kedua pihak. Materi teknis dapat disampaikan secara terbatas setelah identitas dan kewenangan pihak terkait dapat diverifikasi.</p>
+      <h2>Kesimpulan teknis</h2>
+      <p>Temuan utama bukan sekadar keberadaan satu validation function, melainkan sebuah data-flow yang konsisten. <code>stateB</code> dihasilkan dari runtime producer input dan dikirim melalui network, sedangkan <code>stateA</code> dibentuk melalui dua tahap MD5 tambahan dan tetap lokal sebagai nilai pembanding terhadap response yang telah dinormalisasi.</p>
+      <p>MinHook digunakan sebagai telemetry layer untuk menghubungkan static reverse engineering dengan nilai runtime aktual. Dengan mempertahankan original trampoline dan original return value, trace dapat dipakai untuk menjelaskan behavior native program tanpa mencampurkan hasil observasi dengan behavior hasil modifikasi.</p>
 
       <div class="article-contact-wrap">
         <a class="article-contact" href="https://wa.me/6285828310334" target="_blank" rel="noopener noreferrer">CONTACT</a>
       </div>
 
       <h2>Penutup</h2>
-      <p>Penelitian runtime dapat memberikan informasi yang berguna untuk memahami bagaimana suatu program bekerja, tetapi publikasi hasilnya perlu mempertimbangkan risiko. Karena itu, halaman ini hanya menyampaikan konteks umum dan mempertahankan detail penting di luar publikasi terbuka.</p>
-      <p>Jika diperlukan pembahasan lebih lanjut, komunikasi yang terarah dan privat menjadi jalur yang lebih tepat dibandingkan membuka rincian teknis kepada publik.</p>
+      <p>Analisis V1 menunjukkan pentingnya menggabungkan module discovery, xref scanning, ABI verification, state-generation tracing, network telemetry, dan comparator observation dalam satu model. Setiap stage memberikan konteks yang berbeda, dan korelasi antar-stage menghasilkan gambaran validation pipeline yang jauh lebih akurat daripada hanya melihat satu function atau satu packet secara terpisah.</p>
     </article>
 
     <a class="article-back" href="blog.html">← Kembali ke Blog</a>
@@ -101,5 +306,4 @@
     </footer>
   </main>
   <script src="js/navigation.js?v=20260824-qr3" defer></script>
-  <script src="js/countdown.js?v=20260824-release1" defer></script>
 </body></html>
