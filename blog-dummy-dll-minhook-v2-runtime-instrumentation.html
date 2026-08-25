@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#070504">
+  <meta name="description" content="Analisis DUMMY DLL MinHook v2: runtime instrumentation, activation flow, WinINet tracing, dan pemetaan komponen binary Windows x86.">
+  <link rel="canonical" href="https://dolenthis.my.id/blog-dummy-dll-minhook-v2-runtime-instrumentation.html">
+  <meta property="og:title" content="DUMMY DLL MinHook v2 — Runtime Instrumentation & Binary Analysis — Dolenthis">
+  <meta property="og:description" content="Analisis DUMMY DLL MinHook v2: runtime instrumentation, activation flow, WinINet tracing, dan pemetaan komponen binary Windows x86.">
+  <meta property="og:url" content="https://dolenthis.my.id/blog-dummy-dll-minhook-v2-runtime-instrumentation.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://dolenthis.my.id/assets/preview.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DUMMY DLL MinHook v2 — Runtime Instrumentation & Binary Analysis — Dolenthis">
+  <meta name="twitter:description" content="Analisis DUMMY DLL MinHook v2: runtime instrumentation, activation flow, WinINet tracing, dan pemetaan komponen binary Windows x86.">
+  <meta name="twitter:image" content="https://dolenthis.my.id/assets/preview.svg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>DUMMY DLL MinHook v2 — Runtime Instrumentation & Binary Analysis — Dolenthis</title>
+  <link rel="stylesheet" href="css/navigation.css?v=20260824-qr3">
+  <link rel="stylesheet" href="css/pages.css?v=20260824-release1">
+</head>
+<body class="page-body">
+  <header class="site-header" id="site-header">
+    <nav class="site-nav" aria-label="Navigasi utama">
+      <a class="nav-brand" href="index.html" data-nav-action="home" aria-label="Kembali ke halaman utama">Dolenthis</a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Buka navigasi" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <a class="nav-link" href="index.html" data-nav-action="home">Home</a>
+        <a class="nav-link active" href="blog.html" data-nav-action="blog" aria-current="page">Blog</a>
+        <a class="nav-link" href="about.html" data-nav-action="about">About</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-shell article-shell">
+    <p class="page-kicker">Catatan teknis</p>
+    <h1 class="page-title article-title">DUMMY DLL MinHook v2 — Runtime Instrumentation &amp; Binary Analysis</h1>
+    <div class="article-meta"><span>25 Agustus 2026</span><span>Windows / MinHook / x86</span></div>
+    <div class="page-rule"></div>
+
+    <article class="article-panel">
+      <h2>Overview</h2>
+      <p>DUMMY DLL MinHook v2 merupakan studi reverse engineering terkontrol terhadap sebuah binary Windows x86 untuk memahami bagaimana alur validasi, pembentukan machine identifier, hashing, komunikasi network, response handling, dan keputusan akhir program dapat dipetakan secara statis maupun diamati saat runtime.</p>
+      <p>Fokus instrumentation adalah model observe/delegate: hook digunakan untuk melihat parameter, hasil fungsi, urutan pemanggilan, dan data yang melewati boundary tertentu, sementara keputusan program tetap dikembalikan dari implementasi original.</p>
+
+      <div class="article-note"><strong>Scope:</strong> pembahasan ini berfokus pada observability dan struktur program. Detail yang secara langsung dapat digunakan untuk mengubah keputusan validasi tidak dipublikasikan.</div>
+
+      <h2>Binary dan proses analisis</h2>
+      <p>Target yang dianalisis berbentuk PE32 untuk arsitektur x86 dan pada versi awal menggunakan packing. Setelah proses unpacking, section layout menjadi lebih mudah dipetakan sehingga hubungan antara code section, data, import table, resource, relocation, dan entry point dapat dianalisis dengan lebih konsisten.</p>
+      <p>Pemisahan antara analisis packed dan unpacked penting karena alamat relatif serta struktur fungsi menjadi jauh lebih stabil setelah lapisan packing tidak lagi mendominasi control flow awal.</p>
+
+      <h2>High-level activation flow</h2>
+      <p>Pipeline yang teridentifikasi membangun data mesin dari beberapa Windows API, memproses data tersebut menjadi identifier berbentuk hash, menggunakannya pada request network, membaca response, melakukan normalisasi, lalu membandingkan hasil akhir dengan nilai yang diharapkan.</p>
+      <pre><code>machine/system information
+        |
+        v
+machine identifier
+        |
+        v
+hashing
+        |
+        v
+serial value
+        |
+        v
+network request
+        |
+        v
+read response
+        |
+        v
+normalize response
+        |
+        v
+final comparison
+        |
+        v
+boolean decision</code></pre>
+      <p>Dari perspektif instrumentation, pipeline seperti ini memberikan beberapa boundary yang jelas untuk observasi tanpa harus melakukan detour pada instruction di tengah fungsi.</p>
+
+      <h2>Machine identifier</h2>
+      <p>Tahap pertama mengumpulkan informasi host menggunakan Windows API yang berkaitan dengan volume, computer name, dan system information. Nilai tersebut kemudian digabungkan dalam format tertentu sebelum diteruskan ke helper hashing.</p>
+      <p>Output pada tahap ini bukan keputusan akhir dan bukan response network. Ia berfungsi sebagai input deterministik untuk membentuk serial yang digunakan pada tahap berikutnya.</p>
+
+      <h2>Hashing dan serial generation</h2>
+      <p>Binary menggunakan Windows CryptoAPI untuk membuat digest MD5 dari machine data. Digest biner kemudian dikonversi menjadi representasi hexadecimal lowercase sepanjang 32 karakter.</p>
+      <p>Dari sisi runtime tracing, helper hashing merupakan titik observasi yang berguna karena input machine data dan output serial dapat dibandingkan secara langsung tanpa perlu menebak struktur state yang berada lebih jauh di dalam validation function.</p>
+
+      <h2>Network request dan WinINet</h2>
+      <p>Komunikasi network menggunakan WinINet. Jalur request memanfaatkan fungsi untuk membuka session, membuka URL, membaca response, dan menutup handle.</p>
+      <p>Untuk instrumentation, export WinINet merupakan boundary yang lebih stabil daripada memasang hook pada setiap call-site individual. Dengan tracing pada API tersebut, informasi seperti URL request, ukuran read, jumlah byte yang diterima, serta preview data dapat dikorelasikan dengan state aplikasi.</p>
+      <pre><code>request prepared
+      |
+      v
+WinINet session
+      |
+      v
+request opened
+      |
+      v
+response bytes
+      |
+      v
+application normalization</code></pre>
+
+      <h2>Response handling</h2>
+      <p>Response yang diterima tidak langsung digunakan begitu saja. Binary melakukan terminasi buffer dan normalisasi whitespace sebelum comparison final. Tahap ini menjelaskan mengapa raw response network dan string yang masuk ke comparator dapat memiliki representasi berbeda walaupun secara visual tampak sama.</p>
+      <p>Membedakan raw response, normalized response, dan final comparison input sangat berguna ketika melakukan debugging karena masalah dapat terjadi pada transport, parsing, normalisasi, atau comparator secara terpisah.</p>
+
+      <h2>MinHook observation strategy</h2>
+      <p>Strategi yang digunakan lebih mengutamakan hook pada boundary fungsi utuh. Pendekatan ini lebih mudah dipelihara dibandingkan hook pada instruction tengah fungsi dan lebih aman terhadap perubahan kecil pada compiler output.</p>
+      <ul class="article-points">
+        <li>Trace argument yang masuk ke fungsi target.</li>
+        <li>Panggil original trampoline.</li>
+        <li>Catat return value atau output buffer original.</li>
+        <li>Kembalikan hasil original tanpa mengubah keputusan program.</li>
+        <li>Catat call count dan caller context bila diperlukan untuk korelasi runtime.</li>
+      </ul>
+      <p>Pada x86, calling convention harus diverifikasi dengan benar. Prototype detour yang salah dapat merusak stack pointer atau register dan menyebabkan crash yang terlihat seperti masalah pada hook library padahal sumbernya adalah mismatch ABI.</p>
+
+      <h2>Address validation</h2>
+      <p>Alamat relatif yang ditemukan melalui analisis statis tidak sebaiknya dianggap sebagai satu-satunya sumber kebenaran. Build yang berubah dapat menggeser layout code atau menghasilkan prologue berbeda.</p>
+      <p>Strategi yang lebih tahan perubahan adalah menggabungkan known relative location dengan validasi signature atau prologue. Jika validasi gagal, pencarian pada code section dapat digunakan untuk menemukan kandidat fungsi yang sesuai sebelum hook dipasang.</p>
+      <pre><code>known relative location
+        |
+        v
+validate signature
+    +---+---+
+    |       |
+  match   mismatch
+    |       |
+    v       v
+  trace   rescan code</code></pre>
+
+      <h2>Anti-analysis surface</h2>
+      <p>Binary juga memiliki indikator mekanisme anti-analysis. String dan import yang ditemukan menunjukkan adanya perhatian terhadap debugger, process inspection, network inspection, dan beberapa tool reverse engineering yang umum.</p>
+      <p>Bagian ini perlu diperlakukan sebagai subsystem tersendiri: kapan pemeriksaan berjalan, apa condition yang diuji, serta bagaimana hasil pemeriksaan memengaruhi lifecycle aplikasi perlu dipetakan terpisah dari activation pipeline agar analisis tidak mencampur dua control flow berbeda.</p>
+
+      <h2>Downloader dan injector subsystem</h2>
+      <p>Selain jalur activation, terdapat subsystem lain yang memiliki karakteristik downloader dan process injection. Import yang berkaitan dengan pembukaan process, alokasi memory pada process lain, penulisan memory, resolusi fungsi, dan pembuatan remote thread menunjukkan bahwa jalur ini berbeda secara konseptual dari validation logic.</p>
+      <pre><code>                 application
+                     |
+          +----------+----------+
+          |                     |
+          v                     v
+   activation flow       runtime loader flow
+          |                     |
+     machine data           prepare payload
+          |                     |
+       hashing             process discovery
+          |                     |
+       request               target process
+          |                     |
+      response              loader sequence
+          |                     |
+      decision                 result</code></pre>
+      <p>Pemisahan subsystem membantu memastikan telemetry activation tidak tercampur dengan activity loader ketika event runtime dianalisis.</p>
+
+      <h2>Nilai instrumentation</h2>
+      <p>Manfaat utama pendekatan ini bukan sekadar melihat satu return value, tetapi membangun timeline yang dapat menjelaskan hubungan antara input host, serial generation, request network, response bytes, normalisasi, comparator, dan keputusan akhir.</p>
+      <p>Dengan telemetry seperti itu, analisis dapat dilakukan secara repeatable: satu sesi runtime dapat dibandingkan dengan sesi lain tanpa harus mengandalkan snapshot debugger tunggal atau interpretasi manual dari disassembly.</p>
+
+      <div class="article-contact-wrap">
+        <a class="article-contact" href="https://wa.me/6285828310334" target="_blank" rel="noopener noreferrer">CONTACT</a>
+      </div>
+
+      <h2>Penutup</h2>
+      <p>DUMMY DLL MinHook v2 menunjukkan bagaimana analisis statis dan runtime instrumentation dapat digunakan bersama untuk memetakan sebuah binary Windows secara sistematis. Static analysis memberikan struktur dan kandidat boundary, sementara tracing runtime memberikan data nyata mengenai urutan eksekusi dan nilai yang benar-benar melewati fungsi tersebut.</p>
+      <p>Untuk tahap lanjutan, pendekatan yang paling kuat adalah mempertahankan pemisahan antara validation telemetry, network tracing, anti-analysis mapping, dan loader subsystem sehingga setiap bagian dapat diuji serta diverifikasi secara independen.</p>
+    </article>
+
+    <a class="article-back" href="blog.html">← Kembali ke Blog</a>
+    <footer class="page-footer site-crypto-footer">
+      <div class="crypto-footer-title">Support</div>
+      <div class="crypto-footer-grid">
+        <a class="crypto-card" href="bitcoin:bc1q6uz95a7j3c6z9a2vr7a447l6y74pzyaxmsm8dl" aria-label="Bitcoin donation address">
+          <img class="crypto-qr" src="assets/btc-qr.svg" alt="Bitcoin QR code">
+          <span class="crypto-copy"><span class="crypto-name">Bitcoin</span><code class="crypto-address">bc1q6uz95a7j3c6z9a2vr7a447l6y74pzyaxmsm8dl</code></span>
+        </a>
+        <a class="crypto-card" href="ethereum:0xd4a297aA173F1251e517a394B313d5972E2150e3" aria-label="Ethereum donation address">
+          <img class="crypto-qr" src="assets/eth-qr.svg" alt="Ethereum QR code">
+          <span class="crypto-copy"><span class="crypto-name">Ethereum</span><code class="crypto-address">0xd4a297aA173F1251e517a394B313d5972E2150e3</code></span>
+        </a>
+      </div>
+      <div class="crypto-footer-brand">Dolenthis</div>
+    </footer>
+  </main>
+  <script src="js/navigation.js?v=20260824-qr3" defer></script>
+</body></html>
