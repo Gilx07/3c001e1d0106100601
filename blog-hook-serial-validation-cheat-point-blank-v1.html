@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src https://www.youtube.com; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#070504">
+  <meta name="description" content="Rangkuman hook serial validation pada Cheat Point Blank V1">
+  <link rel="canonical" href="https://dolenthis.my.id/blog-hook-serial-validation-cheat-point-blank-v1.html">
+  <meta property="og:title" content="Hook serial validation pada Cheat Point Blank V1 — Dolenthis">
+  <meta property="og:description" content="Rangkuman hook serial validation pada Cheat Point Blank V1">
+  <meta property="og:url" content="https://dolenthis.my.id/blog-hook-serial-validation-cheat-point-blank-v1.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://dolenthis.my.id/assets/preview.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hook serial validation pada Cheat Point Blank V1 — Dolenthis">
+  <meta name="twitter:description" content="Rangkuman hook serial validation pada Cheat Point Blank V1">
+  <meta name="twitter:image" content="https://dolenthis.my.id/assets/preview.svg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Hook serial validation pada Cheat Point Blank V1 — Dolenthis</title>
+  <link rel="stylesheet" href="css/navigation.css?v=20260824-qr3">
+  <link rel="stylesheet" href="css/pages.css?v=20260824-release1">
+</head>
+<body class="page-body">
+  <header class="site-header" id="site-header">
+    <nav class="site-nav" aria-label="Navigasi utama">
+      <a class="nav-brand" href="index.html" data-nav-action="home" aria-label="Kembali ke halaman utama">Dolenthis</a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Buka navigasi" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <a class="nav-link" href="index.html" data-nav-action="home">Home</a>
+        <a class="nav-link active" href="blog.html" data-nav-action="blog" aria-current="page">Blog</a>
+        <a class="nav-link" href="about.html" data-nav-action="about">About</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-shell article-shell">
+    <p class="page-kicker">Catatan teknis</p>
+    <h1 class="page-title article-title">Hook serial validation pada Cheat Point Blank V1</h1>
+    <div class="article-meta"><span>23 Agustus 2026</span><span>Responsible disclosure</span></div>
+    <div class="page-rule"></div>
+
+    <article class="article-panel"><h2>Latar belakang</h2>
+      <p>Telah dilakukan penelitian terbatas terhadap sebuah program Windows dengan tujuan memahami perilaku runtime, alur eksekusi, dan interaksi antarbagian program. Penelitian tersebut menggunakan pendekatan instrumentation dan observasi pada lingkungan yang dikendalikan.</p>
+      <p>Tulisan ini sengaja dibuat pada tingkat yang umum. Detail teknis yang dapat digunakan untuk mereproduksi analisis, mengidentifikasi bagian internal tertentu, atau memanfaatkan hasil penelitian tidak dipublikasikan.</p>
+
+      <div class="article-note"><strong>Catatan penting:</strong> halaman ini bukan panduan eksploitasi, bypass, atau modifikasi terhadap program target. Tujuannya adalah menyediakan titik komunikasi yang dapat dibaca oleh pihak pemilik atau pengelola perangkat lunak apabila diperlukan proses klarifikasi dan mediasi.</div>
+
+      <h2>Apa yang diteliti</h2>
+      <p>Ruang lingkup penelitian berfokus pada observasi perilaku program ketika berjalan. Beberapa teknik diagnostic digunakan untuk memahami hubungan antara state internal, pemanggilan fungsi, dan aktivitas komunikasi program tanpa menjadikan halaman ini sebagai tempat publikasi rincian implementasi.</p>
+      <p>Informasi yang bersifat sensitif tidak disertakan, termasuk lokasi fungsi, signature, alamat atau offset, nilai hash, struktur request dan response, data internal, serta langkah teknis untuk melakukan reproduksi.</p>
+
+      <h2>Tujuan publikasi</h2>
+      <p>Publikasi ini ditujukan sebagai dokumentasi umum dan jalur komunikasi. Apabila pihak yang memiliki atau mengelola program terkait menemukan halaman ini, pembahasan dapat dilanjutkan secara privat untuk memastikan konteks penelitian dipahami dengan benar.</p>
+      <p>Pendekatan yang diutamakan adalah komunikasi yang terkoordinasi. Informasi teknis yang relevan dapat dipisahkan dari publikasi umum dan hanya dibahas dengan pihak yang dapat memverifikasi kewenangannya terhadap perangkat lunak tersebut.</p>
+
+      <div class="article-video" aria-label="Video POC">
+        <div class="article-video-head">
+          <strong>Video POC</strong>
+          <span>YouTube · Unlisted</span>
+        </div>
+        <iframe src="https://www.youtube.com/embed/ED2IaueA_Tc" title="Hook serial validation pada Cheat Point Blank V1" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+
+      <div class="release-countdown article-release-countdown" data-release-countdown="2026-09-07T13:21:00+07:00" aria-label="Countdown rilis source code">
+        <span class="release-countdown-label" data-countdown-status>SOURCE CODE RELEASE</span>
+        <span class="release-countdown-value" data-countdown-value>14d 00h 00m 00s</span>
+        <span class="release-countdown-date">7 September 2026 · 13:21 WIB</span>
+      </div>
+
+      <h2>Untuk pemilik atau pengelola perangkat lunak</h2>
+      <p>Apabila halaman ini berkaitan dengan perangkat lunak yang dikelola oleh suatu pihak, tujuan utamanya adalah membuka ruang komunikasi, bukan mempublikasikan rincian yang dapat menimbulkan dampak tambahan.</p>
+      <p>Pembahasan dapat diarahkan pada verifikasi temuan, ruang lingkup penelitian, dampak yang mungkin ada, serta langkah penyelesaian yang dianggap tepat oleh kedua pihak. Materi teknis dapat disampaikan secara terbatas setelah identitas dan kewenangan pihak terkait dapat diverifikasi.</p>
+
+      <div class="article-contact-wrap">
+        <a class="article-contact" href="https://wa.me/6285828310334" target="_blank" rel="noopener noreferrer">CONTACT</a>
+      </div>
+
+      <h2>Penutup</h2>
+      <p>Penelitian runtime dapat memberikan informasi yang berguna untuk memahami bagaimana suatu program bekerja, tetapi publikasi hasilnya perlu mempertimbangkan risiko. Karena itu, halaman ini hanya menyampaikan konteks umum dan mempertahankan detail penting di luar publikasi terbuka.</p>
+      <p>Jika diperlukan pembahasan lebih lanjut, komunikasi yang terarah dan privat menjadi jalur yang lebih tepat dibandingkan membuka rincian teknis kepada publik.</p>
+    </article>
+
+    <a class="article-back" href="blog.html">← Kembali ke Blog</a>
+    <footer class="page-footer site-crypto-footer">
+      <div class="crypto-footer-title">Support</div>
+      <div class="crypto-footer-grid">
+        <a class="crypto-card" href="bitcoin:bc1q6uz95a7j3c6z9a2vr7a447l6y74pzyaxmsm8dl" aria-label="Bitcoin donation address">
+          <img class="crypto-qr" src="assets/btc-qr.svg" alt="Bitcoin QR code">
+          <span class="crypto-copy"><span class="crypto-name">Bitcoin</span><code class="crypto-address">bc1q6uz95a7j3c6z9a2vr7a447l6y74pzyaxmsm8dl</code></span>
+        </a>
+        <a class="crypto-card" href="ethereum:0xd4a297aA173F1251e517a394B313d5972E2150e3" aria-label="Ethereum donation address">
+          <img class="crypto-qr" src="assets/eth-qr.svg" alt="Ethereum QR code">
+          <span class="crypto-copy"><span class="crypto-name">Ethereum</span><code class="crypto-address">0xd4a297aA173F1251e517a394B313d5972E2150e3</code></span>
+        </a>
+      </div>
+      <div class="crypto-footer-brand">Dolenthis</div>
+    </footer>
+  </main>
+  <script src="js/navigation.js?v=20260824-qr3" defer></script>
+  <script src="js/countdown.js?v=20260824-release1" defer></script>
+</body></html>
