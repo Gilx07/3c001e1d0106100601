@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#070504">
+  <meta name="description" content="INTERCEPT v0.2 adalah realtime SA-MP RakNet packet/RPC monitor berbasis C++ dan RakHook dengan GUI Win32, filtering, event queue, dan raw HEX inspector.">
+  <link rel="canonical" href="https://dolenthis.my.id/blog-intercept-v0-2-realtime-samp-raknet-packet-rpc-monitor.html">
+  <meta property="og:title" content="INTERCEPT v0.2 — Realtime SA-MP RakNet Packet/RPC Monitor — Dolenthis">
+  <meta property="og:description" content="INTERCEPT v0.2 adalah realtime SA-MP RakNet packet/RPC monitor berbasis C++ dan RakHook dengan GUI Win32, filtering, event queue, dan raw HEX inspector.">
+  <meta property="og:url" content="https://dolenthis.my.id/blog-intercept-v0-2-realtime-samp-raknet-packet-rpc-monitor.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://dolenthis.my.id/assets/preview.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="INTERCEPT v0.2 — Realtime SA-MP RakNet Packet/RPC Monitor — Dolenthis">
+  <meta name="twitter:description" content="INTERCEPT v0.2 adalah realtime SA-MP RakNet packet/RPC monitor berbasis C++ dan RakHook dengan GUI Win32, filtering, event queue, dan raw HEX inspector.">
+  <meta name="twitter:image" content="https://dolenthis.my.id/assets/preview.svg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>INTERCEPT v0.2 — Realtime SA-MP RakNet Packet/RPC Monitor — Dolenthis</title>
+  <link rel="stylesheet" href="css/navigation.css?v=20260824-qr3">
+  <link rel="stylesheet" href="css/pages.css?v=20260824-release1">
+</head>
+<body class="page-body">
+  <header class="site-header" id="site-header">
+    <nav class="site-nav" aria-label="Navigasi utama">
+      <a class="nav-brand" href="index.html" data-nav-action="home" aria-label="Kembali ke halaman utama">Dolenthis</a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Buka navigasi" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <a class="nav-link" href="index.html" data-nav-action="home">Home</a>
+        <a class="nav-link active" href="blog.html" data-nav-action="blog" aria-current="page">Blog</a>
+        <a class="nav-link" href="about.html" data-nav-action="about">About</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-shell article-shell">
+    <p class="page-kicker">Open source</p>
+    <h1 class="page-title article-title">INTERCEPT v0.2 — Realtime SA-MP RakNet Packet/RPC Monitor</h1>
+    <div class="article-meta"><span>25 Agustus 2026</span><span>SA-MP / RakNet</span></div>
+    <div class="page-rule"></div>
+
+    <article class="article-panel">
+      <h2>Overview</h2>
+      <p>INTERCEPT v0.2 adalah monitor realtime untuk mengamati traffic packet dan RPC RakNet pada client SA-MP yang diuji. Project ini ditulis dalam C++ dan menggunakan RakHook untuk menerima event packet/RPC, lalu menampilkannya melalui GUI native Win32.</p>
+      <p>Target yang didokumentasikan saat ini adalah Windows, GTA San Andreas 1.0 US, SA-MP 0.3.DL-R1, arsitektur 32-bit x86, dan RakHook pada commit yang dipin secara spesifik oleh project.</p>
+
+      <div class="article-note"><strong>Status v0.2:</strong> implementasi saat ini bersifat passive monitor. GUI digunakan untuk capture, filtering, inspection, dan identifikasi protocol. Versi ini belum memodifikasi, memblokir, replay, atau mengirim ulang traffic yang ditangkap.</div>
+
+      <h2>Apa yang sudah diimplementasikan</h2>
+      <ul class="article-points">
+        <li>Observasi packet dan RPC melalui RakHook.</li>
+        <li>Capture event incoming dan outgoing.</li>
+        <li>Thread-safe bounded event queue untuk traffic realtime.</li>
+        <li>GUI native Win32 dengan tab All, Packets, dan RPC.</li>
+        <li>Text filtering untuk ID, nama, detail, dan payload HEX.</li>
+        <li>Filter Hide Sync untuk traffic sinkronisasi berfrekuensi tinggi.</li>
+        <li>Pause untuk menghentikan update tampilan tanpa menghentikan counter.</li>
+        <li>Event counters dan queue-drop counter.</li>
+        <li>Inspector per event dengan raw hexadecimal payload.</li>
+        <li>Bounded in-memory history hingga 20.000 event yang sudah dikonsumsi GUI.</li>
+      </ul>
+
+      <h2>Arsitektur runtime</h2>
+      <p>Alur utamanya sengaja dibuat sederhana. Callback dari RakHook tidak langsung melakukan pekerjaan UI yang berat. Event dimasukkan ke bounded queue, kemudian GUI mengonsumsi queue tersebut secara terpisah. Counter juga diperbarui dari alur event yang sama.</p>
+      <pre><code>RakHook callback
+      |
+      v
+bounded event queue
+      |
+      +----&gt; realtime GUI
+      |
+      +----&gt; counters</code></pre>
+      <p>Pending queue dibatasi pada 4.096 event. Ketika GUI tidak mampu mengonsumsi event secepat traffic masuk, event pending lama akan dibuang dan jumlahnya dicatat melalui counter <strong>Queue drops</strong>. Batas ini mencegah pertumbuhan memory tanpa batas pada kondisi traffic sinkronisasi yang sangat tinggi.</p>
+
+      <h2>Realtime GUI</h2>
+      <p>Milestone v0.2 menggunakan Win32 GUI native. Interface dibuat setelah RakHook berhasil diinisialisasi, sehingga monitor tidak dibuka sebelum layer packet/RPC siap.</p>
+      <pre><code>+---------------------------------------------------------------+
+| Filter                         [Hide Sync] [Pause]             |
++---------------------------------------------------------------+
+| [All] [Packets] [RPC]                                         |
+|                                                               |
+| #    Dir  Type    ID   Name          Bytes  Details           |
+| ...                                                           |
+|                                                               |
++---------------------------------------------------------------+
+| Selected event / status / raw HEX                             |
++---------------------------------------------------------------+</code></pre>
+      <p>Filter hanya memengaruhi apa yang terlihat di interface. Counter dasar tetap merepresentasikan event yang diterima. Pendekatan ini membuat traffic dapat disaring secara agresif tanpa kehilangan gambaran jumlah event yang sebenarnya masuk.</p>
+
+      <h2>Decoder packet dan RPC</h2>
+      <p>Layer decoder pada v0.2 masih bersifat konservatif. Project menyediakan penamaan packet/RPC dan metadata yang sudah diketahui, tetapi belum menganggap decoder tersebut sebagai schema protocol SA-MP yang lengkap.</p>
+      <p>Field-level layout direncanakan ditambahkan hanya setelah struktur masing-masing event diverifikasi terhadap traffic SA-MP 0.3.DL-R1 dan interface RakHook yang digunakan project. Ini penting karena asumsi layout yang salah dapat menghasilkan interpretasi payload yang keliru walaupun raw bytes yang ditangkap benar.</p>
+
+      <h2>Logging</h2>
+      <p>Traffic packet/RPC berfrekuensi tinggi tidak lagi diarahkan ke text log utama. <code>INTERCEPT.log</code> dipakai terutama untuk lifecycle dan diagnostic message, sementara payload realtime diperiksa melalui GUI.</p>
+      <pre><code>[INFO] INTERCEPT v0.2 starting
+[INFO] samp.dll detected.
+[INFO] INTERCEPT monitor callbacks registered.
+[INFO] RakHook initialized. attempt=1 samp_version=3
+[INFO] Realtime monitor is active.</code></pre>
+
+      <h2>Build</h2>
+      <p>Karena target SA-MP dan RakHook yang digunakan adalah x86, build harus menggunakan generator Visual Studio 32-bit.</p>
+      <pre><code>cmake -S . -B build -A Win32
+cmake --build build --config Release</code></pre>
+      <p>Output Release berada di:</p>
+      <pre><code>build\Release\INTERCEPT.dll</code></pre>
+
+      <h2>Loading</h2>
+      <p><code>INTERCEPT.dll</code> harus dimuat ke proses GTA SA setelah <code>samp.dll</code> tersedia. Repository INTERCEPT sendiri tidak menyertakan injector; bagian tersebut memang berada di luar scope project.</p>
+
+      <h2>Struktur source</h2>
+      <p>Source tree memisahkan beberapa tanggung jawab utama ke file yang berbeda. Di antaranya terdapat modul decoder, monitor, event queue, GUI, session, logger, console, dan entry point DLL. Pemisahan ini membuat capture path, presentation layer, decoding, serta lifecycle lebih mudah dikembangkan secara independen.</p>
+      <ul class="article-points">
+        <li><code>monitor.cpp</code> — layer observasi/callback traffic.</li>
+        <li><code>event_queue.cpp</code> — queue event yang dibatasi.</li>
+        <li><code>decoder.cpp</code> — naming dan metadata decoder.</li>
+        <li><code>gui.cpp</code> — realtime Win32 inspection interface.</li>
+        <li><code>session.cpp</code> — state/session runtime.</li>
+        <li><code>logger.cpp</code> dan <code>console.cpp</code> — diagnostic output.</li>
+        <li><code>dllmain.cpp</code> — lifecycle entry point DLL.</li>
+      </ul>
+
+      <h2>Capture data</h2>
+      <p>Repository juga memuat beberapa capture CSV dari sesi pengujian. File-file tersebut menjadi artefak observasi traffic dan dapat digunakan untuk membandingkan pola event pada kondisi berbeda, misalnya ketika client diam, ketika sebuah aktivitas selesai, atau ketika input tertentu terjadi.</p>
+
+      <h2>Roadmap</h2>
+      <p>Milestone yang sudah selesai mencakup passive RakHook capture, realtime event queue, pemisahan packet/RPC di GUI, sync filtering, dan raw payload inspector. Beberapa pekerjaan lanjutan yang masih tercatat adalah verified field-level SA-MP decoder, event classification/search yang lebih baik, dashboard atau rate graph, serta persistent capture/export format.</p>
+
+      <h2>Source code</h2>
+      <p>INTERCEPT bersifat publik dan source code lengkapnya tersedia di GitHub. README repository diperbarui berdasarkan milestone yang benar-benar sudah masuk ke source tree, sedangkan feature yang belum tersedia tetap dicatat sebagai roadmap.</p>
+      <div class="article-contact-wrap">
+        <a class="article-contact" href="https://github.com/Gilx07/INTERCEPT" target="_blank" rel="noopener noreferrer">VIEW SOURCE</a>
+      </div>
+
+      <h2>Penutup</h2>
+      <p>INTERCEPT v0.2 berfokus pada fondasi observability yang stabil sebelum menambahkan kemampuan yang lebih kompleks. Bounded queue menjaga monitor tetap terkendali ketika traffic tinggi, GUI mempermudah pemisahan packet dan RPC, dan raw HEX inspector mempertahankan akses ke payload asli ketika decoder belum memiliki field-level schema yang terverifikasi.</p>
+      <p>Dengan scope tersebut, v0.2 berfungsi sebagai basis untuk analisis protocol SA-MP 0.3.DL-R1 secara realtime sekaligus menyediakan struktur yang cukup modular untuk pengembangan decoder, classification, dan capture tooling berikutnya.</p>
+    </article>
+
+    <a class="article-back" href="blog.html">← Kembali ke Blog</a>
+    <footer class="page-footer site-crypto-footer">
+      <div class="crypto-footer-title">Support</div>
+      <div class="crypto-footer-grid">
+        <a class="crypto-card" href="bitcoin:bc1q6uz95a7j3c6z9a2vr7a447l6y74pzyaxmsm8dl" aria-label="Bitcoin donation address">
+          <img class="crypto-qr" src="assets/btc-qr.svg" alt="Bitcoin QR code">
+          <span class="crypto-copy"><span class="crypto-name">Bitcoin</span><code class="crypto-address">bc1q6uz95a7j3c6z9a2vr7a447l6y74pzyaxmsm8dl</code></span>
+        </a>
+        <a class="crypto-card" href="ethereum:0xd4a297aA173F1251e517a394B313d5972E2150e3" aria-label="Ethereum donation address">
+          <img class="crypto-qr" src="assets/eth-qr.svg" alt="Ethereum QR code">
+          <span class="crypto-copy"><span class="crypto-name">Ethereum</span><code class="crypto-address">0xd4a297aA173F1251e517a394B313d5972E2150e3</code></span>
+        </a>
+      </div>
+      <div class="crypto-footer-brand">Dolenthis</div>
+    </footer>
+  </main>
+  <script src="js/navigation.js?v=20260824-qr3" defer></script>
+</body></html>
