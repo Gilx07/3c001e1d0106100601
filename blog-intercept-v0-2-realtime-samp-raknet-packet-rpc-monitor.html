@@ -38,7 +38,7 @@
   </header>
 
   <main class="page-shell article-shell">
-    <p class="page-kicker">Open source</p>
+    <p class="page-kicker">Catatan teknis</p>
     <h1 class="page-title article-title">INTERCEPT v0.2 — Realtime SA-MP RakNet Packet/RPC Monitor</h1>
     <div class="article-meta"><span>25 Agustus 2026</span><span>SA-MP / RakNet</span></div>
     <div class="page-rule"></div>
@@ -111,7 +111,7 @@ cmake --build build --config Release</code></pre>
       <pre><code>build\Release\INTERCEPT.dll</code></pre>
 
       <h2>Loading</h2>
-      <p><code>INTERCEPT.dll</code> harus dimuat ke proses GTA SA setelah <code>samp.dll</code> tersedia. Repository INTERCEPT sendiri tidak menyertakan injector; bagian tersebut memang berada di luar scope project.</p>
+      <p><code>INTERCEPT.dll</code> harus dimuat ke proses GTA SA setelah <code>samp.dll</code> tersedia. Project ini tidak menyertakan injector; bagian tersebut berada di luar scope implementasi saat ini.</p>
 
       <h2>Struktur source</h2>
       <p>Source tree memisahkan beberapa tanggung jawab utama ke file yang berbeda. Di antaranya terdapat modul decoder, monitor, event queue, GUI, session, logger, console, dan entry point DLL. Pemisahan ini membuat capture path, presentation layer, decoding, serta lifecycle lebih mudah dikembangkan secara independen.</p>
@@ -126,16 +126,10 @@ cmake --build build --config Release</code></pre>
       </ul>
 
       <h2>Capture data</h2>
-      <p>Repository juga memuat beberapa capture CSV dari sesi pengujian. File-file tersebut menjadi artefak observasi traffic dan dapat digunakan untuk membandingkan pola event pada kondisi berbeda, misalnya ketika client diam, ketika sebuah aktivitas selesai, atau ketika input tertentu terjadi.</p>
+      <p>Beberapa capture CSV dari sesi pengujian digunakan sebagai artefak observasi traffic untuk membandingkan pola event pada kondisi berbeda, misalnya ketika client diam, ketika sebuah aktivitas selesai, atau ketika input tertentu terjadi.</p>
 
       <h2>Roadmap</h2>
       <p>Milestone yang sudah selesai mencakup passive RakHook capture, realtime event queue, pemisahan packet/RPC di GUI, sync filtering, dan raw payload inspector. Beberapa pekerjaan lanjutan yang masih tercatat adalah verified field-level SA-MP decoder, event classification/search yang lebih baik, dashboard atau rate graph, serta persistent capture/export format.</p>
-
-      <h2>Source code</h2>
-      <p>INTERCEPT bersifat publik dan source code lengkapnya tersedia di GitHub. README repository diperbarui berdasarkan milestone yang benar-benar sudah masuk ke source tree, sedangkan feature yang belum tersedia tetap dicatat sebagai roadmap.</p>
-      <div class="article-contact-wrap">
-        <a class="article-contact" href="https://github.com/Gilx07/INTERCEPT" target="_blank" rel="noopener noreferrer">VIEW SOURCE</a>
-      </div>
 
       <h2>Penutup</h2>
       <p>INTERCEPT v0.2 berfokus pada fondasi observability yang stabil sebelum menambahkan kemampuan yang lebih kompleks. Bounded queue menjaga monitor tetap terkendali ketika traffic tinggi, GUI mempermudah pemisahan packet dan RPC, dan raw HEX inspector mempertahankan akses ke payload asli ketika decoder belum memiliki field-level schema yang terverifikasi.</p>
