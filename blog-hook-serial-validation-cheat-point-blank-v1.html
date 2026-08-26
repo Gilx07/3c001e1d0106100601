@@ -2,7 +2,7 @@
 <html lang="id"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src https://www.youtube.com; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
   <meta name="referrer" content="no-referrer">
   <meta name="theme-color" content="#070504">
   <meta name="description" content="Analisis teknis Hook serial validation pada Cheat Point Blank V1: MinHook, state tracing, MD5 pipeline, WinINet, response normalization, dan comparator runtime.">
@@ -268,14 +268,6 @@ stateA ----------------------> comparator <--- normalized_response
       <pre><code>cmake -S . -B build-x86 -A Win32
 cmake --build build-x86 --config Release</code></pre>
       <p>Output diagnostic utama meliputi DLL instrumentation, diagnostic launcher, authorized host/launcher, dan module observer untuk pengujian terkontrol.</p>
-
-      <div class="article-video" aria-label="Video POC">
-        <div class="article-video-head">
-          <strong>Video POC</strong>
-          <span>YouTube · Unlisted</span>
-        </div>
-        <iframe src="https://www.youtube.com/embed/ED2IaueA_Tc" title="Hook serial validation pada Cheat Point Blank V1" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
 
       <h2>Kesimpulan teknis</h2>
       <p>Temuan utama bukan sekadar keberadaan satu validation function, melainkan sebuah data-flow yang konsisten. <code>stateB</code> dihasilkan dari runtime producer input dan dikirim melalui network, sedangkan <code>stateA</code> dibentuk melalui dua tahap MD5 tambahan dan tetap lokal sebagai nilai pembanding terhadap response yang telah dinormalisasi.</p>
