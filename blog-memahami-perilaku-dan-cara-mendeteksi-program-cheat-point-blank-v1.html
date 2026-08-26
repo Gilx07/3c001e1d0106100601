@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#070504">
+  <meta name="description" content="Analisis defensif perilaku dan deteksi program cheat Point Blank V1: process injection, hardware breakpoint, VEH, artefak PE32, telemetry, behavioral scoring, dan YARA triage.">
+  <link rel="canonical" href="https://dolenthis.my.id/blog-memahami-perilaku-dan-cara-mendeteksi-program-cheat-point-blank-v1.html">
+  <meta property="og:title" content="Memahami Perilaku dan Cara Mendeteksi Program Cheat Point Blank V1 — Dolenthis">
+  <meta property="og:description" content="Analisis defensif process injection, hardware breakpoint, VEH, artefak PE32, telemetry, behavioral scoring, dan YARA triage.">
+  <meta property="og:url" content="https://dolenthis.my.id/blog-memahami-perilaku-dan-cara-mendeteksi-program-cheat-point-blank-v1.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://dolenthis.my.id/assets/preview.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Memahami Perilaku dan Cara Mendeteksi Program Cheat Point Blank V1 — Dolenthis">
+  <meta name="twitter:description" content="Analisis defensif process injection, hardware breakpoint, VEH, artefak PE32, telemetry, behavioral scoring, dan YARA triage.">
+  <meta name="twitter:image" content="https://dolenthis.my.id/assets/preview.svg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Memahami Perilaku dan Cara Mendeteksi Program Cheat Point Blank V1 — Dolenthis</title>
+  <link rel="stylesheet" href="css/navigation.css?v=20260824-qr3">
+  <link rel="stylesheet" href="css/pages.css?v=20260825-upcoming1">
+</head>
+<body class="page-body">
+  <header class="site-header" id="site-header">
+    <nav class="site-nav" aria-label="Navigasi utama">
+      <a class="nav-brand" href="index.html" data-nav-action="home" aria-label="Kembali ke halaman utama">Dolenthis</a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Buka navigasi" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <a class="nav-link" href="index.html" data-nav-action="home">Home</a>
+        <a class="nav-link active" href="blog.html" data-nav-action="blog" aria-current="page">Blog</a>
+        <a class="nav-link" href="about.html" data-nav-action="about">About</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-shell article-shell">
+    <p class="page-kicker">Defensive research</p>
+    <h1 class="page-title article-title">Memahami Perilaku dan Cara Mendeteksi Program Cheat Point Blank V1</h1>
+    <div class="article-meta"><span>26 Agustus 2026</span><span>Windows / PE32 / Detection Engineering</span></div>
+    <div class="page-rule"></div>
+
+    <article class="article-panel">
+      <h2>Overview</h2>
+      <p>Tulisan ini membahas hasil analisis statis terhadap tiga artefak PE32 yang berkaitan dengan sebuah program cheat Point Blank V1. Fokusnya bukan pada fitur cheat di dalam game, melainkan pada <strong>perilaku teknis yang dapat diamati dan dideteksi</strong>: process discovery, remote memory operation, thread manipulation, hardware breakpoint, vectored exception handling, perubahan memory protection, dan karakteristik file yang menyamar sebagai format lain.</p>
+      <p>Ketiga artefak dianalisis tanpa dijalankan. Karena itu, setiap temuan dibedakan antara bukti statis yang kuat, hipotesis yang masih membutuhkan validasi runtime, dan indikator yang hanya layak digunakan sebagai bagian dari korelasi.</p>
+
+      <div class="article-note"><strong>Scope:</strong> publikasi ini merupakan media riset privat untuk tujuan edukasi dan defensive analysis. Materi difokuskan pada identifikasi, telemetry, triage, mitigasi, dan false-positive handling. Detail operasional yang tidak diperlukan untuk pertahanan tidak disertakan.</div>
+
+      <h2>Artefak yang dianalisis</h2>
+      <p>Tiga file menunjukkan peran yang berbeda. Nama file sengaja tampak generik, dan salah satunya bahkan menggunakan ekstensi <code>.ini</code> meskipun struktur internalnya adalah DLL PE32.</p>
+      <pre><code>3233321001311.exe  — PE32 x86 executable, 76,589 byte
+3533625655.dll     — PE32 x86 DLL, 914,730 byte
+7677826866.ini     — PE32 x86 DLL, 8,499 byte</code></pre>
+
+      <h3>SHA-256 exact-match</h3>
+      <pre><code>3233321001311.exe
+D4BDA4A791062F8F4E81710370C72F9102ADD63C95AD12C65364A6E231A70D76
+
+3533625655.dll
+5272468EEDCDBB45662F22403916F76DE738A630B75E9398C7CA9EC504B170FE
+
+7677826866.ini
+F4384D90393AE7D96B54966BD5350384E8AABF2C540C2960A471C5007DE24E84</code></pre>
+      <p>Hash memberikan deteksi exact-match dengan confidence tinggi, tetapi tidak boleh menjadi satu-satunya mekanisme. Rename tidak mengubah hash, sedangkan rebuild atau modifikasi kecil dapat menghasilkan hash baru. Karena itu, hash sebaiknya menjadi lapisan pertama sebelum behavioral telemetry.</p>
+
+      <h2>1. Executable sebagai injector/controller</h2>
+      <p>Artefak executable memperlihatkan kombinasi API dan call-flow yang konsisten dengan controller yang mencari proses target, memperoleh handle dengan hak luas, mengalokasikan memory di proses lain, menulis data ke sana, lalu mengaktifkan execution primitive secara dinamis.</p>
+      <p>Import penting yang ditemukan antara lain:</p>
+      <pre><code>CreateToolhelp32Snapshot
+Process32First / Process32Next
+OpenProcess
+VirtualAllocEx
+WriteProcessMemory
+GetModuleHandleA
+GetProcAddress
+WaitForSingleObject
+VirtualFreeEx
+CloseHandle</code></pre>
+      <p>Yang penting dari sisi detection engineering bukan satu API individual, melainkan <strong>urutan operasinya</strong>. Debugger, security software, accessibility tool, dan overlay tertentu dapat memakai salah satu API serupa secara legitimate. Confidence meningkat ketika operasi tersebut membentuk rantai yang konsisten terhadap proses game yang sama.</p>
+
+      <pre><code>process discovery
+      |
+      v
+OpenProcess terhadap game
+      |
+      v
+remote allocation
+      |
+      v
+remote write
+      |
+      v
+remote execution primitive
+      |
+      v
+wait / cleanup</code></pre>
+
+      <p>Analisis statis juga menemukan resolver dinamis terhadap <code>ntdll.dll</code> dengan signature yang sangat cocok dengan primitive pembuatan thread native. Temuan ini kuat secara statis, tetapi tetap dibedakan dari validasi runtime langsung.</p>
+
+      <h2>2. Runtime DLL: hardware breakpoint + VEH</h2>
+      <p>Artefak DLL yang lebih besar menunjukkan karakteristik berbeda. Bukti yang tersedia lebih cocok dengan <strong>custom execution redirection berbasis hardware breakpoint dan Vectored Exception Handler (VEH)</strong> daripada sekadar inline hook tradisional.</p>
+      <p>API yang relevan meliputi:</p>
+      <pre><code>AddVectoredExceptionHandler
+SuspendThread
+GetThreadContext
+SetThreadContext
+ResumeThread
+VirtualProtect
+FlushInstructionCache
+IsDebuggerPresent</code></pre>
+      <p>Pada initialization, modul membuat worker thread dan memasang VEH. Salah satu callback secara khusus menangani <code>EXCEPTION_SINGLE_STEP</code>. Worker kemudian menginspeksi thread milik proses yang sama, menangguhkan thread, membaca context, mengubah debug registers, lalu mengembalikan context sebelum thread dilanjutkan.</p>
+
+      <h3>Kenapa debug register penting?</h3>
+      <p>Pada x86, register <code>Dr0</code>–<code>Dr3</code> dapat menyimpan alamat hardware breakpoint, sedangkan <code>Dr7</code> mengontrol aktivasi breakpoint tersebut. Pada artefak yang dianalisis ditemukan konfigurasi <code>Dr7 = 0x55</code>, sehingga perubahan debug register pada thread game menjadi sinyal telemetry bernilai tinggi ketika dilakukan oleh modul yang tidak resmi.</p>
+
+      <pre><code>enumerate game threads
+      |
+      v
+SuspendThread
+      |
+      v
+GetThreadContext
+      |
+      v
+modify debug registers
+      |
+      v
+SetThreadContext
+      |
+      v
+ResumeThread
+      |
+      v
+EXCEPTION_SINGLE_STEP
+      |
+      v
+VEH redirects execution</code></pre>
+
+      <h2>3. File .ini yang sebenarnya DLL</h2>
+      <p>Artefak ketiga bernama seperti configuration file, tetapi PE header menunjukkan bahwa file tersebut adalah DLL x86. Ini adalah contoh kenapa sistem deteksi tidak boleh mempercayai ekstensi file sebagai identitas format.</p>
+      <p>Karakteristik yang ditemukan:</p>
+      <ul class="article-points">
+        <li>PE32 DLL x86 dengan header <code>MZ</code>.</li>
+        <li>Tidak memiliki export directory publik.</li>
+        <li>Import utama berasal dari <code>KERNEL32.dll</code> dan <code>MSVCR100.dll</code>.</li>
+        <li>Menggunakan <code>IsDebuggerPresent</code> dan exception filtering.</li>
+        <li>Memiliki operasi state berbasis <code>InterlockedExchange</code> / <code>InterlockedCompareExchange</code>.</li>
+        <li>Tidak menunjukkan primitive remote injection pada import table.</li>
+      </ul>
+      <p>Penilaian yang paling aman adalah memperlakukannya sebagai runtime/guard/exception-support component yang mencurigakan, bukan langsung menyimpulkannya sebagai injector utama.</p>
+
+      <h2>4. Detection philosophy: sequence lebih kuat daripada satu indikator</h2>
+      <p>Deteksi yang hanya mencari nama file, satu API, atau satu hash mudah rapuh. Model yang lebih kuat menggabungkan static triage dan telemetry runtime.</p>
+      <pre><code>exact/static indicator
+        +
+process access telemetry
+        +
+remote memory activity
+        +
+thread/context telemetry
+        +
+module/VEH observation
+        |
+        v
+correlated confidence score</code></pre>
+
+      <p>Sequence prioritas tinggi dalam window waktu pendek:</p>
+      <pre><code>process discovery
+  -> external OpenProcess(access luas)
+  -> VirtualAllocEx
+  -> WriteProcessMemory
+  -> remote execution atau context modification
+  -> unknown module / VEH / hardware breakpoint</code></pre>
+
+      <h2>5. Event telemetry minimum</h2>
+      <p>Sensor client atau launcher tidak perlu merekam isi memory game untuk membangun deteksi awal. Metadata operasi sudah cukup berguna dan lebih proporsional dari sisi privacy.</p>
+      <pre><code>{
+  "timestamp": "...",
+  "source_pid": 1234,
+  "target_pid": 5678,
+  "source_image_sha256": "...",
+  "source_path_class": "user-writable|program-files|unknown",
+  "operation": "open_process|remote_alloc|remote_write|remote_thread|thread_context|module_load|veh_observed",
+  "requested_access": "...",
+  "memory_protection": "...",
+  "context_flags": "...",
+  "module_sha256": "...",
+  "signed": false
+}</code></pre>
+      <p>Field yang paling berguna adalah hash image, signer, klasifikasi path, source/target PID, jenis operasi, requested access, memory protection, context flags, dan timestamp. Dengan itu event dapat dikorelasikan tanpa mengambil data gameplay atau isi memory secara default.</p>
+
+      <h2>6. Behavioral scoring</h2>
+      <p>Berikut contoh baseline scoring yang dapat dipakai sebagai titik awal dan harus dikalibrasi terhadap software legitimate serta build game:</p>
+      <ul class="article-points">
+        <li><strong>+100</strong> — exact hash artefak terkonfirmasi.</li>
+        <li><strong>+25</strong> — unsigned/unknown module dengan ekstensi palsu.</li>
+        <li><strong>+25</strong> — external process membuka game dengan access luas.</li>
+        <li><strong>+25</strong> — remote allocation terhadap proses game.</li>
+        <li><strong>+35</strong> — remote write terhadap proses game.</li>
+        <li><strong>+35</strong> — remote execution primitive atau start address dari private memory.</li>
+        <li><strong>+35</strong> — suspend thread lalu Get/SetThreadContext.</li>
+        <li><strong>+40</strong> — debug register non-zero pada thread game.</li>
+        <li><strong>+35</strong> — VEH single-step dari module tidak resmi.</li>
+        <li><strong>+20</strong> — executable page berubah writable lalu executable.</li>
+        <li><strong>-30</strong> — satu sinyal tunggal berasal dari software resmi yang ditandatangani.</li>
+      </ul>
+      <p>Interpretasi awal yang masuk akal: skor rendah hanya untuk observasi; skor menengah memicu pengumpulan telemetry tambahan; skor tinggi masuk ke investigation/containment. <strong>Auto-ban berdasarkan satu skor client tidak direkomendasikan.</strong></p>
+
+      <h2>7. Static triage dengan YARA</h2>
+      <p>Exact hash dapat dikemas ke YARA sebagai deteksi confidence tinggi. Untuk varian yang berubah, static behavioral rule dapat menggabungkan beberapa import dan indikator PE.</p>
+      <pre><code>import "hash"
+import "pe"
+
+rule PBV1_Exact_Injector
+{
+    meta:
+        scope = "defensive triage"
+        confidence = "high"
+
+    condition:
+        hash.sha256(0, filesize) ==
+        "d4bda4a791062f8f4e81710370c72f9102add63c95ad12c65364a6e231a70d76"
+}</code></pre>
+      <p>Untuk file yang menyamar sebagai <code>.ini</code>, rule dapat memeriksa kombinasi header PE, flag DLL, ekstensi filename, dan string import. Pendekatan semacam ini lebih baik daripada sekadar mencari nama file karena identitas format diverifikasi dari struktur binary.</p>
+
+      <h2>8. False-positive handling</h2>
+      <p>Beberapa software legitimate dapat melakukan operasi yang mirip: debugger, overlay, crash reporter, accessibility software, endpoint security, atau tool developer. Karena itu setiap alert harus melewati checklist:</p>
+      <ul class="article-points">
+        <li>Apakah source process memiliki digital signature yang valid dan dikenal?</li>
+        <li>Apakah module berada di path resmi?</li>
+        <li>Apakah aktivitas terjadi bersamaan dengan update, crash handling, overlay, atau accessibility feature?</li>
+        <li>Apakah target benar-benar game process, bukan helper resmi?</li>
+        <li>Apakah sequence muncul berulang dan konsisten?</li>
+        <li>Apakah module/hash cocok dengan allowlist build resmi?</li>
+      </ul>
+
+      <h2>9. Mitigasi yang relevan</h2>
+      <ul class="article-points">
+        <li>Validasi integritas launcher, executable, dan module resmi.</li>
+        <li>Bangun allowlist module berdasarkan signer, hash, dan path.</li>
+        <li>Korelasikan process-handle access dengan remote allocation/write.</li>
+        <li>Pantau perubahan thread context dan debug registers pada titik sensitif.</li>
+        <li>Observasi VEH yang berasal dari module tidak resmi.</li>
+        <li>Pantau transisi memory code menjadi writable/executable.</li>
+        <li>Kirim metadata evidence ke server untuk risk scoring.</li>
+        <li>Gunakan server-authoritative validation untuk state gameplay penting.</li>
+      </ul>
+
+      <h2>10. Tingkat keyakinan temuan</h2>
+      <ul class="article-points">
+        <li><strong>Tinggi:</strong> executable melakukan remote memory allocation/write terhadap proses lain.</li>
+        <li><strong>Sangat kuat secara statis:</strong> primitive remote execution cocok dengan resolver native thread creation dari <code>ntdll.dll</code>.</li>
+        <li><strong>Tinggi:</strong> terdapat dua jalur payload/injection pada controller.</li>
+        <li><strong>Tinggi:</strong> runtime DLL memakai hardware breakpoint + VEH.</li>
+        <li><strong>Rendah/tidak terbukti:</strong> runtime DLL merupakan build langsung framework hooking tertentu.</li>
+        <li><strong>Rendah:</strong> file berekstensi <code>.ini</code> merupakan injector utama.</li>
+        <li><strong>Sedang:</strong> ketiga file pasti merupakan satu paket runtime yang sama; hubungan penuh masih membutuhkan validasi runtime.</li>
+      </ul>
+
+      <h2>Batasan analisis</h2>
+      <p>Analisis ini berbasis PE header, import table, string, hash, dan disassembly statis. Binary tidak dieksekusi. Beberapa relasi runtime—termasuk urutan pemuatan aktual dan state dinamis—masih membutuhkan validasi dalam lab terisolasi dengan logging yang terkontrol.</p>
+
+      <h2>Kesimpulan</h2>
+      <p>Signature pertahanan paling kuat bukanlah nama file tertentu, melainkan rantai perilaku: <strong>process discovery → handle luas → remote allocation/write → execution/context manipulation → unknown module/VEH/hardware breakpoint</strong>. Hash dan YARA berguna untuk exact/static triage, tetapi behavioral telemetry memberikan ketahanan yang lebih baik terhadap rename, rebuild, dan perubahan minor binary.</p>
+      <p>Untuk sistem anti-cheat yang matang, keputusan akhir sebaiknya menggabungkan telemetry client, allowlist signer/module, korelasi server-side, serta evidence sequence yang dapat diaudit. Tujuannya adalah meningkatkan confidence tanpa menjadikan satu indikator sebagai dasar hukuman otomatis.</p>
+
+      <a class="article-back" href="blog.html">← Kembali ke Blog</a>
+    </article>
+  </main>
+  <script src="js/navigation.js?v=20260824-qr3" defer></script>
+</body></html>
