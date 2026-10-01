@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="theme-color" content="#070504" />
+  <meta name="description" content="PBGuard by Dolenthis — tool deteksi heuristik memori untuk riset keamanan software. Unduh versi terbaru v0.2.0." />
+  <link rel="canonical" href="https://dolenthis.my.id/pbguard.html" />
+  <meta property="og:title" content="PBGuard by Dolenthis" />
+  <meta property="og:description" content="Tool deteksi heuristik memori untuk riset keamanan software — report-only, untuk tujuan edukasi." />
+  <meta property="og:url" content="https://dolenthis.my.id/pbguard.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://dolenthis.my.id/assets/IMG_3190.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PBGuard by Dolenthis" />
+  <meta name="twitter:description" content="Tool deteksi heuristik memori untuk riset keamanan software — report-only, untuk tujuan edukasi." />
+  <meta name="twitter:image" content="https://dolenthis.my.id/assets/IMG_3190.png" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <title>PBGuard — Dolenthis</title>
+  <link rel="stylesheet" href="css/site.min.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"PBGuard","applicationCategory":"SecurityApplication","operatingSystem":"Windows","offers":{"@type":"Offer","price":"0"},"author":{"@type":"Organization","name":"Dolenthis"},"softwareVersion":"0.2.0"}</script>
+</head>
+<body class="page-body">
+  <header class="site-header" id="site-header">
+    <nav class="site-nav" aria-label="Navigasi utama">
+      <a class="nav-brand" href="index.html" data-nav-action="home" aria-label="Kembali ke halaman utama">Dolenthis</a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Buka navigasi" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <a class="nav-link" href="index.html" data-nav-action="home">Home</a>
+        <a class="nav-link" href="blog.html" data-nav-action="blog">Blog</a>
+        <a class="nav-link" href="about.html" data-nav-action="about">About</a>
+        <a class="nav-link active" href="pbguard.html" data-nav-action="pbguard" aria-current="page">PBGuard</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <p class="page-kicker">Dolenthis</p>
+    <h1 class="page-title">PBGuard</h1>
+    <p class="page-lead">Tool deteksi heuristik memori untuk riset keamanan software — by Dolenthis.</p>
+    <div class="page-rule"></div>
+
+    <div class="about-grid">
+      <section class="about-panel">
+        <h2>Unduh</h2>
+        <div class="about-item"><span class="about-label">Versi</span><span class="about-value">v0.2.0</span></div>
+        <div class="about-item"><span class="about-label">File</span><span class="about-value">PBGuard.exe</span></div>
+        <div class="about-item"><span class="about-label">Ukuran</span><span class="about-value">±7,3 MB</span></div>
+        <div class="about-item"><span class="about-label">Sistem</span><span class="about-value">Windows</span></div>
+        <a class="dl-button" href="https://www.dropbox.com/scl/fi/092tnkcd7sp08z49qwpvs/PBGuard.exe?rlkey=jm3pyjwx54afmb6wxxtztx7ho&dl=1">Unduh PBGuard v0.2.0</a>
+        <p class="dl-note">File belum memiliki code signature, jadi Windows SmartScreen mungkin menampilkan peringatan "unknown publisher". PBGuard berjalan dalam mode report-only — hanya melaporkan temuan, tidak memblokir atau menghapus apa pun. Belum diuji di Windows fisik; disarankan menjalankannya di VM terlebih dahulu.</p>
+      </section>
+
+      <aside class="about-panel about-note" aria-label="Fitur PBGuard">
+        <h2>Fitur v0.2.0</h2>
+        <p>Heuristik memori L2 — Fase 2:</p>
+        <ul>
+          <li>Deteksi thread injection</li>
+          <li>Deteksi region memori RWX</li>
+          <li>Pengecekan signature DLL</li>
+          <li>Pencarian string IOC</li>
+        </ul>
+        <p>Termasuk seluruh fitur L1 dari v0.1.0. Dibangun dan lolos <code>go test</code> + <code>go vet</code>.</p>
+      </aside>
+    </div>
+
+    <footer class="page-footer site-crypto-footer">
+      <div class="crypto-footer-title">Support</div>
+      <div class="crypto-footer-grid">
+        <a class="crypto-card" href="bitcoin:bc1q6uz95a7j3c6z9a2vr7a447l6y74pzyaxmsm8dl" aria-label="Bitcoin donation address">
+          <img class="crypto-qr" src="assets/btc-qr.svg" alt="Bitcoin QR code" />
+          <span class="crypto-copy"><span class="crypto-name">Bitcoin</span><code class="crypto-address">bc1q6uz95a7j3c6z9a2vr7a447l6y74pzyaxmsm8dl</code></span>
+        </a>
+        <a class="crypto-card" href="ethereum:0xd4a297aA173F1251e517a394B313d5972E2150e3" aria-label="Ethereum donation address">
+          <img class="crypto-qr" src="assets/eth-qr.svg" alt="Ethereum QR code" />
+          <span class="crypto-copy"><span class="crypto-name">Ethereum</span><code class="crypto-address">0xd4a297aA173F1251e517a394B313d5972E2150e3</code></span>
+        </a>
+      </div>
+      <div class="crypto-footer-brand">Dolenthis</div>
+    </footer>
+  </main>
+  <script src="js/site.min.js" defer></script>
+</body>
+</html>
