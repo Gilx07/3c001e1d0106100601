@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests" />
   <meta name="referrer" content="no-referrer" />
   <meta name="theme-color" content="#070504" />
-  <meta name="description" content="PBGuard by Dolenthis — tool deteksi heuristik memori untuk riset keamanan software. Unduh versi terbaru v0.2.0." />
+  <meta name="description" content="PBGuard by Dolenthis — tool deteksi heuristik memori untuk riset keamanan software. Unduh versi terbaru v0.9.15." />
   <link rel="canonical" href="https://dolenthis.my.id/pbguard.html" />
   <meta property="og:title" content="PBGuard by Dolenthis" />
   <meta property="og:description" content="Tool deteksi heuristik memori untuk riset keamanan software — report-only, untuk tujuan edukasi." />
@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <title>PBGuard — Dolenthis</title>
   <link rel="stylesheet" href="css/site.min.css?v=20261001" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"PBGuard","applicationCategory":"SecurityApplication","operatingSystem":"Windows","offers":{"@type":"Offer","price":"0"},"author":{"@type":"Organization","name":"Dolenthis"},"softwareVersion":"0.2.0"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"PBGuard","applicationCategory":"SecurityApplication","operatingSystem":"Windows","offers":{"@type":"Offer","price":"0"},"author":{"@type":"Organization","name":"Dolenthis"},"softwareVersion":"0.9.15"}</script>
 </head>
 <body class="page-body">
   <header class="site-header" id="site-header">
@@ -48,20 +48,21 @@
     <div class="about-grid">
       <section class="about-panel">
         <h2>Unduh</h2>
-        <div class="about-item"><span class="about-label">Versi</span><span class="about-value">v0.2.0</span></div>
+        <div class="about-item"><span class="about-label">Versi</span><span class="about-value">v0.9.15</span></div>
         <div class="about-item"><span class="about-label">File</span><span class="about-value">PBGuard.exe</span></div>
-        <div class="about-item"><span class="about-label">Ukuran</span><span class="about-value">±7,3 MB</span></div>
+        <div class="about-item"><span class="about-label">Ukuran</span><span class="about-value">±11,2 MB</span></div>
         <div class="about-item"><span class="about-label">Sistem</span><span class="about-value">Windows</span></div>
-        <a class="dl-button" href="https://www.dropbox.com/scl/fi/092tnkcd7sp08z49qwpvs/PBGuard.exe?rlkey=jm3pyjwx54afmb6wxxtztx7ho&dl=1">Unduh PBGuard v0.2.0</a>
+        <a class="dl-button" href="pbguard/PBGuard.exe">Unduh PBGuard v0.9.15</a>
               </section>
 
       <aside class="about-panel about-note" aria-label="Fitur PBGuard">
-        <h2>Fitur v0.2.0</h2>
+        <h2>Fitur v0.9.15</h2>
         <ul>
-          <li>Deteksi thread injection</li>
-          <li>Deteksi region memori RWX</li>
-          <li>Pengecekan signature DLL</li>
-          <li>Pencarian string IOC</li>
+          <li>Database IOC cheat bertanda tangan digital, diperbarui otomatis</li>
+          <li>Heuristik memori: deteksi thread injection, region RWX, pengecekan signature DLL, pencarian string IOC</li>
+          <li>Log laporan bertanda tangan digital — perubahan di luar aplikasi akan ketahuan</li>
+          <li>Mode lockdown saat cheat terdeteksi: overlay peringatan + suara, pemindaian berhenti</li>
+          <li>Berbagi hasil pemeriksaan via ID Mesin + PIN (ringkasan saja)</li>
         </ul>
       </aside>
     </div>
