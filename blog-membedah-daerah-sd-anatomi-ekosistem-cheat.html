@@ -74,7 +74,6 @@
       <p>Tulisan ini membedah satu ekosistem distribusi cheat game Point Blank yang kami sebut <strong>"Daerah SD"</strong> — dua huruf yang cukup bagi yang tahu, dan cukup samar bagi yang tidak. Kebetulan yang pas: penyamaran adalah benang merah seluruh ekosistem ini — installer menyamar sebagai komponen Microsoft, "driver kernel" yang ternyata aplikasi user-mode biasa, hingga tool anti-forensik ber-timestamp tahun 2057.</p>
       <p>Analisis dilakukan <strong>murni statis</strong> — tidak satu pun file pernah dijalankan. Total 15+ artefak diperiksa dengan checklist berlapis: identifikasi file, header PE, strings &amp; metadata, hash, section &amp; entropy, digital signature, endpoint, mekanisme login, anti-debugging, pemetaan MITRE ATT&amp;CK, dan penilaian risiko. <strong>Seluruh artefak inti berverdict BERBAHAYA.</strong></p>
       <p>Temuan terbesarnya bukan satu file, melainkan <strong>arsitekturnya</strong>: rantai distribusi 5 tahap yang dirancang seperti operasi perangkat lunak komersial — ada installer, auto-update mandatory, API autentikasi, lisensi berbasis HWID, pembayaran via QRIS, sampai layanan anti-forensik untuk menghapus jejak. Ini bukan script iseng; ini <em>crimeware</em> yang dikelola serius.</p>
-      <p>---</p>
       <h2>1. Peta Rantai Distribusi</h2>
       <pre><code>[Installer NSIS ~80 MB]
         │  menyamar sebagai "Runtime Broker" / "Microsoft Corporation"
@@ -92,7 +91,6 @@
                                               aimbot, ESP, teleport,
                                               keylogger, curi HWID</code></pre>
       <p>Setiap tahap punya peran: installer menanam kaki, aplikasi mengatur distribusi, loader mengambil modul, injector menyuntik ke proses game, dan DLL adalah "otak" yang berjalan di dalam game. Ditambah satu komponen pendukung: <strong>tool anti-forensik</strong> untuk menghapus jejak instalasi.</p>
-      <p>---</p>
       <h2>2. Tahap 1 — Installer dan Aplikasi: Operasi Berbungkus Profesional</h2>
       <p>Pintu masuknya adalah installer <strong>NSIS 3.04</strong> berukuran ~80 MB. Yang langsung mencolok: seluruh identitasnya palsu.</p>
       <ul class="article-points">
@@ -108,7 +106,6 @@
         <li><strong>Modifikasi sistem agresif.</strong> Fitur "Advanced Services Optimizer" mengubah startup type <strong>100+ Windows services</strong> dengan dalih "gaming/low latency". Dari kacamata defensif, ini sudah masuk kategori <em>Impair Defenses</em> (T1562.001).</li>
       </ol>
       <p>Mekanisme <strong>auto-update bersifat mandatory</strong> via manifest JSON di layanan hosting kode publik, dengan beberapa mirror. Jalur update = jalur distribusi: siapa menguasai manifest, menguasai apa yang terinstal di ribuan mesin.</p>
-      <p>---</p>
       <h2>3. Tahap 2 — "Driver" yang Bukan Driver</h2>
       <p>Ini temuan paling elegan dari sisi analisis. Ekosistem ini mendistribusikan file bernama <code>Load.sys</code>, <code>Injek.sys</code>, dan <code>Loadmanual.sys</code> — diklaim sebagai <em>kernel driver</em> yang berjalan di ring-0. Klaim itu <strong>runtuh</strong> dalam lima pemeriksaan:</p>
       <ul class="article-points">
@@ -126,7 +123,6 @@
         <li><strong>Peran</strong> — Loader lokal — <strong>Downloader + injector</strong></li>
       </ul>
       <p>Varian terbaru mengunduh payload dari internet lalu menginjeksikannya — lompatan dari <em>loader</em> menjadi <em>dropper</em>. Satu catatan jujur: ada satu blob bernama <code>Loadmanual.sys</code> (38 KB, entropi 7,12, bukan PE valid) yang diduga sebagai <strong>payload terenkripsi custom</strong> — kemungkinan driver asli yang didekripsi di memori (<em>manual mapping</em>). Hipotesis ini belum bisa diverifikasi secara statis, dan justru di sinilah batas analisis statis berada.</p>
-      <p>---</p>
       <h2>4. Tahap 3 — Injector: Perlombaan Melawan Deteksi</h2>
       <p>Dua generasi injector ditemukan, dan perbandingannya adalah studi kasus evolusi evasion:</p>
       <ul class="article-points">
@@ -143,7 +139,6 @@
         <li><strong>Lisensi serial</strong> — validasi ke server, dengan pesan lokal berbahasa Indonesia.</li>
       </ul>
       <p>Pola ini penting untuk detection engineering: mendeteksi <em>teknik</em> (thread yang start address-nya di luar modul ter-load) lebih tahan lama daripada mendeteksi <em>nama file</em> — karena nama file dan API bisa berganti tiap generasi, tetapi pola injeksinya tetap.</p>
-      <p>---</p>
       <h2>5. Tahap 4 — Modul Cheat: "Otak" di Dalam Proses Game</h2>
       <p>DLL utama (~127 KB) adalah komponen paling "berdaging". Diinjeksikan ke <code>pointblank.exe</code>, ia berjalan <strong>di dalam</strong> proses game — sehingga tidak butuh <code>ReadProcessMemory</code>/<code>WriteProcessMemory</code>; ia mengakses memori game langsung via pointer.</p>
       <p>Dari strings-nya terbaca menu VIP lengkap berbahasa Indonesia: aimbot dengan lingkaran FOV, penghilang recoil horizontal/vertikal, speed hack, teleport (player, bom, smoke), fly hack, wallhack (<em>bug wall through</em>), ESP tulang, mode ghost, sampai <em>fake lag</em> (paksa disconnect saat terbunuh). Integrasinya dalam: mereferensikan class internal engine game (<code>BattleSlotContext</code>, <code>CGameCharaHUDContext</code>) dan me-render overlay via <strong>DirectX 9</strong> (<code>D3DXCreateFontA</code>) — wajar, game targetnya memang era DX9.</p>
@@ -154,7 +149,6 @@
         <li><strong>Satu aktor, banyak brand</strong> — PDB path yang bocor di binary menunjukkan <strong>satu codebase di-build menjadi 7 varian brand berbeda</strong>. Ini menjelaskan mengapa pola yang sama muncul di beberapa "produk" cheat yang terlihat bersaing: di hulu, mereka satu dapur.</li>
       </ol>
       <p>Nama internal DLL ini (<code>AgPerfMon.dll</code>) berbeda dari nama filenya — masquerading lagi, sampai ke level terkecil.</p>
-      <p>---</p>
       <h2>6. Komponen Pendukung — Tool Anti-Forensik</h2>
       <p>Temuan yang paling "gelap": sebuah tool .NET (~167 KB) yang bukan cheat, bukan loader — melainkan <strong>wiper anti-forensik</strong> dengan 58 method bernama <code>Clear*</code>:</p>
       <ul class="article-points">
@@ -166,7 +160,6 @@
       </ul>
       <p>Section <code>.text</code>-nya berflag <strong>RWX</strong> (writable+executable) — tidak wajar untuk .NET polos. Timestamp kompilasinya <strong>tahun 2057</strong> — palsu, pola khas untuk mengecoh analisis berbasis waktu. Version info-nya kembali memalsukan "Microsoft Corporation". Satu-satunya URL cleartext mengarah ke endpoint API baru di luar infrastruktur yang dikenal — indikasi evolusi atau pecahan distribusi.</p>
       <p>Tool seperti ini menjawab pertanyaan "bagaimana mereka bertahan": bukan hanya dengan menghindari deteksi, tetapi dengan <strong>menghapus bukti</strong> setelahnya.</p>
-      <p>---</p>
       <h2>7. Pola yang Berulang: Tanda Tangan Operasi</h2>
       <p>Dari 15+ artefak, lima pola muncul konsisten — inilah yang layak menjadi basis deteksi generik:</p>
       <ol class="article-points">
@@ -189,7 +182,6 @@
         <li><strong>Impact</strong> — T1070 Indicator Removal — 58 method <code>Clear*</code> tool anti-forensik</li>
         <li><strong>Impact</strong> — T1562.001 Impair Defenses — Utak-atik Defender, 100+ services diubah</li>
       </ul>
-      <p>---</p>
       <h2>8. Indikator Deteksi (IOC)</h2>
       <ul class="article-points">
         <li><strong>File</strong> — <code>Load.sys</code>, <code>Injek.sys</code>, <code>Loadmanual.sys</code>, <code>CBs.dll</code>, <code>InjectorV3.exe</code>, <code>Exclusive.exe</code>, <code>injektor.exe</code>, <code>kbthn.exe</code>, <code>elevate.exe</code>, <code>*.mentah</code></li>
@@ -202,7 +194,6 @@
         <li><strong>Perilaku</strong> — Thread di <code>pointblank.exe</code> dengan start address di luar modul ter-load; region <code>MEM_PRIVATE</code> berproteksi RWX; DLL unsigned ter-load di proses game</li>
       </ul>
       <p><em>(Hash tidak di-query ke VirusTotal pada saat analisis; nilai di atas untuk referensi threat intel manual.)</em></p>
-      <p>---</p>
       <h2>9. Rekomendasi</h2>
       <p><strong>Untuk pengguna:</strong></p>
       <ol class="article-points">
@@ -217,10 +208,8 @@
         <li>Waspadai proses bernama komponen Windows di lokasi yang salah — masquerading adalah pola termurah dan paling sering dipakai.</li>
       </ol>
       <p><strong>Untuk developer game:</strong> Rantai ini menunjukkan bahwa proteksi user-mode saja tidak cukup melawan operator yang berevolusi tiap beberapa bulan. Kombinasi deteksi behavioral + respons cepat terhadap varian baru lebih efektif daripada sekadar memblokir hash.</p>
-      <p>---</p>
       <h2>Keterbatasan</h2>
       <p>Seluruh analisis dalam tulisan ini bersifat <strong>statis</strong>. Perilaku runtime — urutan unduhan vs injeksi yang sebenarnya, isi payload terenkripsi <code>Loadmanual.sys</code>, handshake lisensi dengan backend — membutuhkan dynamic analysis di VM terisolasi dan belum dilakukan. Status infrastruktur dapat berubah sewaktu-waktu; beberapa endpoint yang tercatat hidup pada Oktober 2026 mungkin sudah mati saat Anda membaca ini.</p>
-      <p>---</p>
       <p><em>Dolenthis adalah media riset independen. Analisis seperti inilah yang menjadi basis data indikator tool deteksi kami — karena deteksi yang baik selalu dimulai dari pemahaman yang jujur tentang cara kerja penyerang.</em></p>
 
       <div class="article-contact-wrap"><a class="article-contact" href="https://wa.me/6285828310334" rel="noopener noreferrer">CONTACT</a></div>
