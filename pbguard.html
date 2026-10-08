@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests" />
   <meta name="referrer" content="no-referrer" />
   <meta name="theme-color" content="#070504" />
-  <meta name="description" content="PBGuard by Dolenthis — alat pendeteksi cheat Point Blank: memindai proses, file, dan memori, lalu menghasilkan laporan bertanda tangan digital yang dapat diverifikasi siapa pun. Unduh versi terbaru v0.9.16." />
+  <meta name="description" content="PBGuard by Dolenthis — alat pendeteksi cheat Point Blank: memindai proses, file, dan memori, lalu menghasilkan laporan bertanda tangan digital yang dapat diverifikasi siapa pun. Unduh versi terbaru v0.9.25." />
   <link rel="canonical" href="https://dolenthis.my.id/pbguard.html" />
   <meta property="og:title" content="PBGuard — Pendeteksi Cheat Point Blank untuk Windows" />
   <meta property="og:description" content="Pendeteksi cheat Point Blank berbasis laporan terverifikasi — periksa kebersihan mesinmu dan buktikan hasilnya dengan ID Mesin + PIN." />
@@ -23,8 +23,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <title>PBGuard — Pendeteksi Cheat Point Blank untuk Windows | Dolenthis</title>
   <link rel="stylesheet" href="css/site.min.css?v=20261001" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"PBGuard","applicationCategory":"SecurityApplication","operatingSystem":"Windows","offers":{"@type":"Offer","price":"0"},"author":{"@type":"Organization","name":"Dolenthis"},"softwareVersion":"0.9.16"}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Kenapa PBGuard harus dijalankan sebagai administrator?","acceptedAnswer":{"@type":"Answer","text":"Pemeriksaan proses dan memori sistem memerlukan hak akses administrator; tanpanya hasil pemeriksaan tidak lengkap."}},{"@type":"Question","name":"Kenapa menutup aplikasi PBGuard memerlukan konfirmasi?","acceptedAnswer":{"@type":"Answer","text":"Agar PBGuard tidak dapat dimatikan diam-diam, oleh cheat maupun oleh klik yang tidak disengaja, di tengah sesi yang sedang diverifikasi."}},{"@type":"Question","name":"Apakah PBGuard mengubah atau merusak berkas game?","acceptedAnswer":{"@type":"Answer","text":"Tidak. PBGuard hanya membaca dan melaporkan (report-only)."}},{"@type":"Question","name":"Bagaimana memastikan berkas unduhan PBGuard asli?","acceptedAnswer":{"@type":"Answer","text":"Cocokkan SHA-256 dengan nilai di panel Unduh halaman ini. Server PBGuard juga mengenali dan menandai status setiap versi resmi yang beredar."}},{"@type":"Question","name":"Sistem apa saja yang didukung PBGuard?","acceptedAnswer":{"@type":"Answer","text":"Windows 10 dan Windows 11 (64-bit)."}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"PBGuard","applicationCategory":"SecurityApplication","operatingSystem":"Windows","offers":{"@type":"Offer","price":"0"},"author":{"@type":"Organization","name":"Dolenthis"},"softwareVersion":"0.9.25"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Kenapa PBGuard harus dijalankan sebagai administrator?","acceptedAnswer":{"@type":"Answer","text":"Pemeriksaan proses dan memori sistem memerlukan hak akses administrator; tanpanya hasil pemeriksaan tidak lengkap."}},{"@type":"Question","name":"Kenapa menutup aplikasi PBGuard memerlukan konfirmasi?","acceptedAnswer":{"@type":"Answer","text":"Agar PBGuard tidak dapat dimatikan diam-diam, oleh cheat maupun oleh klik yang tidak disengaja, di tengah sesi yang sedang diverifikasi."}},{"@type":"Question","name":"Apakah PBGuard mengubah atau merusak berkas game?","acceptedAnswer":{"@type":"Answer","text":"Tidak. PBGuard hanya membaca dan melaporkan (report-only)."}},{"@type":"Question","name":"Apakah PBGuard bisa menghapus file cheat?","acceptedAnswer":{"@type":"Answer","text":"Tidak — PBGuard tidak pernah menghapus atau mengubah berkas. Membersihkan mesin adalah tindakan pemiliknya sendiri; ikuti panduan menghapus manual di halaman ini."}},{"@type":"Question","name":"Bagaimana memastikan berkas unduhan PBGuard asli?","acceptedAnswer":{"@type":"Answer","text":"Cocokkan SHA-256 dengan nilai di panel Unduh halaman ini. Server PBGuard juga mengenali dan menandai status setiap versi resmi yang beredar."}},{"@type":"Question","name":"Sistem apa saja yang didukung PBGuard?","acceptedAnswer":{"@type":"Answer","text":"Windows 10 dan Windows 11 (64-bit)."}}]}</script>
 </head>
 <body class="page-body">
   <header class="site-header" id="site-header">
@@ -49,23 +49,27 @@
     <div class="about-grid">
       <section class="about-panel">
         <h2>Unduh</h2>
-        <div class="about-item"><span class="about-label">Versi</span><span class="about-value">v0.9.16</span></div>
+        <div class="about-item"><span class="about-label">Versi</span><span class="about-value">v0.9.25</span></div>
         <div class="about-item"><span class="about-label">File</span><span class="about-value">PBGuard.exe</span></div>
-        <div class="about-item"><span class="about-label">Ukuran</span><span class="about-value">±16,3 MB</span></div>
-        <div class="about-item"><span class="about-label">SHA-256</span><span class="about-value">a4ae69152150438b<wbr>3ea8f34855fa8a46<wbr>d098d8f4acdb37d9<wbr>21f5632d434e8d7a</span></div>
+        <div class="about-item"><span class="about-label">Ukuran</span><span class="about-value">±16,8 MB</span></div>
+        <div class="about-item"><span class="about-label">SHA-256</span><span class="about-value">9cb55e9dac53b17a<wbr>f4ed009dddfa4b01<wbr>11de9a17a7b4e4bc<wbr>4457d272a402cf8a</span></div>
         <div class="about-item"><span class="about-label">Sistem</span><span class="about-value">Windows</span></div>
-        <a class="dl-button" href="pbguard/PBGuard.exe">Unduh PBGuard v0.9.16</a>
+        <a class="dl-button" href="pbguard/PBGuard.exe">Unduh PBGuard v0.9.25</a>
         <div><a class="dl-button" href="https://api.dolenthis.my.id/pbguard" target="_blank" rel="noopener">Periksa Laporan Mesin</a></div>
               </section>
 
       <aside class="about-panel about-note" aria-label="Fitur PBGuard">
-        <h2>Fitur v0.9.16</h2>
+        <h2>Fitur v0.9.25</h2>
         <ul>
           <li>Database IOC cheat bertanda tangan digital, diperbarui otomatis</li>
+          <li>Pindai Komputer dua mode — Cepat &amp; Menyeluruh (semua drive) — digerbang check-in server dan database terverifikasi</li>
           <li>Heuristik memori: deteksi thread injection, region RWX, pengecekan signature DLL, pencarian string IOC</li>
-          <li>Log laporan bertanda tangan digital — perubahan di luar aplikasi akan ketahuan</li>
+          <li>Room: ruang pantau pertandingan 2 tim + spectator — status semua pemain terlihat bersama, dikelola Room Owner</li>
+          <li>Log laporan bertanda tangan digital &amp; terenkripsi — perubahan di luar aplikasi akan ketahuan</li>
           <li>Mode lockdown saat cheat terdeteksi: overlay peringatan + suara, pemindaian berhenti</li>
-          <li>Berbagi hasil pemeriksaan via ID Mesin + PIN (ringkasan saja)</li>
+          <li>Berbagi hasil via ID Mesin + PIN (berganti tiap 1 jam) atau ID Privat Web untuk login 1-klik</li>
+          <li>Keadaan sesi terpantau: penutupan sah tercatat, penghentian paksa terlihat</li>
+          <li>Pembaruan otomatis ke versi resmi terbaru (terverifikasi hash)</li>
           <li>Vonis jujur saat database tidak termuat: "TIDAK DAPAT MEMUTUSKAN" — tidak pernah mengaku bersih tanpa indikator</li>
         </ul>
       </aside>
@@ -111,6 +115,22 @@
       </section>
     </div>
 
+    <section class="about-panel" id="panduan-hapus">
+      <h2>Bila PBGuard Menemukan Cheat — Panduan Menghapus Manual</h2>
+      <p>PBGuard tidak menghapus berkas apa pun. Pembersihan selalu merupakan keputusan dan tindakan pemilik mesin sendiri — berikut langkah-langkah amannya:</p>
+      <ol>
+        <li>Bila hasil pemeriksaan perlu dibuktikan ke pihak lain (panitia turnamen, pemilik warnet), catat dan bagikan dulu <strong>ID Mesin + PIN</strong> dari aplikasi sebelum membersihkan — setelah berkas dihapus, barang buktinya ikut hilang.</li>
+        <li>Tutup game dan program lain yang tidak diperlukan.</li>
+        <li>Untuk temuan berlabel <strong>mencurigakan</strong>, lokasi berkasnya ditampilkan penuh di PBGuard — gunakan tombol <em>Salin lokasi</em>, lalu tempel di bilah alamat File Explorer untuk membuka foldernya.</li>
+        <li>Untuk temuan berlabel <strong>PASTI</strong>, lokasi berkas sengaja tidak ditampilkan agar daftar indikator PBGuard tidak dapat dipetakan oleh pihak yang tidak berkepentingan. Cheat umumnya terpasang sebagai satu paket di foldernya sendiri — kenali dari program yang baru dipasang atau folder asing di sekitar folder game dan folder unduhan, lalu hapus paket/folder tersebut secara utuh.</li>
+        <li>Hapus berkas/folder cheat tersebut lewat File Explorer, lalu kosongkan Recycle Bin.</li>
+        <li>Berkas menolak dihapus karena sedang dipakai? Mulai ulang komputer ke <strong>Safe Mode</strong>, lalu ulangi penghapusannya dari sana.</li>
+        <li>Jangan menghapus berkas satu per satu di dalam folder Windows (misalnya System32) — berisiko merusak Windows. Bila ragu sebuah berkas itu cheat atau bukan, jangan dihapus.</li>
+        <li>Jalankan PBGuard kembali dan pindai sampai vonisnya <strong>BERSIH</strong>.</li>
+        <li>Masih ragu? Tanyakan dulu lewat tombol CONTACT di bagian bawah halaman ini sebelum menghapus apa pun.</li>
+      </ol>
+    </section>
+
     <div class="about-grid">
       <section class="about-panel">
         <h2>Privasi &amp; Data</h2>
@@ -137,6 +157,7 @@
         <li><strong>Kenapa harus dijalankan sebagai administrator?</strong> Pemeriksaan proses dan memori sistem memerlukan hak akses tersebut; tanpanya hasil pemeriksaan tidak lengkap.</li>
         <li><strong>Kenapa menutup aplikasi memerlukan konfirmasi?</strong> Agar PBGuard tidak dapat dimatikan diam-diam — oleh cheat maupun oleh klik yang tidak disengaja — di tengah sesi yang sedang diverifikasi.</li>
         <li><strong>Apakah PBGuard mengubah atau merusak berkas game?</strong> Tidak. PBGuard hanya membaca dan melaporkan.</li>
+        <li><strong>Apakah PBGuard bisa menghapus file cheat?</strong> Tidak — PBGuard tidak pernah menghapus atau mengubah berkas. Membersihkan mesin adalah tindakan pemiliknya sendiri; ikuti <a href="#panduan-hapus">panduan menghapus manual</a>.</li>
         <li><strong>Bagaimana memastikan berkas unduhan ini asli?</strong> Cocokkan SHA-256 dengan nilai di panel Unduh. Server PBGuard juga mengenali dan menandai status setiap versi resmi yang beredar.</li>
         <li><strong>Sistem apa saja yang didukung?</strong> Windows 10 dan Windows 11 (64-bit).</li>
       </ul>
