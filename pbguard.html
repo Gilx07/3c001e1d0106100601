@@ -6,16 +6,16 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests" />
   <meta name="referrer" content="no-referrer" />
   <meta name="theme-color" content="#070504" />
-  <meta name="description" content="PBGuard by Dolenthis — tool deteksi heuristik memori untuk riset keamanan software. Unduh versi terbaru v0.9.15." />
+  <meta name="description" content="PBGuard by Dolenthis — alat pendeteksi cheat Point Blank: memindai proses, file, dan memori, lalu menghasilkan laporan bertanda tangan digital yang dapat diverifikasi siapa pun. Unduh versi terbaru v0.9.15." />
   <link rel="canonical" href="https://dolenthis.my.id/pbguard.html" />
   <meta property="og:title" content="PBGuard by Dolenthis" />
-  <meta property="og:description" content="Tool deteksi heuristik memori untuk riset keamanan software — report-only, untuk tujuan edukasi." />
+  <meta property="og:description" content="Pendeteksi cheat Point Blank berbasis laporan terverifikasi — periksa kebersihan mesinmu dan buktikan hasilnya dengan ID Mesin + PIN." />
   <meta property="og:url" content="https://dolenthis.my.id/pbguard.html" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://dolenthis.my.id/assets/IMG_3190.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="PBGuard by Dolenthis" />
-  <meta name="twitter:description" content="Tool deteksi heuristik memori untuk riset keamanan software — report-only, untuk tujuan edukasi." />
+  <meta name="twitter:description" content="Pendeteksi cheat Point Blank berbasis laporan terverifikasi — periksa kebersihan mesinmu dan buktikan hasilnya dengan ID Mesin + PIN." />
   <meta name="twitter:image" content="https://dolenthis.my.id/assets/IMG_3190.png" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="manifest" href="site.webmanifest" />
@@ -42,7 +42,7 @@
   <main class="page-shell">
     <p class="page-kicker">Dolenthis</p>
     <h1 class="page-title">PBGuard</h1>
-    <p class="page-lead">Tool deteksi heuristik memori untuk riset keamanan software — by Dolenthis.</p>
+    <p class="page-lead">Pendeteksi cheat Point Blank berbasis laporan terverifikasi — periksa kebersihan mesinmu, dan buktikan hasilnya ke siapa pun.</p>
     <div class="page-rule"></div>
 
     <div class="about-grid">
@@ -68,6 +68,77 @@
         </ul>
       </aside>
     </div>
+
+    <div class="about-grid">
+      <section class="about-panel">
+        <h2>Untuk Apa PBGuard</h2>
+        <p>PBGuard dibuat untuk satu hal: membantu membuktikan bahwa sebuah mesin bersih dari cheat saat bermain Point Blank. Di komunitas dan turnamen, tuduhan memakai cheat sering berakhir sebagai perdebatan tanpa bukti. PBGuard memberikan bukti yang dapat diperiksa: pemeriksaan dijalankan di mesin pemain, hasilnya dicatat dalam laporan berintegritas yang tidak dapat diubah diam-diam setelah dibuat, dan ringkasannya dapat diverifikasi oleh pihak lain.</p>
+        <p>PBGuard bersifat <strong>report-only</strong> — ia mendeteksi dan melaporkan. Ia tidak memblokir pemain, tidak menghapus berkas, dan tidak mengubah berkas game.</p>
+      </section>
+
+      <section class="about-panel">
+        <h2>Cara Kerja</h2>
+        <p>Selama berjalan, PBGuard memeriksa proses yang aktif, berkas, dan memori program dengan dua lapis pendekatan:</p>
+        <ul>
+          <li><strong>Pencocokan indikator dikenal</strong> — database indikator cheat yang diperbarui berkala dari server dan diverifikasi tanda tangan digitalnya sebelum dipakai; tersedia juga salinan cadangan di dalam aplikasi untuk pemakaian luring.</li>
+          <li><strong>Pemeriksaan heuristik</strong> — perilaku yang lazim dipakai cheat untuk menyuntikkan diri ke proses game diperiksa secara mandiri dari database.</li>
+        </ul>
+        <p>Setiap hasil pemeriksaan disimpan sebagai laporan bertanda tangan digital yang integritasnya dipantau terus selama aplikasi berjalan, dan dikirim ke server PBGuard agar dapat diperiksa kembali. Bila ditemukan cheat yang teridentifikasi secara pasti, PBGuard menampilkan peringatan layar penuh. Temuan yang sifatnya dugaan ditandai <strong>mencurigakan</strong> dan tetap memerlukan peninjauan manusia — bukan vonis.</p>
+      </section>
+    </div>
+
+    <div class="about-grid">
+      <section class="about-panel">
+        <h2>Cara Menggunakan</h2>
+        <ol>
+          <li>Unduh <strong>PBGuard.exe</strong> dari halaman ini, lalu cocokkan nilai SHA-256-nya dengan yang tercantum di panel Unduh.</li>
+          <li>Jalankan sebagai administrator (klik kanan berkasnya, pilih <em>Run as administrator</em>) dan setujui permintaan izin yang muncul.</li>
+          <li>Biarkan PBGuard berjalan selama kamu bermain — pemeriksaan berlangsung berkala di latar belakang.</li>
+          <li>Bila diminta membuktikan hasilmu, tunjukkan <strong>ID Mesin</strong> dan <strong>PIN</strong> dari aplikasi kepada pihak yang memeriksa. Mereka dapat melihat ringkasan hasil pemeriksaanmu lewat tombol <em>Periksa Laporan Mesin</em> di halaman ini.</li>
+          <li>Untuk menutup, gunakan tombol tutup di aplikasi dan ikuti konfirmasi yang muncul.</li>
+        </ol>
+      </section>
+
+      <section class="about-panel">
+        <h2>Manfaat</h2>
+        <ul>
+          <li><strong>Bagi pemain</strong> — bukti kebersihan mesin yang dapat ditunjukkan saat dituduh memakai cheat, tanpa harus membagikan isi komputer.</li>
+          <li><strong>Bagi panitia turnamen &amp; komunitas</strong> — cara yang seragam untuk memeriksa peserta: cukup ID Mesin + PIN, tanpa memasang perangkat lunak tambahan dan tanpa meminta akses ke mesin pemain.</li>
+          <li><strong>Bagi pemilik warnet &amp; lab</strong> — pemeriksaan berkala atas banyak mesin dengan hasil yang konsisten dan tercatat.</li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="about-grid">
+      <section class="about-panel">
+        <h2>Privasi &amp; Data</h2>
+        <ul>
+          <li>Laporan berisi hasil pemeriksaan, versi Windows, dan ID Mesin acak yang dibuat per pemasangan — bukan akun, bukan nama, dan bukan data pribadi.</li>
+          <li>PBGuard tidak membaca, mengunggah, atau membagikan berkas pribadi, dokumen, foto, maupun riwayat penjelajahan.</li>
+          <li>Yang dapat dilihat orang lain lewat ID Mesin + PIN hanyalah ringkasan hasil pemeriksaan. Detail teknis temuan sengaja tidak ditampilkan pada ringkasan publik.</li>
+        </ul>
+      </section>
+
+      <section class="about-panel">
+        <h2>Keterbatasan</h2>
+        <ul>
+          <li>PBGuard mendeteksi cheat yang dikenal dan perilaku yang mencurigakan. Cheat yang benar-benar baru bisa saja belum terdeteksi — hasil bersih berarti tidak ditemukan indikator yang dikenal pada saat pemeriksaan berlangsung.</li>
+          <li>Temuan berlabel mencurigakan adalah dugaan awal untuk ditinjau, bukan bukti final.</li>
+          <li>PBGuard adalah proyek independen Dolenthis dan bukan anti-cheat resmi dari penerbit game.</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="about-panel">
+      <h2>Pertanyaan Umum</h2>
+      <ul>
+        <li><strong>Kenapa harus dijalankan sebagai administrator?</strong> Pemeriksaan proses dan memori sistem memerlukan hak akses tersebut; tanpanya hasil pemeriksaan tidak lengkap.</li>
+        <li><strong>Kenapa menutup aplikasi memerlukan konfirmasi?</strong> Agar PBGuard tidak dapat dimatikan diam-diam — oleh cheat maupun oleh klik yang tidak disengaja — di tengah sesi yang sedang diverifikasi.</li>
+        <li><strong>Apakah PBGuard mengubah atau merusak berkas game?</strong> Tidak. PBGuard hanya membaca dan melaporkan.</li>
+        <li><strong>Bagaimana memastikan berkas unduhan ini asli?</strong> Cocokkan SHA-256 dengan nilai di panel Unduh. Server PBGuard juga mengenali dan menandai status setiap versi resmi yang beredar.</li>
+        <li><strong>Sistem apa saja yang didukung?</strong> Windows 10 dan Windows 11 (64-bit).</li>
+      </ul>
+    </section>
 
     <footer class="page-footer site-crypto-footer">
       <div class="crypto-footer-title">Support</div>
