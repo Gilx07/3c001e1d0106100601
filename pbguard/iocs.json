@@ -2,7 +2,7 @@
   "meta": {
     "generated": "2026-10-08",
     "purpose": "Indikator untuk software anti-cheat / pendeteksi cheat game Point Blank",
-    "source_note": "Diekstrak dari laporan analisa statis di folder 'Analisa Binary' repo muse-vermillion (29 file laporan: 5 dokumen utama + 24 analisa payload). Sitasi per family memakai nama file sumber. Laporan ALLVERSION.md tidak usable (file EXE yang dianalisa terpotong ~44%, tidak ada IOC perilaku yang bisa diambil). Update 2026-10-08: ditambah 41 hash khas ekosistem dari analisa batch owamaew (5 laporan batch atas 62 varian baru) ke family samarinda; 21 file pihak ketiga yang sah (pustaka UI, runtime Microsoft, perangkat sah, arsip bundel) sengaja TIDAK dimasukkan agar tidak menimbulkan false positive.",
+    "source_note": "Diekstrak dari laporan analisa statis di folder 'Analisa Binary' repo muse-vermillion (29 file laporan: 5 dokumen utama + 24 analisa payload). Sitasi per family memakai nama file sumber. Laporan ALLVERSION.md tidak usable (file EXE yang dianalisa terpotong ~44%, tidak ada IOC perilaku yang bisa diambil). Update 2026-10-08: ditambah 41 hash khas ekosistem dari analisa batch owamaew (5 laporan batch atas 62 varian baru) ke family samarinda; 21 file pihak ketiga yang sah (pustaka UI, runtime Microsoft, perangkat sah, arsip bundel) sengaja TIDAK dimasukkan agar tidak menimbulkan false positive. Update lanjutan 2026-10-08: ekstraksi V2VIPMANUAL.zip menambah 4 hash varian paket manual (Load.sys, Ngopi.dll, Loader Samarinda.exe, pe.dll) ke family samarinda; jamu.zip terbukti hanya berisi DLL pendukung generik dan kedua arsip runtime hanya komponen Microsoft asli, jadi tidak ada tambahan dari ketiganya.",
     "no_mutex_observed": "Tidak satu pun dari 29 laporan menyebut nama mutex — kolom mutexes kosong di semua family."
   },
   "families": [
@@ -669,6 +669,38 @@
           ],
           "size_bytes": 162304,
           "sha256": "98bb49d2bc604499502a0451be908d32b5cd1e773afb7c64cf0b6903fdc5c192"
+        },
+        {
+          "name": "Load.sys",
+          "known_paths": [
+            "paket V2VIPMANUAL.zip (folder 'Cheat VIP Versi 2 Manual')"
+          ],
+          "size_bytes": 35328,
+          "sha256": "440868397ce71d03ed96c60d0d99b03898873c0907c35a5c50103d0689b8f4c4"
+        },
+        {
+          "name": "Ngopi.dll",
+          "known_paths": [
+            "paket V2VIPMANUAL.zip (folder 'Cheat VIP Versi 2 Manual')"
+          ],
+          "size_bytes": 829440,
+          "sha256": "f7ed6f3615d291d8f9bde7b6f38bb5f21652583acfadfdd13d8461ee15b8ee94"
+        },
+        {
+          "name": "Loader Samarinda.exe",
+          "known_paths": [
+            "paket V2VIPMANUAL.zip (folder 'Cheat VIP Versi 2 Manual')"
+          ],
+          "size_bytes": 68096,
+          "sha256": "c13cdc3084e745b44e6607b8b1a8ef9a5ad4557ee6424db2367d00feb53a1164"
+        },
+        {
+          "name": "pe.dll",
+          "known_paths": [
+            "paket V2VIPMANUAL.zip (folder 'Cheat VIP Versi 2 Manual')"
+          ],
+          "size_bytes": 9216,
+          "sha256": "c5eb85cdf9aea9181c8c68869be11b2bf57d74192e53977f81f76e2145f05988"
         }
       ],
       "processes": [
