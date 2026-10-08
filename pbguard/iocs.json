@@ -1,38 +1,146 @@
 {
   "meta": {
-    "generated": "2026-10-01",
+    "generated": "2026-10-08",
     "purpose": "Indikator untuk software anti-cheat / pendeteksi cheat game Point Blank",
-    "source_note": "Diekstrak dari laporan analisa statis di folder 'Analisa Binary' repo muse-vermillion (29 file laporan: 5 dokumen utama + 24 analisa payload). Sitasi per family memakai nama file sumber. Laporan ALLVERSION.md tidak usable (file EXE yang dianalisa terpotong ~44%, tidak ada IOC perilaku yang bisa diambil).",
+    "source_note": "Diekstrak dari laporan analisa statis di folder 'Analisa Binary' repo muse-vermillion (29 file laporan: 5 dokumen utama + 24 analisa payload). Sitasi per family memakai nama file sumber. Laporan ALLVERSION.md tidak usable (file EXE yang dianalisa terpotong ~44%, tidak ada IOC perilaku yang bisa diambil). Update 2026-10-08: ditambah 41 hash khas ekosistem dari analisa batch owamaew (5 laporan batch atas 62 varian baru) ke family samarinda; 21 file pihak ketiga yang sah (pustaka UI, runtime Microsoft, perangkat sah, arsip bundel) sengaja TIDAK dimasukkan agar tidak menimbulkan false positive.",
     "no_mutex_observed": "Tidak satu pun dari 29 laporan menyebut nama mutex — kolom mutexes kosong di semua family."
   },
   "families": [
     {
       "name": "csprha",
-      "aliases": ["CsprHA 2.5 Rev 2"],
+      "aliases": [
+        "CsprHA 2.5 Rev 2"
+      ],
       "verdict": "malicious — cheat loader family (Point Blank)",
       "description": "Paket cheat Point Blank berbahasa Indonesia: Buka.exe sebagai launcher/staging, Load.sys sebagai downloader+injector user-mode yang menyamar sebagai driver, dan CheckSerial.exe sebagai HWID dumper 'Bypass Tsugu' milik developer AFI. Semua biner native MSVC 2010, unsigned, tanpa packer.",
       "files": [
-        {"name": "Buka.exe", "known_paths": ["%TEMP%\\<13-char dari alfabet '0123'>\\"], "size_bytes": 58880, "sha256": "e0136c3882bd997bc55491fc7f9c1ba9dcedf208c1e8406142c609e000e7da68"},
-        {"name": "Load.sys", "known_paths": [], "size_bytes": 76288, "sha256": "21f201efe2581bae25476cf5f00f0f6300afcd2af7e21d5f2ec6afb1527b63c2"},
-        {"name": "CheckSerial.exe", "known_paths": [], "size_bytes": 36864, "sha256": "d445129b844d4f1d14740204e7d3fc89c9940824227b57fd1f2cb6e7a4555a85"},
-        {"name": "Load.mentah", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "Ngopi.mentah", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "pe.mentah", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "Ngopi.dll", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "pe.dll", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "Serial.txt", "known_paths": ["<direktori kerja CheckSerial.exe>"], "size_bytes": null, "sha256": null}
+        {
+          "name": "Buka.exe",
+          "known_paths": [
+            "%TEMP%\\<13-char dari alfabet '0123'>\\"
+          ],
+          "size_bytes": 58880,
+          "sha256": "e0136c3882bd997bc55491fc7f9c1ba9dcedf208c1e8406142c609e000e7da68"
+        },
+        {
+          "name": "Load.sys",
+          "known_paths": [],
+          "size_bytes": 76288,
+          "sha256": "21f201efe2581bae25476cf5f00f0f6300afcd2af7e21d5f2ec6afb1527b63c2"
+        },
+        {
+          "name": "CheckSerial.exe",
+          "known_paths": [],
+          "size_bytes": 36864,
+          "sha256": "d445129b844d4f1d14740204e7d3fc89c9940824227b57fd1f2cb6e7a4555a85"
+        },
+        {
+          "name": "Load.mentah",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "Ngopi.mentah",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "pe.mentah",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "Ngopi.dll",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "pe.dll",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "Serial.txt",
+          "known_paths": [
+            "<direktori kerja CheckSerial.exe>"
+          ],
+          "size_bytes": null,
+          "sha256": null
+        }
       ],
-      "processes": ["Notepad.exe", "Buka.exe", "Load.sys", "CheckSerial.exe"],
+      "processes": [
+        "Notepad.exe",
+        "Buka.exe",
+        "Load.sys",
+        "CheckSerial.exe"
+      ],
       "window_titles": [],
       "mutexes": [],
       "registry_keys": [],
       "services_drivers": [],
       "network_endpoints": [],
       "behaviors": [
-        {"technique": "File joiner / staging dropper lokal", "mitre_id": "T1027", "api_calls": ["GetTempPathA", "CreateDirectoryA", "CopyFileA", "rename", "fopen(r+)", "fseek(SEEK_END)", "fwrite", "ShellExecuteA(open,SW_SHOWNORMAL)"], "description": "Buka.exe membuat direktori staging acak %TEMP%\\<13 char 0-3>, menyalin Load.sys, me-rename Load.mentah/Ngopi.mentah/pe.mentah menjadi ekstensi asli, meng-append data ke file, men-deploy 6 DLL CRT, lalu mengeksekusi via ShellExecuteA. (sumber: Buka-analisa.md, Buka-deep-analisa.md)"},
-        {"technique": "HWID/serial dumper (skema lisensi)", "mitre_id": "T1082", "api_calls": ["GetUserNameA", "GetComputerNameA", "GetVolumeInformationA(C:\\, volume serial)", "ShellExecuteA(open,Notepad.exe,Serial.txt)"], "description": "CheckSerial.exe menghitung serial = checksum8(username)+checksum8(computername)+volume serial C:\\, mencetak 'Serial 1 : <serial>', menyimpan ke Serial.txt, membukanya di Notepad. Tidak ada baca disk fisik (SMART IOCTL dihapus vs build lama). (sumber: CheckSerial-analisa.md)"},
-        {"technique": "HTTP downloader + process injection (masquerading)", "mitre_id": "T1105,T1055", "api_calls": ["InternetOpenA", "InternetConnectA", "HttpOpenRequestA", "HttpSendRequestA", "InternetReadFile", "CreateToolhelp32Snapshot", "Process32FirstW", "Process32NextW", "OpenProcess", "VirtualAllocEx", "WriteProcessMemory", "GetCurrentHwProfileA", "IsDebuggerPresent", "system"], "description": "Load.sys (subsystem CONSOLE, bukan driver NATIVE — ekstensi .sys adalah masquerading) mengunduh payload via WinINet dan menginjeksi ke proses lain via OpenProcess/VirtualAllocEx/WriteProcessMemory. URL di-deobfuskasi saat runtime dari tabel .rdata berkunci (hanya prefix http:// dan https:// terlihat plaintext). Fungsional identik dengan Load.sys SaMarinDa V2VIP (diff 0,57%: key material 20-byte di offset 0xDB98). (sumber: Load-sys-analisa.md)"},
-        {"technique": "Debugger evasion saat startup", "mitre_id": "T1622", "api_calls": ["IsDebuggerPresent", "TerminateProcess(0xC0000409)"], "description": "CheckSerial.exe: IsDebuggerPresent di kode startup → TerminateProcess bila di-debug (identik dengan build lama Sumatracit). Buka.exe: satu-satunya IsDebuggerPresent ada di __report_gsfailure (bukan anti-debug deliberat); koleksi HWID-nya adalah dead code. (sumber: CheckSerial-analisa.md, Buka-deep-analisa.md)"}
+        {
+          "technique": "File joiner / staging dropper lokal",
+          "mitre_id": "T1027",
+          "api_calls": [
+            "GetTempPathA",
+            "CreateDirectoryA",
+            "CopyFileA",
+            "rename",
+            "fopen(r+)",
+            "fseek(SEEK_END)",
+            "fwrite",
+            "ShellExecuteA(open,SW_SHOWNORMAL)"
+          ],
+          "description": "Buka.exe membuat direktori staging acak %TEMP%\\<13 char 0-3>, menyalin Load.sys, me-rename Load.mentah/Ngopi.mentah/pe.mentah menjadi ekstensi asli, meng-append data ke file, men-deploy 6 DLL CRT, lalu mengeksekusi via ShellExecuteA. (sumber: Buka-analisa.md, Buka-deep-analisa.md)"
+        },
+        {
+          "technique": "HWID/serial dumper (skema lisensi)",
+          "mitre_id": "T1082",
+          "api_calls": [
+            "GetUserNameA",
+            "GetComputerNameA",
+            "GetVolumeInformationA(C:\\, volume serial)",
+            "ShellExecuteA(open,Notepad.exe,Serial.txt)"
+          ],
+          "description": "CheckSerial.exe menghitung serial = checksum8(username)+checksum8(computername)+volume serial C:\\, mencetak 'Serial 1 : <serial>', menyimpan ke Serial.txt, membukanya di Notepad. Tidak ada baca disk fisik (SMART IOCTL dihapus vs build lama). (sumber: CheckSerial-analisa.md)"
+        },
+        {
+          "technique": "HTTP downloader + process injection (masquerading)",
+          "mitre_id": "T1105,T1055",
+          "api_calls": [
+            "InternetOpenA",
+            "InternetConnectA",
+            "HttpOpenRequestA",
+            "HttpSendRequestA",
+            "InternetReadFile",
+            "CreateToolhelp32Snapshot",
+            "Process32FirstW",
+            "Process32NextW",
+            "OpenProcess",
+            "VirtualAllocEx",
+            "WriteProcessMemory",
+            "GetCurrentHwProfileA",
+            "IsDebuggerPresent",
+            "system"
+          ],
+          "description": "Load.sys (subsystem CONSOLE, bukan driver NATIVE — ekstensi .sys adalah masquerading) mengunduh payload via WinINet dan menginjeksi ke proses lain via OpenProcess/VirtualAllocEx/WriteProcessMemory. URL di-deobfuskasi saat runtime dari tabel .rdata berkunci (hanya prefix http:// dan https:// terlihat plaintext). Fungsional identik dengan Load.sys SaMarinDa V2VIP (diff 0,57%: key material 20-byte di offset 0xDB98). (sumber: Load-sys-analisa.md)"
+        },
+        {
+          "technique": "Debugger evasion saat startup",
+          "mitre_id": "T1622",
+          "api_calls": [
+            "IsDebuggerPresent",
+            "TerminateProcess(0xC0000409)"
+          ],
+          "description": "CheckSerial.exe: IsDebuggerPresent di kode startup → TerminateProcess bila di-debug (identik dengan build lama Sumatracit). Buka.exe: satu-satunya IsDebuggerPresent ada di __report_gsfailure (bukan anti-debug deliberat); koleksi HWID-nya adalah dead code. (sumber: CheckSerial-analisa.md, Buka-deep-analisa.md)"
+        }
       ],
       "detection_strings": [
         "Serial 1 : ",
@@ -55,37 +163,538 @@
     },
     {
       "name": "samarinda",
-      "aliases": ["SaMarinDa UI", "VIP Exclusive", "Samarinda Exclusive", "VIP Samarinda", "VIP SuMatra Cheat", "VIP CASPER", "VIP GAMING", "VIP EGN", "JBC VVIP", "runtime-broker-service"],
+      "aliases": [
+        "SaMarinDa UI",
+        "VIP Exclusive",
+        "Samarinda Exclusive",
+        "VIP Samarinda",
+        "VIP SuMatra Cheat",
+        "VIP CASPER",
+        "VIP GAMING",
+        "VIP EGN",
+        "JBC VVIP",
+        "runtime-broker-service"
+      ],
       "verdict": "BERBAHAYA",
       "description": "Keluarga cheat game Point Blank asal Indonesia dengan rantai distribusi lengkap: downloader/auto-updater multi-mirror, DLL injector (CreateRemoteThread dan varian stealth NtCreateThreadEx), payload cheat CBs.dll (aimbot/ESP/teleport/keylogger), executable '.sys' palsu yang menyamar sebagai driver, serta backend lisensi HWID. Semua binary unsigned dan memakai masquerading 'Runtime Broker'/'Microsoft Corporation' (sumber: 13 laporan analisa statis, 2026-10-01).",
       "files": [
-        {"name": "SaMarinDaUI.exe", "known_paths": ["%TEMP% (file hasil unduhan dipindah dari temp lalu dijalankan via RunExecutable)"], "size_bytes": 22528, "sha256": "d197c7226be8a9d9636be27bcf2aa384f3bb7ca08504348624d7188a17fa0d9f"},
-        {"name": "SaMarinDa-UI-3.1.24.exe", "known_paths": [], "size_bytes": 84195113, "sha256": "a3d6b736fdac64f51a27ba97f57cc5b5e2a227f77a12e8307c9735719cfa203c"},
-        {"name": "Runtime Broker.exe", "known_paths": ["resources/Runtime Broker.exe (di dalam installer SaMarinDa-UI-3.1.24.exe)"], "size_bytes": 181031424, "sha256": "084d64dbe0ea8a5aa9bcdf8208e6a2abd846e252cddb45c8fc3d6d9717b9c58f"},
-        {"name": "elevate.exe", "known_paths": ["resources/elevate.exe (di dalam installer SaMarinDa-UI-3.1.24.exe)"], "size_bytes": 107520, "sha256": "9b1fbf0c11c520ae714af8aa9af12cfd48503eedecd7398d8992ee94d1b4dc37"},
-        {"name": "Uninstall Runtime Broker.exe", "known_paths": ["$R0/Uninstall Runtime Broker.exe (di dalam installer)"], "size_bytes": 226977, "sha256": "7b6f3f8859c6568ab1b73eec561dbe09143969f5665df3094a131f0ff0a045a1"},
-        {"name": "app.asar", "known_paths": ["resources/app.asar (kode aplikasi Electron, 1647 file)"], "size_bytes": 15441675, "sha256": "25f906598d2a3fc57d7eb722d2cacfd442f11fc33d0349141f4e146a8f0d4506"},
-        {"name": "Windows7.exe", "known_paths": [], "size_bytes": 8232448, "sha256": "5f2814bfc4555af10c33ae0df09404244781474227a4ddd912c2331348519b98"},
-        {"name": "CBs.dll", "known_paths": [], "size_bytes": 127488, "sha256": "b2817b7ae3575b35a513e8840be99842f3ef6a27be4a1109c5559e2248a35b88"},
-        {"name": "injektor.exe", "known_paths": [], "size_bytes": 124416, "sha256": "f7a3c09c88613f63e0de3dda5686044d8d00ef197e77ad18f13c353a8fad4afc"},
-        {"name": "InjectorV3.exe", "known_paths": [], "size_bytes": 297472, "sha256": "5f5490363350f3dd27a4442e70e90c88f3e1a49942438810246d2738aaaef013"},
-        {"name": "kbthn.exe", "known_paths": [], "size_bytes": 1141248, "sha256": "56654941c21d21cc23c4352e8808fd73f0fcc1b45ae149af971030d17f33c021"},
-        {"name": "smd.exe", "known_paths": [], "size_bytes": 30208, "sha256": "9993f5cabf947c92611636cc87087a9bffede77b0bf3da4ca217720b4ce097b5"},
-        {"name": "Exclusive.exe", "known_paths": [], "size_bytes": 166912, "sha256": "03871ea7ed77468e760e3846238d89cea62d5fa507a1a65685032d1818c15795"},
-        {"name": "VIPExclusive.exe", "known_paths": ["%TEMP%\\Exclusive.exe (hasil unduhan tahap-2)"], "size_bytes": 12288, "sha256": "1314edb22931d4219f5a441f4f866cc54748a975e67da2d81b68609877647ef6"},
-        {"name": "Load.sys", "known_paths": [], "size_bytes": 76288, "sha256": "82a81effca92df3f591679bda4d4fc69153174f4bdd804ee223a1dc65009f35e"},
-        {"name": "Load_V42VIP.sys", "known_paths": [], "size_bytes": 32768, "sha256": "c79cab057c8fd59905e9d442d7ef5ed9f9374e5c267c005622cddaa9cef353b9"},
-        {"name": "Load_V368VIP.sys", "known_paths": [], "size_bytes": 32768, "sha256": "ef55beb829b8aa94dc73a341d74341ed3173a44ae5bb989a456ca70b0824c773"},
-        {"name": "Injek.sys", "known_paths": [], "size_bytes": 32256, "sha256": "11c0b7fe03644e534eea13faccf269a28ed95e93d34a8a9836bbe3d9b765d986"},
-        {"name": "Loadmanual.sys", "known_paths": [], "size_bytes": 38400, "sha256": "5258fe1b80392cb937cbe36812fabb6df6319609e4cc2eb5a650df0a78293f93"},
-        {"name": "Ngopi.dll", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "PBBasic.dll", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "Function.dll", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "CB.exe", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "SP.dll", "known_paths": [], "size_bytes": null, "sha256": null}
+        {
+          "name": "SaMarinDaUI.exe",
+          "known_paths": [
+            "%TEMP% (file hasil unduhan dipindah dari temp lalu dijalankan via RunExecutable)"
+          ],
+          "size_bytes": 22528,
+          "sha256": "d197c7226be8a9d9636be27bcf2aa384f3bb7ca08504348624d7188a17fa0d9f"
+        },
+        {
+          "name": "SaMarinDa-UI-3.1.24.exe",
+          "known_paths": [],
+          "size_bytes": 84195113,
+          "sha256": "a3d6b736fdac64f51a27ba97f57cc5b5e2a227f77a12e8307c9735719cfa203c"
+        },
+        {
+          "name": "Runtime Broker.exe",
+          "known_paths": [
+            "resources/Runtime Broker.exe (di dalam installer SaMarinDa-UI-3.1.24.exe)"
+          ],
+          "size_bytes": 181031424,
+          "sha256": "084d64dbe0ea8a5aa9bcdf8208e6a2abd846e252cddb45c8fc3d6d9717b9c58f"
+        },
+        {
+          "name": "elevate.exe",
+          "known_paths": [
+            "resources/elevate.exe (di dalam installer SaMarinDa-UI-3.1.24.exe)"
+          ],
+          "size_bytes": 107520,
+          "sha256": "9b1fbf0c11c520ae714af8aa9af12cfd48503eedecd7398d8992ee94d1b4dc37"
+        },
+        {
+          "name": "Uninstall Runtime Broker.exe",
+          "known_paths": [
+            "$R0/Uninstall Runtime Broker.exe (di dalam installer)"
+          ],
+          "size_bytes": 226977,
+          "sha256": "7b6f3f8859c6568ab1b73eec561dbe09143969f5665df3094a131f0ff0a045a1"
+        },
+        {
+          "name": "app.asar",
+          "known_paths": [
+            "resources/app.asar (kode aplikasi Electron, 1647 file)"
+          ],
+          "size_bytes": 15441675,
+          "sha256": "25f906598d2a3fc57d7eb722d2cacfd442f11fc33d0349141f4e146a8f0d4506"
+        },
+        {
+          "name": "Windows7.exe",
+          "known_paths": [],
+          "size_bytes": 8232448,
+          "sha256": "5f2814bfc4555af10c33ae0df09404244781474227a4ddd912c2331348519b98"
+        },
+        {
+          "name": "CBs.dll",
+          "known_paths": [],
+          "size_bytes": 127488,
+          "sha256": "b2817b7ae3575b35a513e8840be99842f3ef6a27be4a1109c5559e2248a35b88"
+        },
+        {
+          "name": "injektor.exe",
+          "known_paths": [],
+          "size_bytes": 124416,
+          "sha256": "f7a3c09c88613f63e0de3dda5686044d8d00ef197e77ad18f13c353a8fad4afc"
+        },
+        {
+          "name": "InjectorV3.exe",
+          "known_paths": [],
+          "size_bytes": 297472,
+          "sha256": "5f5490363350f3dd27a4442e70e90c88f3e1a49942438810246d2738aaaef013"
+        },
+        {
+          "name": "kbthn.exe",
+          "known_paths": [],
+          "size_bytes": 1141248,
+          "sha256": "56654941c21d21cc23c4352e8808fd73f0fcc1b45ae149af971030d17f33c021"
+        },
+        {
+          "name": "smd.exe",
+          "known_paths": [],
+          "size_bytes": 30208,
+          "sha256": "9993f5cabf947c92611636cc87087a9bffede77b0bf3da4ca217720b4ce097b5"
+        },
+        {
+          "name": "Exclusive.exe",
+          "known_paths": [],
+          "size_bytes": 166912,
+          "sha256": "03871ea7ed77468e760e3846238d89cea62d5fa507a1a65685032d1818c15795"
+        },
+        {
+          "name": "VIPExclusive.exe",
+          "known_paths": [
+            "%TEMP%\\Exclusive.exe (hasil unduhan tahap-2)"
+          ],
+          "size_bytes": 12288,
+          "sha256": "1314edb22931d4219f5a441f4f866cc54748a975e67da2d81b68609877647ef6"
+        },
+        {
+          "name": "Load.sys",
+          "known_paths": [],
+          "size_bytes": 76288,
+          "sha256": "82a81effca92df3f591679bda4d4fc69153174f4bdd804ee223a1dc65009f35e"
+        },
+        {
+          "name": "Load_V42VIP.sys",
+          "known_paths": [],
+          "size_bytes": 32768,
+          "sha256": "c79cab057c8fd59905e9d442d7ef5ed9f9374e5c267c005622cddaa9cef353b9"
+        },
+        {
+          "name": "Load_V368VIP.sys",
+          "known_paths": [],
+          "size_bytes": 32768,
+          "sha256": "ef55beb829b8aa94dc73a341d74341ed3173a44ae5bb989a456ca70b0824c773"
+        },
+        {
+          "name": "Injek.sys",
+          "known_paths": [],
+          "size_bytes": 32256,
+          "sha256": "11c0b7fe03644e534eea13faccf269a28ed95e93d34a8a9836bbe3d9b765d986"
+        },
+        {
+          "name": "Loadmanual.sys",
+          "known_paths": [],
+          "size_bytes": 38400,
+          "sha256": "5258fe1b80392cb937cbe36812fabb6df6319609e4cc2eb5a650df0a78293f93"
+        },
+        {
+          "name": "Ngopi.dll",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "PBBasic.dll",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "Function.dll",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "CB.exe",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "SP.dll",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "CBs.cbm",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V3VIP"
+          ],
+          "size_bytes": 37888,
+          "sha256": "fbf316e849a68e07f0c245aa24ad64823ae12bb1c566f2c51c14e0b50f12a55c"
+        },
+        {
+          "name": "CBs.dll",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V3VIP"
+          ],
+          "size_bytes": 146432,
+          "sha256": "18b45ea53977c23a1c39da5376dbef9639c160e6c3ae030b0b34e854d63610bd"
+        },
+        {
+          "name": "CBs.dll",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V1GRATIS"
+          ],
+          "size_bytes": 141824,
+          "sha256": "74572d3eeb5eee30965eaf752c6c4a1d2b9255e3d0cd011135590b27df6c4325"
+        },
+        {
+          "name": "cekserialv5.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V5VIP"
+          ],
+          "size_bytes": 54784,
+          "sha256": "1318cfac2dd97a741cdae192ed9b401c0f53889af5337789b7873ed38a466ea7"
+        },
+        {
+          "name": "checkserial.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V368VIP"
+          ],
+          "size_bytes": 41984,
+          "sha256": "2b193218eec44d7fb28342f223c5c50d4c36d30ee8e2aaa384c6864404a07b0a"
+        },
+        {
+          "name": "checkserial.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V1VIP",
+            "bundel rilis downloaderGUI/V3VIP"
+          ],
+          "size_bytes": 147968,
+          "sha256": "6a20c319a8f08419d80618cca82243185eae216f7b834c0d61acc95456effe09"
+        },
+        {
+          "name": "CheckSerial.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V2SIMPLE",
+            "bundel rilis downloaderGUI/V2SIMPLESEA",
+            "bundel rilis downloaderGUI/V2VIP",
+            "bundel rilis downloaderGUI/V2VIPSEA"
+          ],
+          "size_bytes": 53760,
+          "sha256": "d188dac4920d6c33d7768861a4a0a81909ca513b06c7f38dbfefeb1e4b381ef7"
+        },
+        {
+          "name": "Function.dll",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V42VIP"
+          ],
+          "size_bytes": 3756032,
+          "sha256": "0f362f5ffd35e23eff00a7a841e4de832b388a1c586285d8ca8ccebf59b06c00"
+        },
+        {
+          "name": "Function.dll",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V368VIP"
+          ],
+          "size_bytes": 3768832,
+          "sha256": "4236ed680b459808a0737984c756250c001074300e7883fb88f4e7d770410dbb"
+        },
+        {
+          "name": "Function.dll",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V42GRATIS"
+          ],
+          "size_bytes": 3709952,
+          "sha256": "53ee613e052754f67dfe964d6085c60218033057503d43282aaa13a8db6c99b6"
+        },
+        {
+          "name": "Function.dll",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V368GRATIS"
+          ],
+          "size_bytes": 3732992,
+          "sha256": "fd7258e8ab8b043454476d5f0242ed0412af54369fc597d1aa0c775f2a75b87a"
+        },
+        {
+          "name": "InjectorV1FREE.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V1GRATIS"
+          ],
+          "size_bytes": 300544,
+          "sha256": "8b87cda8b6c3145d0a86d18b2634319a238b45b51bfc3b2ae6d0796b825fd32a"
+        },
+        {
+          "name": "Load.sys",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V368GRATIS"
+          ],
+          "size_bytes": 77312,
+          "sha256": "39a7f7ec4e049e2e595282bafed0f1d7c370df8719a9eb5c853a18e0779a7b92"
+        },
+        {
+          "name": "Load.sys",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V2SIMPLE"
+          ],
+          "size_bytes": 69120,
+          "sha256": "4f9266b90bf3089c89688973f15ab38e8b06ff4390a4b66c49507d2a2c25ddff"
+        },
+        {
+          "name": "Load.sys",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V42GRATIS"
+          ],
+          "size_bytes": 78848,
+          "sha256": "56a671fbff33a779a1668c593273245c489dd87d3c7e52388ef469ecaf7ef76e"
+        },
+        {
+          "name": "Load.sys",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V2VIPSEA"
+          ],
+          "size_bytes": 76800,
+          "sha256": "8d9f72a1e022248aed6dbf0110c55a114656f4083e8da1923593baa6791d5000"
+        },
+        {
+          "name": "Load.sys",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V2SIMPLESEA"
+          ],
+          "size_bytes": 67072,
+          "sha256": "db4f7a552419b538b258f849d84f1dd356654a4fd8d62f95547922408af9d426"
+        },
+        {
+          "name": "LoaderSMD.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V368GRATIS"
+          ],
+          "size_bytes": 41984,
+          "sha256": "8ddea4685b1cf80d8dab7d0175f6f37b7730bb89d986cc05dae8d71fed499629"
+        },
+        {
+          "name": "LoaderSMD.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V2GRATIS"
+          ],
+          "size_bytes": 79360,
+          "sha256": "a6ae27e85442ed0314eb32b9250fb14b4a344463f24bc96f2ffb9e0a09776456"
+        },
+        {
+          "name": "LoaderSMD.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V42GRATIS"
+          ],
+          "size_bytes": 43520,
+          "sha256": "e76ab2faecadf6d7b91c77da3321b462017c474ed0ba7baf5b41259ee1ee10ba"
+        },
+        {
+          "name": "LoaderSMD_SEA.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V2GRATISSEA"
+          ],
+          "size_bytes": 79360,
+          "sha256": "ec797d34a14671d0377c3da36d1de2fe8f4e7e24c18120de1f838c8d5ca6e086"
+        },
+        {
+          "name": "loaderv1.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V1VIP"
+          ],
+          "size_bytes": 36352,
+          "sha256": "834db882ddd3bcdb72f34cd302fd71651aa60f24dc2b90277b00fc2f32cb97ee"
+        },
+        {
+          "name": "loaderv4.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V4VIP"
+          ],
+          "size_bytes": 17887744,
+          "sha256": "f03d0c516dbc9aeab4d8b93c0d5ec5f95da722109b99efa2cafb5713565badea"
+        },
+        {
+          "name": "macro.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/MACRO"
+          ],
+          "size_bytes": 3555840,
+          "sha256": "f117bb2021a0d1b09adb5cca0788b41e5afd9363b6a68255290721b89a862fa0"
+        },
+        {
+          "name": "manual.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V2VIP"
+          ],
+          "size_bytes": 75264,
+          "sha256": "a25c2f9fd8190b639015069cedde15250ac0f2d9227983431479a5a3ef4d5ed5"
+        },
+        {
+          "name": "manual.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V1VIP"
+          ],
+          "size_bytes": 24064,
+          "sha256": "daa473ce34b8afa5e4497c85b026086b60ffa2d5ae189841c946ded193a926ec"
+        },
+        {
+          "name": "Ngopi.dll",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V2VIP"
+          ],
+          "size_bytes": 825856,
+          "sha256": "8243fd440924d5276606cb72a15cfc11e54633010623fce8e1c75a83e85f24a2"
+        },
+        {
+          "name": "private368.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V368VIP"
+          ],
+          "size_bytes": 32256,
+          "sha256": "7214a275ae693fccfcec097000347c2ce92c4278d62be38e65e7d9d4d503d9f6"
+        },
+        {
+          "name": "privatev42.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V42VIP"
+          ],
+          "size_bytes": 34304,
+          "sha256": "d1f905b8f5e3a4b3be6baa278dfb2dc195dd8085671d78028b59300d1af36500"
+        },
+        {
+          "name": "SaMarinDa-UI-3.1.20.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V5"
+          ],
+          "size_bytes": 84194195,
+          "sha256": "98804ac736b73baf47e08bb5ee7c02b5c75cf57e7455028eb4b5866a8a149353"
+        },
+        {
+          "name": "SaMarinDa-UI-3.1.21.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V5"
+          ],
+          "size_bytes": 110261900,
+          "sha256": "ed6752bc7c3ba3c5a740f6955002faf7497e77cec11d4cc4bc08b9864f528939"
+        },
+        {
+          "name": "SaMarinDa-UI-3.1.22.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V5"
+          ],
+          "size_bytes": 84202868,
+          "sha256": "9717ed4758a447df582363f564a8183560448db715fc9da9480892f9dee4535a"
+        },
+        {
+          "name": "SaMarinDa-UI-3.1.23.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V5"
+          ],
+          "size_bytes": 84204874,
+          "sha256": "c86ceb29582a9d3c12d8e1228070ca3c754a8f31f426cf4c52300c13f5285e39"
+        },
+        {
+          "name": "SaMarinDaUI.exe",
+          "known_paths": [
+            "rilis SaMarinDaUI/production"
+          ],
+          "size_bytes": 13824,
+          "sha256": "4973d41b831cb86de6c21128de3b8712ab641585f19ce83f5ad4f10bcea68b1e"
+        },
+        {
+          "name": "sekrip.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/macroderas"
+          ],
+          "size_bytes": 104448,
+          "sha256": "c7d5cd9f5bc1ee3426dec503e5e019c505bd6ab0fed88f255dc3a6d9b0a4fb89"
+        },
+        {
+          "name": "simple.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V2SIMPLE",
+            "bundel rilis downloaderGUI/V2SIMPLESEA",
+            "bundel rilis downloaderGUI/V2VIP"
+          ],
+          "size_bytes": 58880,
+          "sha256": "4954fa1b96b3b6498860440f7d271417880ff24c6797c580558fd69fe2ff7b0f"
+        },
+        {
+          "name": "SmdLoaderSea.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V2VIPSEA"
+          ],
+          "size_bytes": 57856,
+          "sha256": "190679714525fcd8b5c023ce4e3a8d41f5b7f689a30862f0ede8bbb69b38436d"
+        },
+        {
+          "name": "SP.dll",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V368GRATIS",
+            "bundel rilis downloaderGUI/V42GRATIS",
+            "bundel rilis downloaderGUI/V42VIP"
+          ],
+          "size_bytes": 3610112,
+          "sha256": "b5dec2db1883c81bbbdbbe0cabf99898cb139b0f25e3ab310dca6843b44a360e"
+        },
+        {
+          "name": "SP.dll",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V368VIP"
+          ],
+          "size_bytes": 3613184,
+          "sha256": "f2775b392dcaa083ac2a5399116f44f160573e1b27a7e3c978f95654cae41f57"
+        },
+        {
+          "name": "therefor.exe",
+          "known_paths": [
+            "bundel rilis downloaderGUI/Exclusive"
+          ],
+          "size_bytes": 62976,
+          "sha256": "31532cdfb9c883b378fbf9da615330dad2bba1da599939138db293e28b8f0102"
+        },
+        {
+          "name": "v4v4v.dll",
+          "known_paths": [
+            "bundel rilis downloaderGUI/V4VIP"
+          ],
+          "size_bytes": 162304,
+          "sha256": "98bb49d2bc604499502a0451be908d32b5cd1e773afb7c64cf0b6903fdc5c192"
+        }
       ],
-      "processes": ["pointblank.exe", "PointBlank.exe", "Point Blank.exe", "Runtime Broker.exe", "Runtime-Broker.exe", "runtime-broker-service", "CB.exe", "obs64.exe", "obs32.exe", "streamlabs obs.exe"],
-      "window_titles": ["-= VIP MENU PRIVATE =-", "Hide/Show Menu Tekan [ INSERT ]", "-=[ VIP Samarinda ]=-", "-=[ VIP SuMatra Cheat ]=-", "-=[ VIP CASPER ]=-", "-=[ VIP GAMING ]=-", "-=[ VIP EGN ]=-", "-=[ JBC VVIP ]=-", "-=[ SAMARINDA EXCLUSIVE ]=-", "-=[ GAMING EXCLUSIVE ]=-"],
+      "processes": [
+        "pointblank.exe",
+        "PointBlank.exe",
+        "Point Blank.exe",
+        "Runtime Broker.exe",
+        "Runtime-Broker.exe",
+        "runtime-broker-service",
+        "CB.exe",
+        "obs64.exe",
+        "obs32.exe",
+        "streamlabs obs.exe"
+      ],
+      "window_titles": [
+        "-= VIP MENU PRIVATE =-",
+        "Hide/Show Menu Tekan [ INSERT ]",
+        "-=[ VIP Samarinda ]=-",
+        "-=[ VIP SuMatra Cheat ]=-",
+        "-=[ VIP CASPER ]=-",
+        "-=[ VIP GAMING ]=-",
+        "-=[ VIP EGN ]=-",
+        "-=[ JBC VVIP ]=-",
+        "-=[ SAMARINDA EXCLUSIVE ]=-",
+        "-=[ GAMING EXCLUSIVE ]=-"
+      ],
       "mutexes": [],
       "registry_keys": [
         "HKLM\\SOFTWARE\\Microsoft\\Cryptography (MachineGuid dibaca sebagai HWID)",
@@ -97,33 +706,210 @@
         "Loadmanual.sys (BUKAN PE — blob terenkripsi 38.400 bytes, hipotesis payload driver untuk manual mapping tanpa Service Control Manager)"
       ],
       "network_endpoints": [
-        {"host": "samarinda.io", "role": "API Exclusive.exe: /exclusive/api/v1; freemium in-app: /freemium-inapp/login.php, reset_hwid.php, set_pin.php; pembayaran /freemiumbuy-inapp/api/create_payment.php; broadcast /announcement/api.php, broadcast.php; mirror HTTP lama /GUI/vip/versi{1,2,2sea,2simple,2simplesea,3,4,5,pbprivate}/ (loader + Load.sys/Injek.sys)"},
-        {"host": "62.146.236.10", "role": "mirror payload via IP telanjang: /GUI/production/download.json, /GUI/production/Windows7.exe, /GUI/production/SaMarinDa-UI-3.1.24.exe, /GUI/production/Exclusive.exe, /marketplace/get_freemium_sold_count.php, /token/randomnum.php (mati saat analisa 2026-10-01)"},
-        {"host": "api-samarinda.xyz", "role": "API member/auth: /api/v1/member/login, /change-hwid, /lupa-key, /set-pin, /pause-duration, /resume-duration; validasi cheat /api/v1/pb?x1=, /api/v3/pb?e=, /api/v4/pb?x1="},
-        {"host": "194.233.73.141", "role": "auth & order via IP telanjang: /auth/member/login, /app/member/perpanjang, /self-order (+ login token via webview ?token=)"},
-        {"host": "jualchar.com", "role": "marketplace API Bearer/JWT: /api/gui/products, /latest, /best-sellers, /recommendations; payment/registrasi /api/gui, /register"},
-        {"host": "starscit.com", "role": "eksfiltrasi HWID: http://starscit.com/?hwid= (plaintext HTTP, serial motherboard via WMI)"},
-        {"host": "vvip-casper-5574f.vercel.app", "role": "backend lisensi/konfigurasi: /api/firebase (infrastruktur CBs.dll + kbthn.exe)"},
-        {"host": "shot.ifhmodule.com", "role": "payload DLL: http://shot.ifhmodule.com/PBBasic.dll; endpoint mencurigakan /PointB/Samarinda/dll.php"},
-        {"host": "raw.githubusercontent.com", "role": "manifest publik (repo owamaew/SaMarinDaUI, branch main): download.json, version.json (latestVersion V3.1.24, mandatory true)"},
-        {"host": "repo publik downloaderGUI (pemilik: owamaew)", "role": "distribusi payload rilis (tag V1-V5, varian VIP/GRATIS/SEA/MACRO/JAMU/Exclusive): SaMarinDa-UI-3.1.24.exe, Windows7.exe, Exclusive.exe, injektor.exe, InjectorV3.exe, CBs.dll, PBBasic.dll, Load.sys, Injek.sys, Loadmanual.sys, smd.exe, Function.dll, SP.dll"},
-        {"host": "abc.maungireng.xyz", "role": "path /form/font/x/ ter-obfuscate (pola credential-harvest/phising)"},
-        {"host": "orderkuota.my.id", "role": "path /form/font/x/ ter-obfuscate (pola credential-harvest/phising)"},
-        {"host": "is3.cloudhost.id", "role": "hosting video tutorial & gameplay (storage S3-compatible)"}
+        {
+          "host": "samarinda.io",
+          "role": "API Exclusive.exe: /exclusive/api/v1; freemium in-app: /freemium-inapp/login.php, reset_hwid.php, set_pin.php; pembayaran /freemiumbuy-inapp/api/create_payment.php; broadcast /announcement/api.php, broadcast.php; mirror HTTP lama /GUI/vip/versi{1,2,2sea,2simple,2simplesea,3,4,5,pbprivate}/ (loader + Load.sys/Injek.sys)"
+        },
+        {
+          "host": "62.146.236.10",
+          "role": "mirror payload via IP telanjang: /GUI/production/download.json, /GUI/production/Windows7.exe, /GUI/production/SaMarinDa-UI-3.1.24.exe, /GUI/production/Exclusive.exe, /marketplace/get_freemium_sold_count.php, /token/randomnum.php (mati saat analisa 2026-10-01)"
+        },
+        {
+          "host": "api-samarinda.xyz",
+          "role": "API member/auth: /api/v1/member/login, /change-hwid, /lupa-key, /set-pin, /pause-duration, /resume-duration; validasi cheat /api/v1/pb?x1=, /api/v3/pb?e=, /api/v4/pb?x1="
+        },
+        {
+          "host": "194.233.73.141",
+          "role": "auth & order via IP telanjang: /auth/member/login, /app/member/perpanjang, /self-order (+ login token via webview ?token=)"
+        },
+        {
+          "host": "jualchar.com",
+          "role": "marketplace API Bearer/JWT: /api/gui/products, /latest, /best-sellers, /recommendations; payment/registrasi /api/gui, /register"
+        },
+        {
+          "host": "starscit.com",
+          "role": "eksfiltrasi HWID: http://starscit.com/?hwid= (plaintext HTTP, serial motherboard via WMI)"
+        },
+        {
+          "host": "vvip-casper-5574f.vercel.app",
+          "role": "backend lisensi/konfigurasi: /api/firebase (infrastruktur CBs.dll + kbthn.exe)"
+        },
+        {
+          "host": "shot.ifhmodule.com",
+          "role": "payload DLL: http://shot.ifhmodule.com/PBBasic.dll; endpoint mencurigakan /PointB/Samarinda/dll.php"
+        },
+        {
+          "host": "raw.githubusercontent.com",
+          "role": "manifest publik (repo owamaew/SaMarinDaUI, branch main): download.json, version.json (latestVersion V3.1.24, mandatory true)"
+        },
+        {
+          "host": "repo publik downloaderGUI (pemilik: owamaew)",
+          "role": "distribusi payload rilis (tag V1-V5, varian VIP/GRATIS/SEA/MACRO/JAMU/Exclusive): SaMarinDa-UI-3.1.24.exe, Windows7.exe, Exclusive.exe, injektor.exe, InjectorV3.exe, CBs.dll, PBBasic.dll, Load.sys, Injek.sys, Loadmanual.sys, smd.exe, Function.dll, SP.dll"
+        },
+        {
+          "host": "abc.maungireng.xyz",
+          "role": "path /form/font/x/ ter-obfuscate (pola credential-harvest/phising)"
+        },
+        {
+          "host": "orderkuota.my.id",
+          "role": "path /form/font/x/ ter-obfuscate (pola credential-harvest/phising)"
+        },
+        {
+          "host": "is3.cloudhost.id",
+          "role": "hosting video tutorial & gameplay (storage S3-compatible)"
+        }
       ],
       "behaviors": [
-        {"technique": "Downloader multi-mirror + eksekusi remote", "mitre_id": "T1105", "api_calls": ["WebClient.DownloadFileAsync", "DownloadFileWithProgress", "DownloadString", "FindFastestUrl", "TestServerSpeed", "RunExecutable", "WinHttpOpen", "WinHttpConnect", "WinHttpOpenRequest", "WinHttpSendRequest", "WinHttpReceiveResponse", "WinHttpReadData", "InternetOpenA", "InternetConnectA", "HttpOpenRequestA", "HttpSendRequestA", "InternetReadFile", "ObtainUserAgentString"], "description": "SaMarinDaUI.exe dan VIPExclusive.exe mengambil manifest download.json dari 4 mirror, memilih server tercepat, membandingkan versi terinstall vs terbaru, mengunduh EXE ke %TEMP% lalu mengeksekusinya tanpa verifikasi signature. smd.exe adalah downloader CLI generik: URL via argumen, WinHTTP dengan User-Agent 'Downloader/1.0', eksekusi via ShellExecuteA/system(). (sumber: SaMarinDaUI.md, VIPExclusive-analisa.md, smd-analisa.md)"},
-        {"technique": "DLL injection ke proses game", "mitre_id": "T1055.001", "api_calls": ["OpenProcess", "VirtualAllocEx", "WriteProcessMemory", "ReadProcessMemory", "CreateRemoteThread", "VirtualFreeEx", "WaitForSingleObject", "GetExitCodeThread", "CreateToolhelp32Snapshot", "Process32First", "Process32Next", "GetModuleHandleA", "GetProcAddress", "LoadLibraryA", "LoadLibraryExA", "NtCreateThreadEx", "OpenThread", "Thread32First", "Thread32Next", "SuspendThread", "ResumeThread", "VirtualProtectEx", "TerminateProcess"], "description": "Urutan klasik OpenProcess -> VirtualAllocEx -> WriteProcessMemory -> CreateRemoteThread (+LoadLibraryA) dipakai injektor.exe ke pointblank.exe dengan payload CBs.dll; LoadLibraryA di-resolve dinamis via GetProcAddress. InjectorV3.exe adalah upgrade stealth: NtCreateThreadEx + LoadLibraryExA di-resolve dinamis (menghindari hook user-mode pada CreateRemoteThread), target 'PointBlank.exe'/'Point Blank.exe', payload CBs.dll + PBBasic.dll. Injek.sys memakai pola thread hijacking: OpenThread -> SuspendThread -> WriteProcessMemory -> VirtualProtectEx -> ResumeThread, target PointBlank.exe, payload Ngopi.dll. (sumber: injektor-analisa.md, InjectorV3-analisa.md, Injek-sys-analisa.md, kbthn-analisa.md)"},
-        {"technique": "Masquerading", "mitre_id": "T1036", "api_calls": [], "description": "Nama 'Runtime Broker' / 'Runtime-Broker.exe' / 'runtime-broker-service' dengan CompanyName 'Microsoft Corporation' dipakai installer, binary Electron, uninstaller, dan downloader. File 'Windows7.exe' menyamar sebagai komponen Windows (nama proyek asli: Viral_Bioskop_Indo). Executable user-mode diberi ekstensi '.sys' palsu (Load.sys, Injek.sys) agar terlihat seperti driver sistem. Nama internal CBs.dll adalah 'AgPerfMon.dll' (export directory kosong). Version info Exclusive.exe dipalsukan: FileDescription 'Windows Runtime Broker', CompanyName 'Microsoft Corporation', versi 10.0.19041.1. (sumber: SaMarinDa-UI-3.1.24-analisa.md, SaMarinDaUI.md, Windows7-analisa.md, Load-sys-analisa.md, CBs-dll-analisa.md, Exclusive-analisa.md)"},
-        {"technique": "Debugger evasion", "mitre_id": "T1622", "api_calls": ["IsDebuggerPresent", "CheckRemoteDebuggerPresent", "NtQueryInformationProcess", "NtQueryInformationThread", "GetTickCount", "QueryPerformanceCounter", "AddVectoredExceptionHandler"], "description": "IsDebuggerPresent di-import injektor.exe, InjectorV3.exe, Injek.sys, CBs.dll, kbthn.exe; CheckRemoteDebuggerPresent via P/Invoke di Exclusive.exe; NtQueryInformationThread + GetTickCount (timing check) di kbthn.exe; AddVectoredExceptionHandler di CBs.dll. Tidak ada string anti-VM (vmware/virtualbox/sandbox/wireshark) di file manapun. (sumber: injektor-analisa.md, InjectorV3-analisa.md, Injek-sys-analisa.md, CBs-dll-analisa.md, kbthn-analisa.md, Exclusive-analisa.md)"},
-        {"technique": "System information discovery / HWID harvesting", "mitre_id": "T1082", "api_calls": ["ManagementObjectSearcher", "GetMachineGuid", "GetAdaptersInfo", "GetComputerNameA", "CreateToolhelp32Snapshot", "CryptAcquireContextA", "CryptCreateHash", "CryptHashData", "CryptGetHashParam", "CoCreateInstance", "GetVolumeInformationA"], "description": "MachineGuid dari HKLM\\SOFTWARE\\Microsoft\\Cryptography dibaca SaMarinDaUI.exe dan Windows7.exe. WMI 'SELECT SerialNumber FROM Win32_BaseBoard' + 'SELECT UUID FROM Win32_ComputerSystemProduct' di CBs.dll dan kbthn.exe, dieksfiltrasi ke http://starscit.com/?hwid= via HTTP plaintext. InjectorV3.exe memakai GetAdaptersInfo (MAC) dan menulis C:\\HWIDs.txt. (sumber: SaMarinDaUI.md, Windows7-analisa.md, CBs-dll-analisa.md, kbthn-analisa.md, InjectorV3-analisa.md)"},
-        {"technique": "Input capture (kapabilitas keylogging)", "mitre_id": "T1056.001", "api_calls": ["GetAsyncKeyState", "GetForegroundWindow", "keybd_event", "mouse_event", "GetCursorPos", "EnumWindows"], "description": "GetAsyncKeyState + GetForegroundWindow di-import CBs.dll (berjalan di dalam pointblank.exe) dan kbthn.exe (plus keybd_event) — kapabilitas keylogging penuh; dalam konteks cheat dipakai untuk hotkey menu (INSERT). (sumber: CBs-dll-analisa.md, kbthn-analisa.md)"},
-        {"technique": "Indicator removal / anti-forensik", "mitre_id": "T1070", "api_calls": ["MoveFileEx"], "description": "Exclusive.exe (assembly VIP_Exclusive): 58 method 'Clear*' — ClearEventLogs, ClearDefenderEventLogs, ClearDefenderQuarantine, ClearDefenderExclusions, ClearDefenderDetectionHistory, ClearUSNJournal, ClearPrefetch, ClearAmcache, ClearRecentDocs, ClearJumpList, ClearUserAssist, ClearBrowserHistory/Cache, ClearTempSystem, ClearTempUser, ClearRecycleBin, ClearCBSLogs, ClearWERReports, ClearCrashReports, ClearMemoryDumps, ClearExecutionHistory, ClearLnkTraces, DeleteSelectedFiles, ScheduleSelfDelete (via MoveFileEx — hapus diri saat reboot), KillBrowserProcesses, RestartExplorer. (sumber: Exclusive-analisa.md)"},
-        {"technique": "Bypass UAC", "mitre_id": "T1548.002", "api_calls": ["ShellExecuteExW", "SystemFunction036"], "description": "resources/elevate.exe memakai SHELL32!ShellExecuteExW (verb 'runas') untuk elevasi administrator; SystemFunction036 (RtlGenRandom) untuk nama file temp. (sumber: SaMarinDa-UI-3.1.24-analisa.md)"},
-        {"technique": "Modify registry (pembersihan jejak cheat)", "mitre_id": "T1112", "api_calls": [], "description": "Exclusive.exe membersihkan kunci registry jejak cheat SaMarinDa/SMR: ClearSamarindaKeys, ClearSMRSoftwareKeys, ClearClearCheatKeys, ClearGuidKeys, ClearSMRWOW64, ClearHWIDCheatFiles, ClearUninstallEntries, ClearMSIInstaller — khas tool anti-ban/penghindar deteksi HWID. (sumber: Exclusive-analisa.md)"},
-        {"technique": "Render overlay DirectX 9 (ESP/menu cheat)", "mitre_id": "", "api_calls": ["D3DXCreateFontA", "GetTextExtentPoint32A"], "description": "CBs.dll me-render menu VIP dan ESP (Visual Bone, lingkaran FOV aimbot) di atas game via d3dx9_43.dll (Point Blank memakai DX9); mereferensikan class internal game BattleSlotContext::getNickForSlot/setMySlotIdx, CGameCharaHUDContext::ScreenEffect_Flashbang, ChannelContext::GetChannelUserCount. kbthn.exe me-hook fungsi engine i3/Point Blank: CGameCharaBase::getCurHP, CGameCharaManager::ChangeTeamAvatar, BattleSlotContext::getGameInfo_Chara, FrameworkPostProcess::SetNightVisionEnable, CGameUDPHandler::WriteGameEvent_RadioChat, UIHudMultiWeapon::ShowMultiWeaponSlot. (sumber: CBs-dll-analisa.md, kbthn-analisa.md)"},
-        {"technique": "Obfuscated files (blob terenkripsi)", "mitre_id": "T1027", "api_calls": [], "description": "Loadmanual.sys (38.400 bytes, bukan PE, entropi global 7,12) adalah blob terenkripsi/terobfuscate dengan filler ASCII berulang '235246856876125325768'; upaya dekripsi XOR 256 kunci gagal — hipotesis payload driver untuk manual mapping tanpa Service Control Manager. Exclusive.exe memakai string-encryption custom (blob seperti 'VHZSCORTGGPDRHX', 'Gomzl}gii#Qegtbwm') + renamer ringan; kemungkinan kunci 'k3n1I'. (sumber: Loadmanual-sys-analisa.md, Exclusive-analisa.md)"},
-        {"technique": "Impair defenses (rekayasa sosial + modifikasi sistem)", "mitre_id": "T1562.001", "api_calls": [], "description": "Windows7.exe menyuruh pengguna menganggap deteksi AV sebagai 'false virus' dan menyalahkan AV atas 'DC Biru'. Fitur 'Advanced Services Optimizer' di aplikasi Electron mengubah startup type 100+ Windows services (Disabled/Manual); fitur anti screen-capture mendeteksi obs64.exe, obs32.exe, 'streamlabs obs.exe'. InjectorV3.exe menjalankan taskkill /f /t /im terhadap 'CB.exe' (cheat kompetitor), 'Point Blank.exe', 'PointBlank.exe'. (sumber: Windows7-analisa.md, SaMarinDa-UI-3.1.24-analisa.md, InjectorV3-analisa.md)"}
+        {
+          "technique": "Downloader multi-mirror + eksekusi remote",
+          "mitre_id": "T1105",
+          "api_calls": [
+            "WebClient.DownloadFileAsync",
+            "DownloadFileWithProgress",
+            "DownloadString",
+            "FindFastestUrl",
+            "TestServerSpeed",
+            "RunExecutable",
+            "WinHttpOpen",
+            "WinHttpConnect",
+            "WinHttpOpenRequest",
+            "WinHttpSendRequest",
+            "WinHttpReceiveResponse",
+            "WinHttpReadData",
+            "InternetOpenA",
+            "InternetConnectA",
+            "HttpOpenRequestA",
+            "HttpSendRequestA",
+            "InternetReadFile",
+            "ObtainUserAgentString"
+          ],
+          "description": "SaMarinDaUI.exe dan VIPExclusive.exe mengambil manifest download.json dari 4 mirror, memilih server tercepat, membandingkan versi terinstall vs terbaru, mengunduh EXE ke %TEMP% lalu mengeksekusinya tanpa verifikasi signature. smd.exe adalah downloader CLI generik: URL via argumen, WinHTTP dengan User-Agent 'Downloader/1.0', eksekusi via ShellExecuteA/system(). (sumber: SaMarinDaUI.md, VIPExclusive-analisa.md, smd-analisa.md)"
+        },
+        {
+          "technique": "DLL injection ke proses game",
+          "mitre_id": "T1055.001",
+          "api_calls": [
+            "OpenProcess",
+            "VirtualAllocEx",
+            "WriteProcessMemory",
+            "ReadProcessMemory",
+            "CreateRemoteThread",
+            "VirtualFreeEx",
+            "WaitForSingleObject",
+            "GetExitCodeThread",
+            "CreateToolhelp32Snapshot",
+            "Process32First",
+            "Process32Next",
+            "GetModuleHandleA",
+            "GetProcAddress",
+            "LoadLibraryA",
+            "LoadLibraryExA",
+            "NtCreateThreadEx",
+            "OpenThread",
+            "Thread32First",
+            "Thread32Next",
+            "SuspendThread",
+            "ResumeThread",
+            "VirtualProtectEx",
+            "TerminateProcess"
+          ],
+          "description": "Urutan klasik OpenProcess -> VirtualAllocEx -> WriteProcessMemory -> CreateRemoteThread (+LoadLibraryA) dipakai injektor.exe ke pointblank.exe dengan payload CBs.dll; LoadLibraryA di-resolve dinamis via GetProcAddress. InjectorV3.exe adalah upgrade stealth: NtCreateThreadEx + LoadLibraryExA di-resolve dinamis (menghindari hook user-mode pada CreateRemoteThread), target 'PointBlank.exe'/'Point Blank.exe', payload CBs.dll + PBBasic.dll. Injek.sys memakai pola thread hijacking: OpenThread -> SuspendThread -> WriteProcessMemory -> VirtualProtectEx -> ResumeThread, target PointBlank.exe, payload Ngopi.dll. (sumber: injektor-analisa.md, InjectorV3-analisa.md, Injek-sys-analisa.md, kbthn-analisa.md)"
+        },
+        {
+          "technique": "Masquerading",
+          "mitre_id": "T1036",
+          "api_calls": [],
+          "description": "Nama 'Runtime Broker' / 'Runtime-Broker.exe' / 'runtime-broker-service' dengan CompanyName 'Microsoft Corporation' dipakai installer, binary Electron, uninstaller, dan downloader. File 'Windows7.exe' menyamar sebagai komponen Windows (nama proyek asli: Viral_Bioskop_Indo). Executable user-mode diberi ekstensi '.sys' palsu (Load.sys, Injek.sys) agar terlihat seperti driver sistem. Nama internal CBs.dll adalah 'AgPerfMon.dll' (export directory kosong). Version info Exclusive.exe dipalsukan: FileDescription 'Windows Runtime Broker', CompanyName 'Microsoft Corporation', versi 10.0.19041.1. (sumber: SaMarinDa-UI-3.1.24-analisa.md, SaMarinDaUI.md, Windows7-analisa.md, Load-sys-analisa.md, CBs-dll-analisa.md, Exclusive-analisa.md)"
+        },
+        {
+          "technique": "Debugger evasion",
+          "mitre_id": "T1622",
+          "api_calls": [
+            "IsDebuggerPresent",
+            "CheckRemoteDebuggerPresent",
+            "NtQueryInformationProcess",
+            "NtQueryInformationThread",
+            "GetTickCount",
+            "QueryPerformanceCounter",
+            "AddVectoredExceptionHandler"
+          ],
+          "description": "IsDebuggerPresent di-import injektor.exe, InjectorV3.exe, Injek.sys, CBs.dll, kbthn.exe; CheckRemoteDebuggerPresent via P/Invoke di Exclusive.exe; NtQueryInformationThread + GetTickCount (timing check) di kbthn.exe; AddVectoredExceptionHandler di CBs.dll. Tidak ada string anti-VM (vmware/virtualbox/sandbox/wireshark) di file manapun. (sumber: injektor-analisa.md, InjectorV3-analisa.md, Injek-sys-analisa.md, CBs-dll-analisa.md, kbthn-analisa.md, Exclusive-analisa.md)"
+        },
+        {
+          "technique": "System information discovery / HWID harvesting",
+          "mitre_id": "T1082",
+          "api_calls": [
+            "ManagementObjectSearcher",
+            "GetMachineGuid",
+            "GetAdaptersInfo",
+            "GetComputerNameA",
+            "CreateToolhelp32Snapshot",
+            "CryptAcquireContextA",
+            "CryptCreateHash",
+            "CryptHashData",
+            "CryptGetHashParam",
+            "CoCreateInstance",
+            "GetVolumeInformationA"
+          ],
+          "description": "MachineGuid dari HKLM\\SOFTWARE\\Microsoft\\Cryptography dibaca SaMarinDaUI.exe dan Windows7.exe. WMI 'SELECT SerialNumber FROM Win32_BaseBoard' + 'SELECT UUID FROM Win32_ComputerSystemProduct' di CBs.dll dan kbthn.exe, dieksfiltrasi ke http://starscit.com/?hwid= via HTTP plaintext. InjectorV3.exe memakai GetAdaptersInfo (MAC) dan menulis C:\\HWIDs.txt. (sumber: SaMarinDaUI.md, Windows7-analisa.md, CBs-dll-analisa.md, kbthn-analisa.md, InjectorV3-analisa.md)"
+        },
+        {
+          "technique": "Input capture (kapabilitas keylogging)",
+          "mitre_id": "T1056.001",
+          "api_calls": [
+            "GetAsyncKeyState",
+            "GetForegroundWindow",
+            "keybd_event",
+            "mouse_event",
+            "GetCursorPos",
+            "EnumWindows"
+          ],
+          "description": "GetAsyncKeyState + GetForegroundWindow di-import CBs.dll (berjalan di dalam pointblank.exe) dan kbthn.exe (plus keybd_event) — kapabilitas keylogging penuh; dalam konteks cheat dipakai untuk hotkey menu (INSERT). (sumber: CBs-dll-analisa.md, kbthn-analisa.md)"
+        },
+        {
+          "technique": "Indicator removal / anti-forensik",
+          "mitre_id": "T1070",
+          "api_calls": [
+            "MoveFileEx"
+          ],
+          "description": "Exclusive.exe (assembly VIP_Exclusive): 58 method 'Clear*' — ClearEventLogs, ClearDefenderEventLogs, ClearDefenderQuarantine, ClearDefenderExclusions, ClearDefenderDetectionHistory, ClearUSNJournal, ClearPrefetch, ClearAmcache, ClearRecentDocs, ClearJumpList, ClearUserAssist, ClearBrowserHistory/Cache, ClearTempSystem, ClearTempUser, ClearRecycleBin, ClearCBSLogs, ClearWERReports, ClearCrashReports, ClearMemoryDumps, ClearExecutionHistory, ClearLnkTraces, DeleteSelectedFiles, ScheduleSelfDelete (via MoveFileEx — hapus diri saat reboot), KillBrowserProcesses, RestartExplorer. (sumber: Exclusive-analisa.md)"
+        },
+        {
+          "technique": "Bypass UAC",
+          "mitre_id": "T1548.002",
+          "api_calls": [
+            "ShellExecuteExW",
+            "SystemFunction036"
+          ],
+          "description": "resources/elevate.exe memakai SHELL32!ShellExecuteExW (verb 'runas') untuk elevasi administrator; SystemFunction036 (RtlGenRandom) untuk nama file temp. (sumber: SaMarinDa-UI-3.1.24-analisa.md)"
+        },
+        {
+          "technique": "Modify registry (pembersihan jejak cheat)",
+          "mitre_id": "T1112",
+          "api_calls": [],
+          "description": "Exclusive.exe membersihkan kunci registry jejak cheat SaMarinDa/SMR: ClearSamarindaKeys, ClearSMRSoftwareKeys, ClearClearCheatKeys, ClearGuidKeys, ClearSMRWOW64, ClearHWIDCheatFiles, ClearUninstallEntries, ClearMSIInstaller — khas tool anti-ban/penghindar deteksi HWID. (sumber: Exclusive-analisa.md)"
+        },
+        {
+          "technique": "Render overlay DirectX 9 (ESP/menu cheat)",
+          "mitre_id": "",
+          "api_calls": [
+            "D3DXCreateFontA",
+            "GetTextExtentPoint32A"
+          ],
+          "description": "CBs.dll me-render menu VIP dan ESP (Visual Bone, lingkaran FOV aimbot) di atas game via d3dx9_43.dll (Point Blank memakai DX9); mereferensikan class internal game BattleSlotContext::getNickForSlot/setMySlotIdx, CGameCharaHUDContext::ScreenEffect_Flashbang, ChannelContext::GetChannelUserCount. kbthn.exe me-hook fungsi engine i3/Point Blank: CGameCharaBase::getCurHP, CGameCharaManager::ChangeTeamAvatar, BattleSlotContext::getGameInfo_Chara, FrameworkPostProcess::SetNightVisionEnable, CGameUDPHandler::WriteGameEvent_RadioChat, UIHudMultiWeapon::ShowMultiWeaponSlot. (sumber: CBs-dll-analisa.md, kbthn-analisa.md)"
+        },
+        {
+          "technique": "Obfuscated files (blob terenkripsi)",
+          "mitre_id": "T1027",
+          "api_calls": [],
+          "description": "Loadmanual.sys (38.400 bytes, bukan PE, entropi global 7,12) adalah blob terenkripsi/terobfuscate dengan filler ASCII berulang '235246856876125325768'; upaya dekripsi XOR 256 kunci gagal — hipotesis payload driver untuk manual mapping tanpa Service Control Manager. Exclusive.exe memakai string-encryption custom (blob seperti 'VHZSCORTGGPDRHX', 'Gomzl}gii#Qegtbwm') + renamer ringan; kemungkinan kunci 'k3n1I'. (sumber: Loadmanual-sys-analisa.md, Exclusive-analisa.md)"
+        },
+        {
+          "technique": "Impair defenses (rekayasa sosial + modifikasi sistem)",
+          "mitre_id": "T1562.001",
+          "api_calls": [],
+          "description": "Windows7.exe menyuruh pengguna menganggap deteksi AV sebagai 'false virus' dan menyalahkan AV atas 'DC Biru'. Fitur 'Advanced Services Optimizer' di aplikasi Electron mengubah startup type 100+ Windows services (Disabled/Manual); fitur anti screen-capture mendeteksi obs64.exe, obs32.exe, 'streamlabs obs.exe'. InjectorV3.exe menjalankan taskkill /f /t /im terhadap 'CB.exe' (cheat kompetitor), 'Point Blank.exe', 'PointBlank.exe'. (sumber: Windows7-analisa.md, SaMarinDa-UI-3.1.24-analisa.md, InjectorV3-analisa.md)"
+        }
       ],
       "detection_strings": [
         "ScanLocalAppDataForBroker",
@@ -202,62 +988,349 @@
     },
     {
       "name": "sumatracit",
-      "aliases": ["Sumatracit 1.0.6", "Loader", "VIP Sumatra", "SumatraCit", "Bypass Tsugu"],
+      "aliases": [
+        "Sumatracit 1.0.6",
+        "Loader",
+        "VIP Sumatra",
+        "SumatraCit",
+        "Bypass Tsugu"
+      ],
       "verdict": "BERBAHAYA (malicious)",
       "description": "Ekosistem cheat loader game Point Blank berbahasa Indonesia yang berfungsi sebagai trojan downloader: mengunduh dan mengeksekusi binary remote dari server operator, menginjeksi DLL cheat ke proses PointBlank.exe, melumpuhkan Windows Defender, dan memakai lisensi berbasis HWID. Binary dari server update SHA256-nya identik dengan sampel yang dianalisa (rantai distribusi aktif).",
       "files": [
-        {"name": "Sumatracit.exe", "known_paths": ["C:\\Windows\\Temp"], "size_bytes": 263168, "sha256": "5fdde326b0dec127d3aab193ab1f78f145908b8939856852b66e658ffb369f34"},
-        {"name": "Sumatracit.1.0.6.exe", "known_paths": ["/app-update/Sumatracit.1.0.6.exe"], "size_bytes": 1406976, "sha256": "242d4b4a4f2b262a4d95c47cf93530f98a6deea4877d6afdaca533a44e7f17d3"},
-        {"name": "AppXor.exe", "known_paths": [], "size_bytes": 578560, "sha256": "8b4101d48c1c518706d22ecfeea6799c12007c0641ec12f72f08d4164fa01649"},
-        {"name": "CheckSerial.exe", "known_paths": ["Serial.txt"], "size_bytes": 53760, "sha256": "75b30eae34b55db87f48d2e427939c2ba9d32f6a0e298c8020639789a13edd27"},
-        {"name": "HWIDCheck.exe", "known_paths": ["C:\\HWID.txt"], "size_bytes": 28160, "sha256": "56df5bdf5eab089399b36bfd75927fb4b19074f812657aef5067a54bb0c3e223"},
-        {"name": "Loader-v2.exe", "known_paths": [], "size_bytes": 180224, "sha256": "07db7115bcc237843b6c7a52b6e07609c0cea67cb4fe9a8fa68eb30d3eda71c2"},
-        {"name": "Loader-v3.exe", "known_paths": ["C:\\Windows\\System\\a1.mentah"], "size_bytes": 36352, "sha256": "1dc88734d669aececc1d85659dbb253f1d4245cb323f8d34575a003760221275"},
-        {"name": "LoaderVIP.exe", "known_paths": [], "size_bytes": 76583, "sha256": "fd5a7afef0ad4a8196021acc387b29eb1c7e41c1a395f8b3baf3856291c9f5fa"},
-        {"name": "dControl.exe", "known_paths": [], "size_bytes": 457984, "sha256": "1ef6c1a4dfdc39b63bfe650ca81ab89510de6c0d3d7c608ac5be80033e559326"},
-        {"name": "dControl-unpacked.exe", "known_paths": [], "size_bytes": 798464, "sha256": "4958477ab0fc14f6c2ed4c044e41718a87aa47f491c40b863f891451caf9db5b"},
-        {"name": "exe.php (payload, di-drop sebagai a1.mentah)", "known_paths": ["C:\\Windows\\System\\a1.mentah", "/PointB/Sumatra/exe.php"], "size_bytes": 65536, "sha256": "cfbc691ec0c5d2390c57a9107b505e9bf7f067a51ffaad6ff1cc1acc2700dcf2"},
-        {"name": "LoaderHard.exe", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "Loader.exe", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "Bunifu_UI_v1.52.dll", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "Guna.UI2.dll", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "dll.php (stage-3, DLL cheat aktual)", "known_paths": [], "size_bytes": null, "sha256": null},
-        {"name": "mini_zepetto2026.zip", "known_paths": ["files/mini_zepetto2026.zip"], "size_bytes": null, "sha256": null}
+        {
+          "name": "Sumatracit.exe",
+          "known_paths": [
+            "C:\\Windows\\Temp"
+          ],
+          "size_bytes": 263168,
+          "sha256": "5fdde326b0dec127d3aab193ab1f78f145908b8939856852b66e658ffb369f34"
+        },
+        {
+          "name": "Sumatracit.1.0.6.exe",
+          "known_paths": [
+            "/app-update/Sumatracit.1.0.6.exe"
+          ],
+          "size_bytes": 1406976,
+          "sha256": "242d4b4a4f2b262a4d95c47cf93530f98a6deea4877d6afdaca533a44e7f17d3"
+        },
+        {
+          "name": "AppXor.exe",
+          "known_paths": [],
+          "size_bytes": 578560,
+          "sha256": "8b4101d48c1c518706d22ecfeea6799c12007c0641ec12f72f08d4164fa01649"
+        },
+        {
+          "name": "CheckSerial.exe",
+          "known_paths": [
+            "Serial.txt"
+          ],
+          "size_bytes": 53760,
+          "sha256": "75b30eae34b55db87f48d2e427939c2ba9d32f6a0e298c8020639789a13edd27"
+        },
+        {
+          "name": "HWIDCheck.exe",
+          "known_paths": [
+            "C:\\HWID.txt"
+          ],
+          "size_bytes": 28160,
+          "sha256": "56df5bdf5eab089399b36bfd75927fb4b19074f812657aef5067a54bb0c3e223"
+        },
+        {
+          "name": "Loader-v2.exe",
+          "known_paths": [],
+          "size_bytes": 180224,
+          "sha256": "07db7115bcc237843b6c7a52b6e07609c0cea67cb4fe9a8fa68eb30d3eda71c2"
+        },
+        {
+          "name": "Loader-v3.exe",
+          "known_paths": [
+            "C:\\Windows\\System\\a1.mentah"
+          ],
+          "size_bytes": 36352,
+          "sha256": "1dc88734d669aececc1d85659dbb253f1d4245cb323f8d34575a003760221275"
+        },
+        {
+          "name": "LoaderVIP.exe",
+          "known_paths": [],
+          "size_bytes": 76583,
+          "sha256": "fd5a7afef0ad4a8196021acc387b29eb1c7e41c1a395f8b3baf3856291c9f5fa"
+        },
+        {
+          "name": "dControl.exe",
+          "known_paths": [],
+          "size_bytes": 457984,
+          "sha256": "1ef6c1a4dfdc39b63bfe650ca81ab89510de6c0d3d7c608ac5be80033e559326"
+        },
+        {
+          "name": "dControl-unpacked.exe",
+          "known_paths": [],
+          "size_bytes": 798464,
+          "sha256": "4958477ab0fc14f6c2ed4c044e41718a87aa47f491c40b863f891451caf9db5b"
+        },
+        {
+          "name": "exe.php (payload, di-drop sebagai a1.mentah)",
+          "known_paths": [
+            "C:\\Windows\\System\\a1.mentah",
+            "/PointB/Sumatra/exe.php"
+          ],
+          "size_bytes": 65536,
+          "sha256": "cfbc691ec0c5d2390c57a9107b505e9bf7f067a51ffaad6ff1cc1acc2700dcf2"
+        },
+        {
+          "name": "LoaderHard.exe",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "Loader.exe",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "Bunifu_UI_v1.52.dll",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "Guna.UI2.dll",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "dll.php (stage-3, DLL cheat aktual)",
+          "known_paths": [],
+          "size_bytes": null,
+          "sha256": null
+        },
+        {
+          "name": "mini_zepetto2026.zip",
+          "known_paths": [
+            "files/mini_zepetto2026.zip"
+          ],
+          "size_bytes": null,
+          "sha256": null
+        }
       ],
-      "processes": ["PointBlank.exe", "Notepad.exe"],
-      "window_titles": ["VIP Sumatra", "PBApp", "Sumatracit Simple Loader", "PanelInjector"],
+      "processes": [
+        "PointBlank.exe",
+        "Notepad.exe"
+      ],
+      "window_titles": [
+        "VIP Sumatra",
+        "PBApp",
+        "Sumatracit Simple Loader",
+        "PanelInjector"
+      ],
       "mutexes": [],
       "registry_keys": [],
       "services_drivers": [],
       "network_endpoints": [
-        {"host": "sumatra.pro", "role": "update server (/app-update/update.json manifest v1.0.6, binary update via HTTP) + payload download; IP asli: 2.57.91.59, 88.222.222.11"},
-        {"host": "www.sumatra.biz.id", "role": "payload download server (/DOwNload/versi1|2|3|5/...) — 7 payload dapat diunduh; IP asli: 103.219.251.169"},
-        {"host": "sumatra.my.id", "role": "tools file server (/Files/ autoindex): dControl, psiphon3, UltraViewer, MSVC+, WinRAR; IP asli: 103.30.147.20; server LiteSpeed"},
-        {"host": "147.93.154.157", "role": "payment/self-order QRIS (/self-order, HTTPS 43 KB) + status layanan (IP literal)"},
-        {"host": "217.15.165.61", "role": "license/auth API legacy (/auth/member/login) — MATI saat dicek 2026-10-01 (IP literal)"},
-        {"host": "vvipkingparben-f5c64.vercel.app", "role": "license/control API (/api/server, hanya terima POST; GET → 405 'Gunakan POST')"},
-        {"host": "starscit.com", "role": "HWID exfil (http://starscit.com/?hwid=, HTTP plaintext) + halaman JS auto-download files/mini_zepetto2026.zip; IP asli: 163.223.227.38"},
-        {"host": "shot.ifhmodule.com", "role": "payload download: /PointB/Sumatra/exe.php (dropper PE 65 KB, HTTP polos, filename acak per request), /PointB/Sumatra/dll.php (stage-3, filename acak berekstensi .cbm); IP asli: 172.235.245.77"},
-        {"host": "apisumatra.com", "role": "license check API (/api/v3/pb?x1=, terkonfirmasi dari payload exe.php; tidak terlihat di Loader-v3)"},
-        {"host": "api.aim...god.my.id", "role": "license/update API terobfusikasi XOR (fragmen: skema https://, host mengandung 'api.aim', domain '.god.my.id', path /MULTI..., /UPDATE/Proxy.php, /UPDATE/LinkLokasi..., token 'multiupdate')"}
+        {
+          "host": "sumatra.pro",
+          "role": "update server (/app-update/update.json manifest v1.0.6, binary update via HTTP) + payload download; IP asli: 2.57.91.59, 88.222.222.11"
+        },
+        {
+          "host": "www.sumatra.biz.id",
+          "role": "payload download server (/DOwNload/versi1|2|3|5/...) — 7 payload dapat diunduh; IP asli: 103.219.251.169"
+        },
+        {
+          "host": "sumatra.my.id",
+          "role": "tools file server (/Files/ autoindex): dControl, psiphon3, UltraViewer, MSVC+, WinRAR; IP asli: 103.30.147.20; server LiteSpeed"
+        },
+        {
+          "host": "147.93.154.157",
+          "role": "payment/self-order QRIS (/self-order, HTTPS 43 KB) + status layanan (IP literal)"
+        },
+        {
+          "host": "217.15.165.61",
+          "role": "license/auth API legacy (/auth/member/login) — MATI saat dicek 2026-10-01 (IP literal)"
+        },
+        {
+          "host": "vvipkingparben-f5c64.vercel.app",
+          "role": "license/control API (/api/server, hanya terima POST; GET → 405 'Gunakan POST')"
+        },
+        {
+          "host": "starscit.com",
+          "role": "HWID exfil (http://starscit.com/?hwid=, HTTP plaintext) + halaman JS auto-download files/mini_zepetto2026.zip; IP asli: 163.223.227.38"
+        },
+        {
+          "host": "shot.ifhmodule.com",
+          "role": "payload download: /PointB/Sumatra/exe.php (dropper PE 65 KB, HTTP polos, filename acak per request), /PointB/Sumatra/dll.php (stage-3, filename acak berekstensi .cbm); IP asli: 172.235.245.77"
+        },
+        {
+          "host": "apisumatra.com",
+          "role": "license check API (/api/v3/pb?x1=, terkonfirmasi dari payload exe.php; tidak terlihat di Loader-v3)"
+        },
+        {
+          "host": "api.aim...god.my.id",
+          "role": "license/update API terobfusikasi XOR (fragmen: skema https://, host mengandung 'api.aim', domain '.god.my.id', path /MULTI..., /UPDATE/Proxy.php, /UPDATE/LinkLokasi..., token 'multiupdate')"
+        }
       ],
       "behaviors": [
-        {"technique": "Ingress Tool Transfer", "mitre_id": "T1105", "api_calls": ["WebClient.DownloadFile", "URLDownloadToFileA", "HttpClient.GetByteArrayAsync", "InternetOpenA", "InternetConnectA", "HttpOpenRequestA", "HttpSendRequestA", "InternetReadFile"], "description": "Mengunduh EXE/DLL cheat dari server remote lalu mengeksekusi (UnduhDanJalankan / ExecuteDownload). (sumber: Sumatracit.md, Sumatracit-1.0.6.md, Loader-v2-analisa.md)"},
-        {"technique": "User Execution: Malicious File", "mitre_id": "T1204.002", "api_calls": ["Process.Start", "set_UseShellExecute", "ShellExecuteA", "system()"], "description": "Eksekusi binary unduhan via Process.Start/ShellExecute; system() memungkinkan eksekusi perintah shell arbitrer. (sumber: Sumatracit.md, Loader-v2-analisa.md)"},
-        {"technique": "Process Injection", "mitre_id": "T1055", "api_calls": ["OpenProcess", "VirtualAllocEx", "WriteProcessMemory", "CreateRemoteThread", "NtCreateThreadEx", "GetProcAddress"], "description": "Injeksi DLL cheat ke proses PointBlank.exe (AppXor.exe, LoaderVIP.exe, exe.php via NtCreateThreadEx + LoadLibraryA remote). (sumber: AppXor-analisa.md, LoaderVIP-analisa.md, exe-php-payload-analisa.md)"},
-        {"technique": "System Information Discovery", "mitre_id": "T1082", "api_calls": ["GetVolumeInformationA", "GetCurrentHwProfileA", "GetComputerNameA", "GetUserNameA", "GetAdaptersInfo", "DeviceIoControl"], "description": "HWID fingerprinting untuk lisensi: serial disk (SMART IOCTL 0x74080, 0x2D1400), volume serial, HW profile, MAC. (sumber: CheckSerial-analisa.md, HWIDCheck-analisa.md, Loader-v2-analisa.md)"},
-        {"technique": "Impair Defenses: Disable or Modify Tools", "mitre_id": "T1562.001", "api_calls": ["RegCreateKeyExW", "RegSetValueExW", "RegDeleteKeyW", "RegDeleteValueW", "AdjustTokenPrivileges"], "description": "dControl.exe (Sordum Defender Control v2.1, AutoIt+UPX) menonaktifkan Windows Defender; loader juga menyuruh user mematikan AV via teks UI. (sumber: dControl-analisa.md, Sumatracit.md)"},
-        {"technique": "Access Token Manipulation", "mitre_id": "T1134", "api_calls": ["OpenProcessToken", "LookupPrivilegeValueA", "AdjustTokenPrivileges"], "description": "Mengaktifkan SeDebugPrivilege untuk akses penuh ke proses target. (sumber: Loader-v3-analisa.md, exe-php-payload-analisa.md)"},
-        {"technique": "Indicator Removal: File Deletion", "mitre_id": "T1070.004", "api_calls": ["GetFiles", "GetDirectories", "DeleteFileA", "DeleteFileW"], "description": "Temporary cleaner di loader + wipe %TEMP% saat start exe.php (anti-forensik). (sumber: Sumatracit-1.0.6.md, exe-php-payload-analisa.md)"},
-        {"technique": "Masquerading", "mitre_id": "T1036", "api_calls": [], "description": "Loader-v3 memalsukan version info (OriginalFilename=PointBlank.exe, CompanyName=Point Blank) dan manifest rakitan PointBlank.Natagames; nama file numerik (01238172341.exe); ekstensi .mentah. (sumber: Loader-v3-analisa.md, exe-php-payload-analisa.md)"},
-        {"technique": "Process Discovery", "mitre_id": "T1057", "api_calls": ["EnumProcesses", "EnumProcessModules", "GetModuleBaseNameA", "CreateToolhelp32Snapshot", "Process32First", "Process32Next", "GetProcessesByName"], "description": "Enumerasi proses untuk menemukan target PointBlank.exe. (sumber: AppXor-analisa.md, LoaderVIP-analisa.md)"},
-        {"technique": "Obfuscated Files or Information", "mitre_id": "T1027", "api_calls": [], "description": "Obfusikasi ConfuserEx-style (AppXor), string XOR per-string (Loader-v2, exe.php), UPX packing (dControl), string terenkripsi penuh (LoaderVIP). (sumber: AppXor-analisa.md, Loader-v2-analisa.md, dControl-analisa.md, LoaderVIP-analisa.md)"},
-        {"technique": "Debugger Evasion", "mitre_id": "T1622", "api_calls": ["IsDebuggerPresent", "NtQueryInformationThread", "TerminateProcess"], "description": "IsDebuggerPresent lalu bunuh diri (CheckSerial: TerminateProcess 0xC0000409); exe.php menampilkan MessageBox 'debug !'. (sumber: CheckSerial-analisa.md, exe-php-payload-analisa.md)"},
-        {"technique": "Input Capture", "mitre_id": "T1056", "api_calls": ["GetAsyncKeyState", "keybd_event", "mouse_event"], "description": "Polling hotkey global (Key [V] on/off cheat) di DLL cheat ter-embed AppXor. (sumber: AppXor-analisa.md)"},
-        {"technique": "Web Protocols", "mitre_id": "T1071.001", "api_calls": ["InternetConnectW", "HttpOpenRequestW", "HttpSendRequestW"], "description": "Komunikasi HTTP(S) ke API lisensi (form-urlencoded POST, respons JSON) dan scraping HTML status layanan (HtmlAgilityPack, XPath). (sumber: Sumatracit-1.0.6.md, Loader-v2-analisa.md)"},
-        {"technique": "Rantai update resmi yang konsisten (observasi jaringan)", "mitre_id": "T1105", "api_calls": [], "description": "Binary dari sumatra.pro/app-update/Sumatracit.1.0.6.exe SHA256 identik dengan sampel yang dianalisa — sampel pengguna = build resmi yang didistribusikan; analisa statis berlaku untuk populasi aktual. (sumber: Endpoint.md)"},
-        {"technique": "Multi-stage loader chain (observasi jaringan)", "mitre_id": "T1105", "api_calls": [], "description": "Loader-v3.exe → /PointB/Sumatra/exe.php (PE 65 KB berisi string 'PointBlank.exe Found', '>>> Start PointBlank now...') → mereferensikan dll.php sebagai stage berikutnya. dll.php tidak muncul di analisa statis Loader-v3, ditemukan dari string payload unduhan — rantai 3 tahap: loader → dropper EXE → DLL. (sumber: Endpoint.md)"},
-        {"technique": "Random filename per request + HTTP polos (observasi jaringan)", "mitre_id": "T1027", "api_calls": [], "description": "exe.php dan dll.php mengembalikan Content-Disposition filename=<angka-acak>.<ext> yang berbeda tiap request (anti-caching/anti-deteksi berbasis nama file). exe.php, starscit.com/?hwid=, dan URL update di manifest masih memakai HTTP tanpa TLS → rentan MITM. (sumber: Endpoint.md)"}
+        {
+          "technique": "Ingress Tool Transfer",
+          "mitre_id": "T1105",
+          "api_calls": [
+            "WebClient.DownloadFile",
+            "URLDownloadToFileA",
+            "HttpClient.GetByteArrayAsync",
+            "InternetOpenA",
+            "InternetConnectA",
+            "HttpOpenRequestA",
+            "HttpSendRequestA",
+            "InternetReadFile"
+          ],
+          "description": "Mengunduh EXE/DLL cheat dari server remote lalu mengeksekusi (UnduhDanJalankan / ExecuteDownload). (sumber: Sumatracit.md, Sumatracit-1.0.6.md, Loader-v2-analisa.md)"
+        },
+        {
+          "technique": "User Execution: Malicious File",
+          "mitre_id": "T1204.002",
+          "api_calls": [
+            "Process.Start",
+            "set_UseShellExecute",
+            "ShellExecuteA",
+            "system()"
+          ],
+          "description": "Eksekusi binary unduhan via Process.Start/ShellExecute; system() memungkinkan eksekusi perintah shell arbitrer. (sumber: Sumatracit.md, Loader-v2-analisa.md)"
+        },
+        {
+          "technique": "Process Injection",
+          "mitre_id": "T1055",
+          "api_calls": [
+            "OpenProcess",
+            "VirtualAllocEx",
+            "WriteProcessMemory",
+            "CreateRemoteThread",
+            "NtCreateThreadEx",
+            "GetProcAddress"
+          ],
+          "description": "Injeksi DLL cheat ke proses PointBlank.exe (AppXor.exe, LoaderVIP.exe, exe.php via NtCreateThreadEx + LoadLibraryA remote). (sumber: AppXor-analisa.md, LoaderVIP-analisa.md, exe-php-payload-analisa.md)"
+        },
+        {
+          "technique": "System Information Discovery",
+          "mitre_id": "T1082",
+          "api_calls": [
+            "GetVolumeInformationA",
+            "GetCurrentHwProfileA",
+            "GetComputerNameA",
+            "GetUserNameA",
+            "GetAdaptersInfo",
+            "DeviceIoControl"
+          ],
+          "description": "HWID fingerprinting untuk lisensi: serial disk (SMART IOCTL 0x74080, 0x2D1400), volume serial, HW profile, MAC. (sumber: CheckSerial-analisa.md, HWIDCheck-analisa.md, Loader-v2-analisa.md)"
+        },
+        {
+          "technique": "Impair Defenses: Disable or Modify Tools",
+          "mitre_id": "T1562.001",
+          "api_calls": [
+            "RegCreateKeyExW",
+            "RegSetValueExW",
+            "RegDeleteKeyW",
+            "RegDeleteValueW",
+            "AdjustTokenPrivileges"
+          ],
+          "description": "dControl.exe (Sordum Defender Control v2.1, AutoIt+UPX) menonaktifkan Windows Defender; loader juga menyuruh user mematikan AV via teks UI. (sumber: dControl-analisa.md, Sumatracit.md)"
+        },
+        {
+          "technique": "Access Token Manipulation",
+          "mitre_id": "T1134",
+          "api_calls": [
+            "OpenProcessToken",
+            "LookupPrivilegeValueA",
+            "AdjustTokenPrivileges"
+          ],
+          "description": "Mengaktifkan SeDebugPrivilege untuk akses penuh ke proses target. (sumber: Loader-v3-analisa.md, exe-php-payload-analisa.md)"
+        },
+        {
+          "technique": "Indicator Removal: File Deletion",
+          "mitre_id": "T1070.004",
+          "api_calls": [
+            "GetFiles",
+            "GetDirectories",
+            "DeleteFileA",
+            "DeleteFileW"
+          ],
+          "description": "Temporary cleaner di loader + wipe %TEMP% saat start exe.php (anti-forensik). (sumber: Sumatracit-1.0.6.md, exe-php-payload-analisa.md)"
+        },
+        {
+          "technique": "Masquerading",
+          "mitre_id": "T1036",
+          "api_calls": [],
+          "description": "Loader-v3 memalsukan version info (OriginalFilename=PointBlank.exe, CompanyName=Point Blank) dan manifest rakitan PointBlank.Natagames; nama file numerik (01238172341.exe); ekstensi .mentah. (sumber: Loader-v3-analisa.md, exe-php-payload-analisa.md)"
+        },
+        {
+          "technique": "Process Discovery",
+          "mitre_id": "T1057",
+          "api_calls": [
+            "EnumProcesses",
+            "EnumProcessModules",
+            "GetModuleBaseNameA",
+            "CreateToolhelp32Snapshot",
+            "Process32First",
+            "Process32Next",
+            "GetProcessesByName"
+          ],
+          "description": "Enumerasi proses untuk menemukan target PointBlank.exe. (sumber: AppXor-analisa.md, LoaderVIP-analisa.md)"
+        },
+        {
+          "technique": "Obfuscated Files or Information",
+          "mitre_id": "T1027",
+          "api_calls": [],
+          "description": "Obfusikasi ConfuserEx-style (AppXor), string XOR per-string (Loader-v2, exe.php), UPX packing (dControl), string terenkripsi penuh (LoaderVIP). (sumber: AppXor-analisa.md, Loader-v2-analisa.md, dControl-analisa.md, LoaderVIP-analisa.md)"
+        },
+        {
+          "technique": "Debugger Evasion",
+          "mitre_id": "T1622",
+          "api_calls": [
+            "IsDebuggerPresent",
+            "NtQueryInformationThread",
+            "TerminateProcess"
+          ],
+          "description": "IsDebuggerPresent lalu bunuh diri (CheckSerial: TerminateProcess 0xC0000409); exe.php menampilkan MessageBox 'debug !'. (sumber: CheckSerial-analisa.md, exe-php-payload-analisa.md)"
+        },
+        {
+          "technique": "Input Capture",
+          "mitre_id": "T1056",
+          "api_calls": [
+            "GetAsyncKeyState",
+            "keybd_event",
+            "mouse_event"
+          ],
+          "description": "Polling hotkey global (Key [V] on/off cheat) di DLL cheat ter-embed AppXor. (sumber: AppXor-analisa.md)"
+        },
+        {
+          "technique": "Web Protocols",
+          "mitre_id": "T1071.001",
+          "api_calls": [
+            "InternetConnectW",
+            "HttpOpenRequestW",
+            "HttpSendRequestW"
+          ],
+          "description": "Komunikasi HTTP(S) ke API lisensi (form-urlencoded POST, respons JSON) dan scraping HTML status layanan (HtmlAgilityPack, XPath). (sumber: Sumatracit-1.0.6.md, Loader-v2-analisa.md)"
+        },
+        {
+          "technique": "Rantai update resmi yang konsisten (observasi jaringan)",
+          "mitre_id": "T1105",
+          "api_calls": [],
+          "description": "Binary dari sumatra.pro/app-update/Sumatracit.1.0.6.exe SHA256 identik dengan sampel yang dianalisa — sampel pengguna = build resmi yang didistribusikan; analisa statis berlaku untuk populasi aktual. (sumber: Endpoint.md)"
+        },
+        {
+          "technique": "Multi-stage loader chain (observasi jaringan)",
+          "mitre_id": "T1105",
+          "api_calls": [],
+          "description": "Loader-v3.exe → /PointB/Sumatra/exe.php (PE 65 KB berisi string 'PointBlank.exe Found', '>>> Start PointBlank now...') → mereferensikan dll.php sebagai stage berikutnya. dll.php tidak muncul di analisa statis Loader-v3, ditemukan dari string payload unduhan — rantai 3 tahap: loader → dropper EXE → DLL. (sumber: Endpoint.md)"
+        },
+        {
+          "technique": "Random filename per request + HTTP polos (observasi jaringan)",
+          "mitre_id": "T1027",
+          "api_calls": [],
+          "description": "exe.php dan dll.php mengembalikan Content-Disposition filename=<angka-acak>.<ext> yang berbeda tiap request (anti-caching/anti-deteksi berbasis nama file). exe.php, starscit.com/?hwid=, dan URL update di manifest masih memakai HTTP tanpa TLS → rentan MITM. (sumber: Endpoint.md)"
+        }
       ],
       "detection_strings": [
         "UnduhDanJalankan",
