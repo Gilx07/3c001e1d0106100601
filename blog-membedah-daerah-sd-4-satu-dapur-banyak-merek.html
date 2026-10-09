@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#070504">
+  <meta name="description" content="Empat merek cheat yang tampak bersaing ternyata berbagi satu dapur: loader bersama bermuatan empat payload, backend lisensi dan spesifikasi HWID yang sama, serta infrastruktur bersama — beserta peta MITRE dan IOC hash lengkap.">
+  <link rel="canonical" href="https://dolenthis.my.id/blog-membedah-daerah-sd-4-satu-dapur-banyak-merek.html">
+  <meta property="og:title" content="Membedah &quot;Daerah SD&quot; (Bagian 4): Satu Dapur, Banyak Merek — Loader Bersama di Balik Etalase Cheat — Dolenthis">
+  <meta property="og:description" content="Empat merek cheat yang tampak bersaing ternyata berbagi satu dapur: loader bersama bermuatan empat payload, backend lisensi dan spesifikasi HWID yang sama, serta infrastruktur bersama — beserta peta MITRE dan IOC hash lengkap.">
+  <meta property="og:url" content="https://dolenthis.my.id/blog-membedah-daerah-sd-4-satu-dapur-banyak-merek.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://dolenthis.my.id/assets/IMG_3190.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Membedah &quot;Daerah SD&quot; (Bagian 4): Satu Dapur, Banyak Merek — Loader Bersama di Balik Etalase Cheat — Dolenthis">
+  <meta name="twitter:description" content="Empat merek cheat yang tampak bersaing ternyata berbagi satu dapur: loader bersama bermuatan empat payload, backend lisensi dan spesifikasi HWID yang sama, serta infrastruktur bersama — beserta peta MITRE dan IOC hash lengkap.">
+  <meta name="twitter:image" content="https://dolenthis.my.id/assets/IMG_3190.png">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Membedah &quot;Daerah SD&quot; (Bagian 4): Satu Dapur, Banyak Merek — Loader Bersama di Balik Etalase Cheat — Dolenthis</title>
+  <link rel="stylesheet" href="css/site.min.css" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Membedah &quot;Daerah SD&quot; (Bagian 4): Satu Dapur, Banyak Merek — Loader Bersama di Balik Etalase Cheat — Dolenthis",
+  "description": "Empat merek cheat yang tampak bersaing ternyata berbagi satu dapur: loader bersama bermuatan empat payload, backend lisensi dan spesifikasi HWID yang sama, serta infrastruktur bersama — beserta peta MITRE dan IOC hash lengkap.",
+  "url": "https://dolenthis.my.id/blog-membedah-daerah-sd-4-satu-dapur-banyak-merek.html",
+  "datePublished": "2026-10-09",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://dolenthis.my.id/blog-membedah-daerah-sd-4-satu-dapur-banyak-merek.html"
+  },
+  "inLanguage": "id",
+  "author": {
+    "@type": "Organization",
+    "name": "Dolenthis",
+    "url": "https://dolenthis.my.id/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Dolenthis",
+    "url": "https://dolenthis.my.id/"
+  }
+}
+  </script>
+</head>
+<body class="page-body">
+  <header class="site-header" id="site-header">
+    <nav class="site-nav" aria-label="Navigasi utama">
+      <a class="nav-brand" href="index.html" data-nav-action="home" aria-label="Kembali ke halaman utama">Dolenthis</a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Buka navigasi" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <a class="nav-link" href="index.html" data-nav-action="home">Home</a>
+        <a class="nav-link active" href="blog.html" data-nav-action="blog" aria-current="page">Blog</a>
+        <a class="nav-link" href="about.html" data-nav-action="about">About</a>
+        <a class="nav-link" href="pbguard.html" data-nav-action="pbguard">PBGuard</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-shell article-shell">
+    <p class="page-kicker">Defensive research / Threat analysis</p>
+    <h1 class="page-title article-title">Membedah "Daerah SD" (Bagian 4): Satu Dapur, Banyak Merek — Loader Bersama di Balik Etalase Cheat</h1>
+    <div class="article-meta"><span>9 Oktober 2026</span><span>Windows / Static Analysis / Threat Intel / Anti-Cheat</span></div>
+    <div class="page-rule"></div>
+
+    <article class="article-panel">
+      <div class="article-note"><strong>Catatan editorial:</strong> Seluruh nama individu, brand, dan merk dagang dalam tulisan ini disamarkan sesuai kebijakan editorial Dolenthis. Merek-merek cheat dirujuk dengan julukan peran (merek tuan rumah, merek pulau seberang, merek hantu, merek kota kecil). Identifier teknis (nama file, hash, path, teknik MITRE ATT&amp;CK) ditulis apa adanya karena merupakan indikator deteksi.</div>
+      <h2>Ringkasan Eksekutif</h2>
+      <p>Di etalase, ekosistem cheat ini tampak seperti pasar yang ramai. Ada merek tuan rumah yang menjadi subjek seri ini — sebut saja "Daerah SD". Ada merek dari pulau seberang. Ada merek hantu. Ada merek kota kecil. Masing-masing punya nama, paket, dan etalase sendiri; dari luar, mereka tampak seperti pesaing yang berebut pembeli yang sama.</p>
+      <p>Bagian 4 seri ini membongkar apa yang ada di belakang etalase itu — dan ternyata bukan pasar. Di balik empat merek tersebut ditemukan <strong>satu dapur yang sama</strong>: satu loader bersama yang membawa payload untuk keempat merek sekaligus, satu backend lisensi yang melayani semuanya, satu format sidik jari mesin yang disepakati lintas penulis kode, dan satu server yang merangkap sebagai kasir lisensi sekaligus gudang cadangan distribusi. Menu internal salah satu modul cheat bahkan mendaftar nama semua merek itu berdampingan, seperti daftar varian dalam satu katalog produk.</p>
+      <p>Kesimpulan gelombang analisis terbaru (62 varian) ini sederhana dan mengubah cara membacanya: "persaingan" antar-merek cheat ini sebagian besar adalah teater etalase. Yang bersaing di depan layar adalah nama-nama; yang bekerja di belakang layar adalah satu operasi. Analisis tetap <strong>murni statis</strong> — tidak satu pun file dijalankan; untuk komponen .NET, logika dipulihkan lewat dekompilasi offline.</p>
+      <h2>1. Ilusi Persaingan di Etalase</h2>
+      <p>Asumsi yang wajar saat melihat banyak merek cheat adalah bahwa mereka dibuat operator yang berbeda-beda — mungkin saling meniru, mungkin saling mencuri kode, tetapi berdiri sendiri. Asumsi itu yang selama tiga bagian pertama seri ini kami pegang dengan hati-hati: jembatan antar-merek dicatat sebagai indikasi, bukan kesimpulan.</p>
+      <p>Tiga temuan pada gelombang terbaru mengubah statusnya. Pertama, sebuah loader yang membawa payload semua merek dalam satu file. Kedua, sebuah modul cheat yang daftar varian internalnya menyebut semua merek sekaligus. Ketiga, keselarasan teknis yang terlalu rapi untuk disebut kebetulan: format identitas mesin yang identik di tool karya penulis berbeda, pada ekosistem yang berbeda. Bab-bab berikut membedahnya satu per satu.</p>
+      <h2>2. Sang Kurir: Satu Loader Membawa Empat Merek</h2>
+      <p>File-nya berukuran hampir 18 MB — raksasa untuk ukuran loader cheat, yang biasanya ramping. Isinya menjelaskan kenapa: <strong>98% dari file itu adalah muatan.</strong> Tertanam sebagai resource di dalamnya ada empat DLL utuh, masing-masing sekitar 4,45 MB, masing-masing dilindungi protektor komersial ber-virtualisasi, dan masing-masing <strong>satu untuk setiap merek</strong>: tuan rumah, pulau seberang, hantu, dan kota kecil.</p>
+      <p>Keempat payload itu berbagi sidik jari yang sama:</p>
+      <ul class="article-points">
+        <li><strong>Nama internal identik.</strong> Semuanya menyandang nama internal yang sama — <code>AgPerfMon.dll</code> — nama netral berkedok komponen pemantau performa. Empat merek, satu topeng.</li>
+        <li><strong>Ukuran kode pra-proteksi identik.</strong> Di balik lapisan virtualisasinya, ukuran bagian kode varian-varian bermerek itu sama persis dengan modul cheat mandiri yang beredar untuk lini tuan rumah — indikasi kuat mereka adalah <em>build</em> berbeda dari <strong>satu codebase yang sama</strong>, diproteksi ulang untuk tiap etalase.</li>
+        <li><strong>String yang bocor dari dalam.</strong> Pada tubuh loader, string milik payload tertanam ikut terbaca — dan isinya adalah endpoint sidik jari mesin serta backend lisensi yang sama persis dengan yang dipakai modul tuan rumah. Payload "merek lain" itu menelepon rumah ke alamat yang sama.</li>
+      </ul>
+      <p>Cara kerja sang kurir sendiri terpulihkan utuh dari dekompilasinya (ia aplikasi .NET yang diobfuskasi; 43 string tersembunyinya berhasil didekode offline — skema penyembunyiannya sekadar XOR terhadap posisi byte dan satu konstanta tetap, satu lagi kunci sederhana dari dapur yang sama):</p>
+      <ol class="article-points">
+        <li>Ia menolak berjalan bila game sedang terbuka, dan menghapus sisa payload lama.</li>
+        <li>Sekali klik pada tombol pembaruan, ia menulis payload merek tuan rumah ke <strong><code>C:\mscoore.dll</code></strong> — nama samaran yang meniru nama file runtime sah dengan menghilangkan satu huruf.</li>
+        <li>Ia lalu mengintai proses game setiap setengah detik; begitu game muncul, ia menginjeksikan DLL itu dengan teknik klasik <code>LoadLibraryA</code> lewat thread jarak jauh, lalu keluar.</li>
+        <li>Antarmukanya membawa tombol ke situs penjual bersama dan status "sedang perawatan" yang tertanam di kode.</li>
+      </ol>
+      <p>Satu detail yang jujur perlu dicatat: pada build yang kami periksa, tombolnya hanya menulis payload merek tuan rumah. Payload tiga merek lain ikut terbawa sebagai muatan, tetapi tidak dirujuk kode yang terpulihkan. Penjelasan yang paling masuk akal: <strong>setiap etalase menerima build kurirnya sendiri</strong> dari basis kode yang sama — muatan bersama, saklar berbeda. Itu pun, dengan sendirinya, sudah merupakan bukti dapur bersama: tidak ada pesaing yang menitipkan produknya di kendaraan pengiriman rival.</p>
+      <p>Nama internal loader ini menambah satu jembatan lagi. Nama yang sama pernah muncul sebagai modul pada analisis ekosistem merek pulau seberang terdahulu — indikasi kuat basis kode sang kurir memang beredar lintas merek, jauh sebelum empat payload itu dikemas dalam satu file.</p>
+      <h2>3. Menu yang Membocorkan Isi Dapur</h2>
+      <p>Bukti kedua datang dari modul cheat kelas berat milik tuan rumah itu sendiri — build terbaru dari codebase utamanya, terbit Juli 2026. Di dalam daftar string menunya, tersimpan daftar varian VIP yang ia layani. Isinya bukan satu merek: <strong>nama semua merek itu tercantum berdampingan</strong> — tuan rumah, pulau seberang, hantu, dan beberapa label varian lain — seperti satu produk dengan banyak rasa.</p>
+      <p>Detail pendukungnya sama telanjangnya:</p>
+      <ul class="article-points">
+        <li><strong>Nomor kontak penjual yang identik</strong> tercetak di dalam modul ini dan di build generasi sebelumnya — satu nomor melayani "semua merek".</li>
+        <li><strong>Endpoint pengumpulan sidik jari mesin yang sama</strong> — alamat polos HTTP yang menerima parameter HWID — dipakai modul ini, payload-payload tertanam sang kurir, dan generasi sebelumnya.</li>
+        <li><strong>Backend lisensi yang sama</strong>, dan alamat backend itu sendiri secara harfiah <strong>menyandang nama merek hantu</strong> — sementara ia melayani lisensi untuk modul tuan rumah. Bayangkan sebuah restoran yang kasirnya memakai seragam restoran sebelah yang katanya pesaing.</li>
+      </ul>
+      <p>Pada titik ini tafsir "mereka saling meniru" tidak lagi cukup. Meniru fitur itu biasa; meniru nomor kasir, alamat kasir, dan daftar menu bersama bukanlah peniruan — itu pembagian fasilitas.</p>
+      <h2>4. Dua Codebase, Satu Spesifikasi</h2>
+      <p>Di dapur yang sama ternyata bekerja lebih dari satu resep. Gelombang terbaru mengidentifikasi <strong>dua codebase cheat yang berbeda</strong> beredar di bawah etalase tuan rumah:</p>
+      <ul class="article-points">
+        <li><strong>Codebase kelas berat</strong> — yang sudah dikenal sejak gelombang pertama: fitur VIP penuh (aimbot peluru, teleportasi, terbang, tembus pandang), pengumpulan HWID dan validasi lisensi di dalam modul, nama internal bertopeng yang sama dari generasi ke generasi.</li>
+        <li><strong>Codebase kelas ringan</strong> — temuan baru: gaya "assist" yang lebih sederhana (bantuan bidik + ESP + makro senjata), tanpa pengumpulan HWID di dalam DLL-nya, konfigurasi lewat file INI yang disimpan di folder sistem palsu yang sama dengan yang dipakai rantai loader ekosistem ini sejak lama.</li>
+      </ul>
+      <p>Dua resep boleh saja berarti dua juru masak yang tidak saling kenal. Yang menyatukan mereka adalah <strong>spesifikasi lisensinya</strong>. Sebuah tool pemeriksa serial dari generasi terbaru — ditulis oleh penulis yang berbeda dari penulis modul kelas berat, dengan toolchain yang lebih baru dan anti-debugging tiga lapis — ternyata memakai <strong>dua query identitas mesin yang identik kata per kata</strong> dengan yang dipakai modul kelas berat: nomor seri papan induk dan UUID sistem, digabung lalu di-hash. Format sidik jari yang sama persis, di tangan penulis yang berbeda, hanya masuk akal bila keduanya bekerja dari <strong>satu spesifikasi lisensi yang disepakati</strong> — sistem kasir yang sama harus bisa membaca nota dari semua dapur.</p>
+      <p>Pola yang sama terulang pada peralatan pendukungnya. Satu tool pemeriksa serial generasi lama yang sama ditemukan tersebar di paket tiga ekosistem berbeda — tuan rumah dan dua merek tetangga — dibangun sekali, dipakai semua pihak. Bocoran jalur proyek pada file-file gelombang ini menunjukkan beberapa nama pembangun yang berbeda-beda untuk komponen yang berbeda (loader, updater, pemeriksa serial, modul cheat) — gambar yang muncul bukan satu orang yang mengerjakan semuanya, melainkan <strong>lingkaran kecil pembangun yang berbagi spesifikasi, peralatan, dan infrastruktur</strong>. Atribusi dari jalur file tentu bisa dipalsukan; tetapi konsistensinya lintas puluhan file dan dua gelombang analisis membuat tafsir sebaliknya terasa jauh lebih dipaksakan.</p>
+      <h2>5. Infrastruktur yang Dipakai Bersama</h2>
+      <p>Dapur bersama membutuhkan gudang dan kasir bersama. Peta gelombang ini menemukannya:</p>
+      <ul class="article-points">
+        <li><strong>Satu alamat IP, banyak pekerjaan.</strong> Alamat yang sama melayani API lisensi dan penukaran token bagi injector tuan rumah, menjadi server cadangan tempat updater menarik antarmuka utama bila sumber utama gagal, dan — menurut rangkuman gelombang ini — melayani API lisensi dua merek sekaligus. Satu server yang tidak bisa mati tanpa melumpuhkan beberapa etalase sekaligus.</li>
+        <li><strong>Server unduhan bersama, jalur per merek.</strong> Downloader generasi awal tuan rumah mengambil payload dari server yang sama dengan downloader merek pulau seberang — alamatnya tersusun rapi sebagai jalur per merek di bawah direktori yang sama, seperti rak-rak berlabel di satu gudang.</li>
+        <li><strong>Distribusi lewat satu repositori rilis, dengan cadangan IP polos.</strong> Pintu masuk seluruh operasi adalah updater ramping yang membunuh proses lama, mengunduh antarmuka terbaru dari rilis repositori bersama (atau dari IP cadangan di atas bila itu gagal), menyimpannya di folder bernama acak di direktori data aplikasi, lalu menjalankannya <strong>sebagai administrator tanpa satu pun pemeriksaan integritas</strong> — tanpa hash, tanpa tanda tangan. Kelemahan itu bukan milik satu merek: ia diwarisi setiap pengguna dari semua etalase yang berbagi pintu yang sama. Siapa pun yang menguasai rantai unduhan itu memegang hak admin di mesin seluruh pasar sekaligus.</li>
+        <li><strong>Panel member yang menolak mati.</strong> Dari berkas petunjuk di dalam paket cadangan manual operator sendiri terkonfirmasi: panel lisensi member mereka <strong>masih hidup dan sudah pindah alamat IP</strong> — jalur loginnya identik, skema kunci membernya sama persis, panel lamanya sudah mati. Infrastruktur boleh berganti rumah; sistem kasirnya tidak pernah tutup.</li>
+      </ul>
+      <h2>6. Apa Artinya bagi Deteksi</h2>
+      <p>Membaca peta ini sebagai empat merek terpisah menghasilkan strategi yang salah. Implikasi praktisnya:</p>
+      <ul class="article-points">
+        <li><strong>Menekan satu etalase tidak mematikan operasi.</strong> Nama merek adalah lapisan termurah dari seluruh tumpukan — ia bisa diganti dalam sehari. Lapisan mahalnya adalah yang dipakai bersama: kurir, codebase, spesifikasi lisensi, dan server kasir. Di situlah tekanan harus ditujukan.</li>
+        <li><strong>Indikator bersama bernilai lintas merek.</strong> Hash satu payload bermerek membuka keluarganya: nama internal topeng yang sama, jalur drop <code>C:\mscoore.dll</code>, endpoint HWID bersama, dan alamat kasir bersama adalah indikator yang tetap berlaku apa pun nama etalase minggu ini.</li>
+        <li><strong>Satu sampel adalah jendela ke seluruh dapur.</strong> Karena muatan empat merek bepergian dalam satu file, menganalisis loader satu etalase memberikan indikator untuk tiga etalase lain yang bahkan belum diperoleh sampelnya. Bagi pemburu indikator, file 18 MB ini adalah hadiah.</li>
+        <li><strong>Bagi pengguna cheat-nya sendiri:</strong> "memilih merek yang lebih aman" adalah ilusi — semua merek berbagi pintu masuk tanpa verifikasi integritas yang sama. Risikonya tidak berbeda per etalase; yang berbeda hanya labelnya.</li>
+      </ul>
+      <h2>7. Pemetaan MITRE ATT&amp;CK (ringkas)</h2>
+      <ul class="article-points">
+        <li><strong>Defense Evasion</strong> — T1036 — Masquerading — Payload semua merek bernama internal <code>AgPerfMon.dll</code>; drop sebagai <code>C:\mscoore.dll</code> meniru file runtime sah</li>
+        <li><strong>Defense Evasion</strong> — T1027 — Obfuscated Files or Information — Obfuskasi .NET pada kurir bersama; payload terproteksi virtualisasi per merek</li>
+        <li><strong>Execution</strong> — T1055.001 — Process Injection: DLL Injection — Kurir menginjeksikan payload terpilih ke proses game via thread jarak jauh + <code>LoadLibraryA</code></li>
+        <li><strong>Persistence / Distribusi</strong> — T1105 — Ingress Tool Transfer — Updater bersama menarik antarmuka terbaru dari repositori rilis / IP cadangan lalu menjalankannya sebagai admin</li>
+        <li><strong>Discovery</strong> — T1082 — System Information Discovery — Query identitas mesin yang identik lintas penulis untuk spesifikasi HWID bersama</li>
+        <li><strong>Defense Evasion</strong> — T1622 — Debugger Evasion — Anti-debugging tiga lapis pada pemeriksa serial generasi terbaru</li>
+      </ul>
+      <h2>8. Indikator Deteksi (IOC)</h2>
+      <p>Berbeda dari bagian sebelumnya, gelombang ini memperoleh hash lengkap untuk artefak-artefak kuncinya:</p>
+      <ul class="article-points">
+        <li><strong>SHA256 — kurir bersama (loader 4 merek)</strong> — <code>f03d0c516dbc9aeab4d8b93c0d5ec5f95da722109b99efa2cafb5713565badea</code></li>
+        <li><strong>SHA256 — payload tertanam merek tuan rumah</strong> — <code>8c6beb00db0eead492d6b725fa5dadc41788724dbbd8aaa4e6084a078cf1ae18</code></li>
+        <li><strong>SHA256 — payload tertanam merek pulau seberang</strong> — <code>cc8b0cbc1c859c163a8cd868a401d6d3a020805207ca855400405629c04dfb78</code></li>
+        <li><strong>SHA256 — payload tertanam merek hantu</strong> — <code>36923b73966ca0114866f5a785dc72fee00a924c792fdda2f923780b4208188d</code></li>
+        <li><strong>SHA256 — payload tertanam merek kota kecil</strong> — <code>0b226ef162c423ccfd8373184e0e4b1ba17956db6e43b8910dc2ccbbfa3ff08a</code></li>
+        <li><strong>SHA256 — modul kelas berat (build terbaru)</strong> — <code>98bb49d2bc604499502a0451be908d32b5cd1e773afb7c64cf0b6903fdc5c192</code></li>
+        <li><strong>SHA256 — modul kelas ringan (varian penuh)</strong> — <code>18b45ea53977c23a1c39da5376dbef9639c160e6c3ae030b0b34e854d63610bd</code></li>
+        <li><strong>SHA256 — pemeriksa serial generasi terbaru</strong> — <code>1318cfac2dd97a741cdae192ed9b401c0f53889af5337789b7873ed38a466ea7</code></li>
+        <li><strong>SHA256 — updater pintu masuk</strong> — <code>4973d41b831cb86de6c21128de3b8712ab641585f19ce83f5ad4f10bcea68b1e</code></li>
+        <li><strong>Nama internal payload</strong> — <code>AgPerfMon.dll</code> (dipakai semua merek)</li>
+        <li><strong>Jalur drop</strong> — <code>C:\mscoore.dll</code></li>
+        <li><strong>Perilaku</strong> — Loader ±18 MB dengan ±98% isi berupa DLL tertanam; query WMI ganda (nomor seri papan induk + UUID sistem) dari proses asing; unduhan ke folder bernama GUID di direktori data aplikasi lalu eksekusi <code>runas</code> tanpa verifikasi</li>
+      </ul>
+      <h2>9. Rekomendasi</h2>
+      <p><strong>Untuk pengguna:</strong></p>
+      <ul class="article-points">
+        <li>Anggap setiap klaim "merek kami paling aman / paling tidak terdeteksi" sebagai naskah pemasaran. Di belakang layar, merek-merek itu berbagi kode, kasir, dan pintu masuk yang sama — termasuk kelemahannya.</li>
+        <li>Pintu masuk bersama ekosistem ini menjalankan unduhan sebagai administrator tanpa memverifikasi apa pun. Memakai salah satu etalasenya berarti memercayakan mesin Anda pada rantai pasok yang sama persis, apa pun labelnya.</li>
+      </ul>
+      <p><strong>Untuk deteksi:</strong></p>
+      <ul class="article-points">
+        <li>Bangun indikator pada lapisan bersama — kurir, nama internal payload, jalur drop, endpoint HWID, server kasir — bukan pada nama merek.</li>
+        <li>Perlakukan kemunculan satu merek sebagai pemicu perburuan keluarga: bila satu payload dari dapur ini terdeteksi, varian etalase lain berbagi cukup banyak sidik jari untuk ditemukan dengan indikator yang sama.</li>
+      </ul>
+      <h2>Keterbatasan</h2>
+      <p>Seluruh analisis bersifat <strong>statis</strong>; logika payload di dalam kurir dilindungi virtualisasi dan tidak dibedah isinya — identifikasinya bertumpu pada nama internal, ukuran bagian kode pra-proteksi, string yang bocor, dan kesetaraan endpoint dengan modul mandiri yang terpulihkan. Sebagian metode kurir mungkin tidak ter-decompile sempurna akibat obfuskasi (beberapa pemanggilan unduhan terdeklarasi tanpa call-site yang ditemukan) dan ditandai sebagai indikasi di tempatnya. Kesimpulan "satu operasi" adalah penilaian analitis atas kumulasi bukti bersama — loader bermuatan empat merek, menu lintas merek, spesifikasi HWID identik, dan infrastruktur bersama — bukan pengakuan dari operatornya; bentuk hukumnya (satu pemilik, lisensi silang, atau kartel longgar antar-penjual) tidak dapat ditentukan dari artefak saja.</p>
+      <p><em>Empat etalase, empat nama, empat daftar harga — dan satu dapur, satu kasir, satu kurir untuk semuanya. Seri ini akan terus memetakan ekosistem "Daerah SD" selama ia beroperasi; peta terbarunya sejauh ini menunjukkan bahwa yang tampak seperti pasar ternyata lebih mirip satu toko yang memasang banyak papan nama.</em></p>
+      <p><em>Dolenthis adalah media riset independen. Analisis seperti inilah yang menjadi basis data indikator tool deteksi kami — karena deteksi yang baik selalu dimulai dari pemahaman yang jujur tentang cara kerja penyerang.</em></p>
+
+      <p><em>Indikator dari rangkaian analisa ini dipakai oleh <a href="pbguard.html">PBGuard</a> — pendeteksi cheat Point Blank by Dolenthis.</em></p>
+
+      <div class="article-contact-wrap"><a class="article-contact" href="https://wa.me/6285828310334" rel="noopener noreferrer">CONTACT</a></div>
+      <a class="article-back" href="blog.html">← Kembali ke Blog</a>
+    </article>
+  </main>
+  <script src="js/site.min.js" defer></script>
+</body></html>
