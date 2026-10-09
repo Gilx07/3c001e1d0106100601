@@ -40,3 +40,4 @@ body.crypto-modal-open{overflow:hidden}
 html,body,body *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
 img,svg,canvas{-webkit-user-drag:none;user-drag:none}
 @media print{html,body{background:#000!important}body>*{display:none!important}body::before{content:'Printing is disabled for this page.';display:block!important;padding:48px;color:#aaa;background:#000;font:16px/1.5 sans-serif}}
+.nav-logo{height:30px;width:30px;flex:none}
