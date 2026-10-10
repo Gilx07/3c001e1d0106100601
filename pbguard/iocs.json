@@ -63,14 +63,6 @@
           "known_paths": [],
           "size_bytes": null,
           "sha256": null
-        },
-        {
-          "name": "Serial.txt",
-          "known_paths": [
-            "<direktori kerja CheckSerial.exe>"
-          ],
-          "size_bytes": null,
-          "sha256": null
         }
       ],
       "processes": [
@@ -199,14 +191,6 @@
           ],
           "size_bytes": 181031424,
           "sha256": "084d64dbe0ea8a5aa9bcdf8208e6a2abd846e252cddb45c8fc3d6d9717b9c58f"
-        },
-        {
-          "name": "elevate.exe",
-          "known_paths": [
-            "resources/elevate.exe (di dalam installer SaMarinDa-UI-3.1.24.exe)"
-          ],
-          "size_bytes": 107520,
-          "sha256": "9b1fbf0c11c520ae714af8aa9af12cfd48503eedecd7398d8992ee94d1b4dc37"
         },
         {
           "name": "Uninstall Runtime Broker.exe",
@@ -1091,14 +1075,8 @@
         {
           "name": "dControl.exe",
           "known_paths": [],
-          "size_bytes": 457984,
-          "sha256": "1ef6c1a4dfdc39b63bfe650ca81ab89510de6c0d3d7c608ac5be80033e559326"
-        },
-        {
-          "name": "dControl-unpacked.exe",
-          "known_paths": [],
-          "size_bytes": 798464,
-          "sha256": "4958477ab0fc14f6c2ed4c044e41718a87aa47f491c40b863f891451caf9db5b"
+          "size_bytes": null,
+          "sha256": null
         },
         {
           "name": "exe.php (payload, di-drop sebagai a1.mentah)",
@@ -1111,24 +1089,6 @@
         },
         {
           "name": "LoaderHard.exe",
-          "known_paths": [],
-          "size_bytes": null,
-          "sha256": null
-        },
-        {
-          "name": "Loader.exe",
-          "known_paths": [],
-          "size_bytes": null,
-          "sha256": null
-        },
-        {
-          "name": "Bunifu_UI_v1.52.dll",
-          "known_paths": [],
-          "size_bytes": null,
-          "sha256": null
-        },
-        {
-          "name": "Guna.UI2.dll",
           "known_paths": [],
           "size_bytes": null,
           "sha256": null
