@@ -57,12 +57,6 @@
           "known_paths": [],
           "size_bytes": null,
           "sha256": null
-        },
-        {
-          "name": "pe.dll",
-          "known_paths": [],
-          "size_bytes": null,
-          "sha256": null
         }
       ],
       "processes": [
@@ -142,7 +136,6 @@
         "pe.mentah",
         "Heisenberg",
         "Ngopi.dll",
-        "pe.dll",
         "msvcp100d.dll",
         "msvcr100d.dll",
         "Bypass Tsugu",
@@ -302,12 +295,6 @@
         },
         {
           "name": "Function.dll",
-          "known_paths": [],
-          "size_bytes": null,
-          "sha256": null
-        },
-        {
-          "name": "CB.exe",
           "known_paths": [],
           "size_bytes": null,
           "sha256": null
@@ -694,7 +681,6 @@
         "Runtime Broker.exe",
         "Runtime-Broker.exe",
         "runtime-broker-service",
-        "CB.exe",
         "obs64.exe",
         "obs32.exe",
         "streamlabs obs.exe"
