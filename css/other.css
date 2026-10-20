@@ -1,0 +1,94 @@
+/* Dolenthis: lapisan keterbacaan khusus rubrik Other.
+   Dimuat SETELAH css/site.min.css hanya di halaman Other.
+   Tujuan: teks panjang yang nyaman dibaca (sans-serif, baris
+   longgar, kontras lebih tinggi, lebar kolom sempit), tanpa
+   mengubah tema/identitas situs utama. */
+.page-shell.other-shell{width:min(860px,calc(100% - 36px))}
+.page-shell.other-article-shell{width:min(740px,calc(100% - 36px))}
+
+/* Badan artikel: sans-serif, lebih besar, lebih terang, longgar */
+.other-article .article-panel p,
+.other-article .article-panel li{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:1.07rem;
+  line-height:1.85;
+  color:#d9c9a8;
+}
+.other-article .article-panel p{margin:0 0 20px}
+.other-article .article-panel h2{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:1.42rem;
+  font-weight:700;
+  line-height:1.35;
+  color:#e9cd97;
+  margin:40px 0 12px;
+}
+.other-article .article-panel h2:first-of-type{margin-top:6px}
+.other-article .article-panel a{color:#eec27f;text-underline-offset:3px}
+.other-article .article-panel strong{color:#efdcb2}
+.other-article .article-points li,
+.other-article .article-panel ol li{margin:10px 0}
+.other-article .article-note{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:.98rem;
+  line-height:1.75;
+  color:#cdbb96;
+}
+.other-article .article-meta{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:.9rem;
+  color:#a68f66;
+}
+.other-article .article-title{font-size:clamp(2rem,6vw,3.4rem)}
+
+/* Kotak "baca juga" di akhir artikel */
+.other-related{
+  margin:36px 0 8px;
+  padding:20px 22px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(138,82,35,.07);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+.other-related h2{margin:0 0 10px !important;font-size:1.1rem !important}
+.other-related ul{margin:0;padding-left:18px}
+.other-related li{margin:8px 0;font-size:1rem !important;line-height:1.6 !important}
+
+/* Hub Other: kartu daftar yang lebih lapang & terang */
+.other-hub .post-copy p{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:1rem;
+  line-height:1.65;
+  color:#c3ad83;
+}
+.other-hub .post-copy h2{font-size:1.42rem}
+.other-hub .post-date{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color:#a68f66;
+}
+.other-cat{
+  display:inline-block;
+  margin:0 0 8px;
+  padding:3px 10px;
+  border:1px solid rgba(190,135,75,.45);
+  border-radius:999px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:.78rem;
+  letter-spacing:.04em;
+  color:#eec27f;
+}
+.other-about{
+  margin:26px 0 6px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:1rem;
+  line-height:1.8;
+  color:#c3ad83;
+  max-width:690px;
+}
+
+/* Sentuhan aksesibilitas & layar kecil */
+.other-hub a:focus-visible,.other-article a:focus-visible{outline:2px solid #eec27f;outline-offset:3px}
+@media (max-width:560px){
+  .other-article .article-panel{padding:24px 18px}
+  .other-article .article-panel p,.other-article .article-panel li{font-size:1.03rem;line-height:1.8}
+}
