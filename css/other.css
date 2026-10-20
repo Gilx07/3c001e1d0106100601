@@ -77,14 +77,6 @@
   letter-spacing:.04em;
   color:#eec27f;
 }
-.other-about{
-  margin:26px 0 6px;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  font-size:1rem;
-  line-height:1.8;
-  color:#c3ad83;
-  max-width:690px;
-}
 
 /* Sentuhan aksesibilitas & layar kecil */
 .other-hub a:focus-visible,.other-article a:focus-visible{outline:2px solid #eec27f;outline-offset:3px}
