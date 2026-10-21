@@ -84,3 +84,6 @@
   .other-article .article-panel{padding:24px 18px}
   .other-article .article-panel p,.other-article .article-panel li{font-size:1.03rem;line-height:1.8}
 }
+
+/* Foto pendukung di dalam artikel: dibatasi selebar kolom baca dan responsif di HP supaya tidak meluber keluar teks. */
+.other-photo{display:block;max-width:100%;height:auto;margin:1.4em auto;border-radius:10px}
