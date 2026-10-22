@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
   <meta name="referrer" content="no-referrer">
   <meta name="theme-color" content="#070504">
-  <meta name="description" content="Analisis teknis Hook serial validation pada Cheat Point Blank V1: MinHook, state tracing, MD5 pipeline, WinINet, response normalization, dan comparator runtime.">
+  <meta name="description" content="Analisis teknis hook serial validation pada Cheat Point Blank V1: MinHook, state tracing, pipeline MD5, WinINet, dan comparator runtime.">
   <link rel="canonical" href="https://dolenthis.my.id/blog-hook-serial-validation-cheat-point-blank-v1.html">
   <meta property="og:title" content="Hook serial validation pada Cheat Point Blank V1 — Dolenthis">
   <meta property="og:description" content="Analisis teknis MinHook, state tracing, MD5 pipeline, WinINet, response normalization, dan comparator runtime pada Cheat Point Blank V1.">
@@ -27,7 +27,7 @@
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "Hook serial validation pada Cheat Point Blank V1 — Dolenthis",
-  "description": "Analisis teknis Hook serial validation pada Cheat Point Blank V1: MinHook, state tracing, MD5 pipeline, WinINet, response normalization, dan comparator runtime.",
+  "description": "Analisis teknis hook serial validation pada Cheat Point Blank V1: MinHook, state tracing, pipeline MD5, WinINet, dan comparator runtime.",
   "url": "https://dolenthis.my.id/blog-hook-serial-validation-cheat-point-blank-v1.html",
   "mainEntityOfPage": {
     "@type": "WebPage",
@@ -50,10 +50,10 @@
 <body class="page-body">
   <header class="site-header" id="site-header">
     <nav class="site-nav" aria-label="Navigasi utama">
-      <a class="nav-brand" href="index.html" data-nav-action="home" aria-label="Kembali ke halaman utama"><img class="nav-logo" src="assets/logo.svg" alt="" width="30" height="30">Dolenthis</a>
+      <a class="nav-brand" href="/" data-nav-action="home" aria-label="Kembali ke halaman utama"><img class="nav-logo" src="assets/logo.svg" alt="Logo Dolenthis" width="30" height="30">Dolenthis</a>
       <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Buka navigasi" aria-expanded="false" aria-controls="nav-links"><span></span></button>
       <div class="nav-links" id="nav-links">
-        <a class="nav-link" href="index.html" data-nav-action="home">Home</a>
+        <a class="nav-link" href="/" data-nav-action="home">Home</a>
         <a class="nav-link active" href="blog.html" data-nav-action="blog" aria-current="page">Blog</a>
         <a class="nav-link" href="other.html" data-nav-action="other">Other</a>
         <a class="nav-link" href="about.html" data-nav-action="about">About</a>
@@ -311,11 +311,11 @@ cmake --build build-x86 --config Release</code></pre>
       <div class="crypto-footer-title">Support</div>
       <div class="crypto-footer-grid">
         <a class="crypto-card" href="bitcoin:bc1q6uz95a7j3c6z9a2vr7a447l6y74pzyaxmsm8dl" aria-label="Bitcoin donation address">
-          <img class="crypto-qr" src="assets/btc-qr.svg" alt="Bitcoin QR code">
+          <img class="crypto-qr" src="assets/btc-qr.svg" alt="Bitcoin QR code" width="37" height="37">
           <span class="crypto-copy"><span class="crypto-name">Bitcoin</span><code class="crypto-address">bc1q6uz95a7j3c6z9a2vr7a447l6y74pzyaxmsm8dl</code></span>
         </a>
         <a class="crypto-card" href="ethereum:0xd4a297aA173F1251e517a394B313d5972E2150e3" aria-label="Ethereum donation address">
-          <img class="crypto-qr" src="assets/eth-qr.svg" alt="Ethereum QR code">
+          <img class="crypto-qr" src="assets/eth-qr.svg" alt="Ethereum QR code" width="37" height="37">
           <span class="crypto-copy"><span class="crypto-name">Ethereum</span><code class="crypto-address">0xd4a297aA173F1251e517a394B313d5972E2150e3</code></span>
         </a>
       </div>
