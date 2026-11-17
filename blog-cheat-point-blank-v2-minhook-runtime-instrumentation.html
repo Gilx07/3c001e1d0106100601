@@ -97,7 +97,7 @@
 
   <main class="page-shell article-shell">
     <p class="page-kicker">Catatan teknis</p>
-    <h1 class="page-title article-title">Cheat Point Blank V2 MinHook — Runtime Instrumentation &amp; Binary Analysis</h1>
+    <h1 class="page-title article-title">Cheat Point Blank V2 MinHook: Analisis Runtime</h1>
     <div class="article-meta"><span>25 Agustus 2026</span><span>Windows / MinHook / x86</span></div>
     <div class="page-rule"></div>
 
@@ -496,6 +496,14 @@ activation result</code></pre>
       <p>Analisis ini menunjukkan bahwa memahami binary Windows tidak cukup hanya dengan melihat satu comparator atau satu network call. Struktur sebenarnya baru terlihat ketika data dilacak sebagai pipeline: input mesin dibentuk, di-hash, dipakai sebagai serial, diteruskan ke network layer, response dibaca dan dinormalisasi, kemudian decision dibuat oleh logic internal.</p>
       <p>Static analysis menyediakan peta awal berupa imports, strings, call relationships, section layout, dan kandidat function boundary. Runtime instrumentation kemudian mengubah peta tersebut menjadi telemetry nyata. Kombinasi keduanya memungkinkan analyst membedakan asumsi dari behavior aktual.</p>
       <p>Pada saat yang sama, anti-analysis surface dan loader subsystem menunjukkan bahwa activation flow bukan satu-satunya control path penting. Memisahkan masing-masing subsystem membuat dokumentasi lebih konsisten dan mengurangi false correlation ketika event runtime dianalisis.</p>
+
+
+      <h2>Bagian lain seri ini</h2>
+      <ul>
+        <li><a href="blog-memahami-perilaku-dan-cara-mendeteksi-program-cheat-point-blank-v1.html">tiga artefak PE32/x86</a> (Cara Mendeteksi Program Cheat Point Blank V1)</li>
+        <li><a href="blog-intercept-v0-2-realtime-samp-raknet-packet-rpc-monitor.html">monitor realtime traffic packet dan RPC RakNet pada client SA-MP</a> (INTERCEPT v0.2: Monitor Paket RakNet SA-MP)</li>
+        <li><a href="blog-membedah-daerah-sd-3-mitos-driver-kernel.html">nol driver kernel</a> (Membedah Daerah SD 3: Mitos Driver Kernel)</li>
+      </ul>
 
       <div class="article-contact-wrap">
         <a class="article-contact" href="https://wa.me/6285828310334" target="_blank" rel="noopener noreferrer">CONTACT</a>

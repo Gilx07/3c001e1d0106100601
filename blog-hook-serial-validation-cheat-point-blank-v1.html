@@ -97,7 +97,7 @@
 
   <main class="page-shell article-shell">
     <p class="page-kicker">Catatan teknis</p>
-    <h1 class="page-title article-title">Hook serial validation pada Cheat Point Blank V1</h1>
+    <h1 class="page-title article-title">Hook Serial Validation Cheat Point Blank V1</h1>
     <div class="article-meta"><span>23 Agustus 2026</span><span>Windows / MinHook / x86</span></div>
     <div class="page-rule"></div>
 
@@ -330,6 +330,15 @@ cmake --build build-x86 --config Release</code></pre>
       <h2>Kesimpulan teknis</h2>
       <p>Temuan utama bukan sekadar keberadaan satu validation function, melainkan sebuah data-flow yang konsisten. <code>stateB</code> dihasilkan dari runtime producer input dan dikirim melalui network, sedangkan <code>stateA</code> dibentuk melalui dua tahap MD5 tambahan dan tetap lokal sebagai nilai pembanding terhadap response yang telah dinormalisasi.</p>
       <p>MinHook digunakan sebagai telemetry layer untuk menghubungkan static reverse engineering dengan nilai runtime aktual. Dengan mempertahankan original trampoline dan original return value, trace dapat dipakai untuk menjelaskan behavior native program tanpa mencampurkan hasil observasi dengan behavior hasil modifikasi.</p>
+
+
+      <h2>Bagian lain seri ini</h2>
+      <ul>
+        <li><a href="blog-memahami-perilaku-dan-cara-mendeteksi-program-cheat-point-blank-v1.html">terkonfirmasi secara statis</a> (Cara Mendeteksi Program Cheat Point Blank V1)</li>
+        <li><a href="blog-cheat-point-blank-v2-minhook-runtime-instrumentation.html">hook diposisikan sebagai lapisan telemetry</a> (Cheat Point Blank V2 MinHook: Analisis Runtime)</li>
+        <li><a href="blog-membedah-daerah-sd-4-satu-dapur-banyak-merek.html">satu loader bersama yang membawa payload untuk keempat merek</a> (Membedah Daerah SD 4: Satu Dapur Banyak Merek)</li>
+        <li><a href="blog-intercept-v0-2-realtime-samp-raknet-packet-rpc-monitor.html">monitor realtime traffic packet dan RPC RakNet pada client SA-MP</a> (INTERCEPT v0.2: Monitor Paket RakNet SA-MP)</li>
+      </ul>
 
       <div class="article-contact-wrap">
         <a class="article-contact" href="https://wa.me/6285828310334" target="_blank" rel="noopener noreferrer">CONTACT</a>
